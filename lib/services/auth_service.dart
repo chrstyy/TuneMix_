@@ -90,20 +90,6 @@ class AuthService {
     }
   }
 
-  Future<void> _saveUserDataToFirestore(User user) async {
-    try {
-      DocumentReference userDocRef = _database.collection('users').doc(user.uid);
-
-      await userDocRef.set({
-        'userId': user.uid,
-        'email': user.email ?? '',
-      });
-    } catch (e) {
-      print('Error saving user data to Firestore: $e');
-      throw e;
-    }
-  }
-
   Future<Map<String, dynamic>?> getUserData() async {
     User? user = _auth.currentUser;
     if (user != null) {

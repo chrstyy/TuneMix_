@@ -10,10 +10,10 @@ import 'screens/user_profile.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
-  FirebaseFirestore.instance.settings = const Settings(persistenceEnabled: true);
-  runApp(const MyApp());
+  if (Firebase.apps.isEmpty) {
+    await Firebase.initializeApp();
+  }
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -27,11 +27,11 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         debugShowCheckedModeBanner: false,
-        home: LandingScreen(),
+        home: UserProfile(),
         initialRoute: '/',
         routes: {
           '/landing': (context) => const LandingScreen(),
-          '/view': (context) => const UserProfile(imageUrl: '', userName: '',),
+          '/view': (context) => const UserProfile(),
           '/signup': (context) => const SignupScreen(),
           '/login': (context) => const LoginScreen(),
         });
