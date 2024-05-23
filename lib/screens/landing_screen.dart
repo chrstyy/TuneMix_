@@ -2,6 +2,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
 
+import 'ct_screen.dart';
+import 'login_screen.dart';
 import 'signup_screen.dart';
 
 class Logo extends StatefulWidget {
@@ -104,7 +106,7 @@ class _LandingScreenState extends State<LandingScreen> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(
-                          top: 40, left: 20, right: 20, bottom: 15),
+                          top: 40, left: 20, right: 20, bottom: 5),
                       child: ElevatedButton(
                         onPressed: () {
                           Navigator.push(
@@ -146,10 +148,14 @@ class _LandingScreenState extends State<LandingScreen> {
                           );
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xB957D0CA),
+                          backgroundColor: const Color(0xFFEEF0E5),
                           elevation: 5,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(15),
+                            side: const BorderSide(
+                              color: Color(0xFF8FB2AD), 
+                              width: 2, 
+                            ),
                           ),
                         ),
                         child: Container(
@@ -158,9 +164,9 @@ class _LandingScreenState extends State<LandingScreen> {
                           child: const Text(
                             'SIGNUP FOR FREE',
                             style: TextStyle(
-                              fontFamily: 'HoltwoodOneSC',
-                              color: Colors.black,
-                              fontWeight: FontWeight.w100,
+                              fontFamily: 'OdorMeanChey',
+                              color: Color(0xFF304D30),
+                              fontSize: 20,
                             ),
                           ),
                         ),
@@ -211,59 +217,49 @@ class _LandingScreenState extends State<LandingScreen> {
                           );
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          foregroundColor: const Color(0xFF101213),
-                          textStyle: const TextStyle(
-                            fontFamily: 'Itim',
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
-                          ),
-                          side: const BorderSide(
-                            color: Color.fromARGB(184, 224, 224, 224),
-                            width: 3,
-                          ),
+                          backgroundColor: Color(0xFFEEF0E5),
+                          foregroundColor: Color(0xFF304D30),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(15),
+                            side: const BorderSide(
+                              color: Color(0xFF8FB2AD), 
+                              width: 2, 
+                            ),
                           ),
                           minimumSize: const Size(double.infinity, 45),
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset('images/google.png',
-                                width: 20, height: 20),
-                            const SizedBox(width: 10),
-                            const Text('Continue with Google'),
-                          ],
-                        ),
+                         child: const Text('CONTINUE WITH GOOGLE', 
+                         style: TextStyle(
+                            fontFamily: 'OdorMeanChey',
+                            fontSize: 20,
+                            color: Color(0xFF304D30)
+                          ),),
                       ),
                     ),
-        
-
                     Align(
-                      alignment: const AlignmentDirectional(-1.00, 0.00),
+                      alignment: const AlignmentDirectional(-2.00, 0.00),
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 20),
+                        padding: const EdgeInsets.only(left: 70),
                         child: RichText(
                           textScaleFactor:
                               MediaQuery.of(context).textScaleFactor,
                           text: TextSpan(
                             children: [
                               const TextSpan(
-                                text: 'Already have an account?',
+                                text: 'ALREADY HAVE AN ACCOUNT?',
                                 style: TextStyle(
-                                  fontFamily: 'Bebas Neue',
+                                  fontFamily: 'PragatiNarrow',
                                   color: Colors.black,
                                   fontSize: 16,
                                 ),
                               ),
                               TextSpan(
-                                text: 'Sign In',
+                                text: 'LOGIN',
                                 style: const TextStyle(
-                                  fontFamily: 'Bebas Neue',
-                                  color: Color(0xFF4B39EF),
+                                  fontFamily: 'OdorMeanChey',
+                                  color: Color(0xFF32012F),
                                   fontSize: 16,
-                                  fontWeight: FontWeight.w500,
+                                  decoration: TextDecoration.underline,
                                 ),
                                 mouseCursor: SystemMouseCursors.click,
                                 recognizer: TapGestureRecognizer()

@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "743602971084",
+    "firebase_url": "https://gracieusg-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "gracieusg",
     "storage_bucket": "gracieusg.appspot.com"
   },
@@ -10,6 +11,25 @@
         "mobilesdk_app_id": "1:743602971084:android:d52e95ca804970dc673d69",
         "android_client_info": {
           "package_name": "com.example.flutter_application_1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAihVpb2KwRCR9ItAbdj4SWuuVW50sWbK8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:743602971084:android:ccb6c6f0bfec7f74673d69",
+        "android_client_info": {
+          "package_name": "com.example.grage"
         }
       },
       "oauth_client": [],

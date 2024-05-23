@@ -4,7 +4,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.3.0 <4.0.0'
+  sdk: '>=3.0.0 <4.0.0'
 
 dependencies:
   flutter:
@@ -38,45 +38,36 @@ flutter:
 
   assets:
     - images/
+    - fonts/
   
   fonts:
     - family: Belgrano
       fonts:
-      - asset: assets/fonts/Belgrano-Regular.ttf
+      - asset: fonts/Belgrano-Regular.ttf
     - family: Bebas Neue
       fonts:
-      - asset: assets/fonts/BebasNeue-Regular.ttf
+      - asset: fonts/BebasNeue-Regular.ttf
     - family: Itim
       fonts:
-      - asset: assets/fonts/Itim-Regular.ttf
-    - family: Inknut Antiqua
+      - asset: fonts/Itim-Regular.ttf
+    - family: Basic
       fonts:
-      - asset: assets/fonts/InknutAntiqua-Regular.ttf
-    - family: HoltwoodOneSC
+      - asset: fonts/Basic-Regular.ttf
+    - family: Battambang
       fonts:
-      - asset: assets/fonts/HoltwoodOneSC-Regular.ttf
-    - family: Kite One
+      - asset: fonts/Battambang-Regular.ttf
+    - family: Bayon
       fonts:
-      - asset: assets/fonts/KiteOne-Regular.ttf
-    - family: Kavoon
+      - asset: fonts/Bayon-Regular.ttf
+    - family: Bellefair
       fonts:
-      - asset: assets/fonts/Kavoon-Regular.ttf
-    - family: Josefin Sans
+      - asset: fonts/Itim-Regular.ttf
+    - family: BlackOpsOne
       fonts:
-      - asset: assets/fonts/JosefinSans-VariableFont_wght.ttf
-    - family: Lilita One
+      - asset: fonts/BlackOpsOne-Regular.ttf
+    - family: OdorMeanChey
       fonts:
-      - asset: assets/fonts/LilitaOne-Regular.ttf
-    - family: Lato
+      - asset: fonts/OdorMeanChey-Regular.ttf
+    - family: PragatiNarrow
       fonts:
-      - asset: assets/fonts/Lato-Regular.ttf
-    - family: Inria Sans
-      fonts:
-      - asset: assets/fonts/InriaSans-Regular.ttf
-    - family: Poppins
-      fonts:
-      - asset: assets/fonts/Poppins-Regular.ttf
-    - family: Concert One
-      fonts:
-      - asset: assets/fonts/ConcertOne-Regular.ttf
-  
+      - asset: fonts/PragatiNarrow-Regular.ttf
