@@ -1,0 +1,82 @@
+name: gracieusgalerij
+description: "A new Flutter project."
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.6
+  firebase_database: ^10.5.4
+  firebase_core: ^2.30.1
+  shimmer_animation: ^2.1.0+1
+  firebase_auth: ^4.19.4
+  cloud_firestore: ^4.17.2
+  image_picker: ^1.1.1
+  firebase_storage: ^11.7.4
+  youtube_api: ^1.0.4
+  path: ^1.9.0
+  youtube_player_flutter: ^9.0.1
+  youtube_explode_dart: ^1.12.4
+  audioplayers: ^6.0.0
+  geocoding: ^3.0.0
+  geolocator: ^11.0.0
+  url_launcher: ^6.2.6
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - images/
+  
+  fonts:
+    - family: Belgrano
+      fonts:
+      - asset: assets/fonts/Belgrano-Regular.ttf
+    - family: Bebas Neue
+      fonts:
+      - asset: assets/fonts/BebasNeue-Regular.ttf
+    - family: Itim
+      fonts:
+      - asset: assets/fonts/Itim-Regular.ttf
+    - family: Inknut Antiqua
+      fonts:
+      - asset: assets/fonts/InknutAntiqua-Regular.ttf
+    - family: HoltwoodOneSC
+      fonts:
+      - asset: assets/fonts/HoltwoodOneSC-Regular.ttf
+    - family: Kite One
+      fonts:
+      - asset: assets/fonts/KiteOne-Regular.ttf
+    - family: Kavoon
+      fonts:
+      - asset: assets/fonts/Kavoon-Regular.ttf
+    - family: Josefin Sans
+      fonts:
+      - asset: assets/fonts/JosefinSans-VariableFont_wght.ttf
+    - family: Lilita One
+      fonts:
+      - asset: assets/fonts/LilitaOne-Regular.ttf
+    - family: Lato
+      fonts:
+      - asset: assets/fonts/Lato-Regular.ttf
+    - family: Inria Sans
+      fonts:
+      - asset: assets/fonts/InriaSans-Regular.ttf
+    - family: Poppins
+      fonts:
+      - asset: assets/fonts/Poppins-Regular.ttf
+    - family: Concert One
+      fonts:
+      - asset: assets/fonts/ConcertOne-Regular.ttf
+  
