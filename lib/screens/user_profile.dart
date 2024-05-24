@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:gracieusgalerij/screens/home_screen.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -29,6 +30,9 @@ class _UserProfileState extends State<UserProfile> {
   File? _imageFile;
   File? _tempImageFile;
   String _tempUsername = '';
+   String _profileImageUrl = '';
+
+  bool _showHistory = false;
 
   @override
   void initState() {
@@ -72,40 +76,51 @@ class _UserProfileState extends State<UserProfile> {
       DocumentSnapshot userInfo =
           await _database.collection('users').doc(user.uid).get();
 
-      setState(() {
-        _userName = userInfo['username'];
-        _tempUsername = _userName; 
-        _editedUserNameController.text = _userName; 
-      });
+
+      if (userInfo.exists) {
+        print("User info found: ${userInfo.data()}");
+        setState(() {
+          _userName = userInfo['username'] ?? 'No Username';
+           _profileImageUrl = userInfo['profileImageUrl'];
+           userName = _userName; 
+          _tempUsername = _userName; 
+          _editedUserNameController.text = _userName; 
+        });
+      }
     }
   }
 
   Future<void> _updateUsername() async {
-    String newUsername = _editedUserNameController.text.trim();
-    try {
-      await AuthService().editUsername(newUsername);
-
-      // Update username di dalam Firestore
-      User? user = _auth.currentUser;
-      if (user != null) {
-        await _database.collection('users').doc(user.uid).update({
-          'username': newUsername,
-        });
-
-        setState(() {
-          _userName = newUsername;
-        });
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Username updated successfully')),
-        );
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to update username: $e')),
-      );
-    }
+  String newUsername = _editedUserNameController.text.trim();
+  print('Attempting to update username to: $newUsername');
+  if (newUsername.isEmpty) {
+    print('Username cannot be empty');
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Username cannot be empty')),
+    );
+    return;
   }
+
+  try {
+    User? user = _auth.currentUser;
+    if (user != null) {
+      await _database.collection('users').doc(user.uid).update({
+        'username': newUsername,
+      });
+
+      setState(() {
+        _userName = newUsername;
+        userName = newUsername;
+      });
+
+    }
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Failed to update username')),
+    );
+  }
+}
+
 
 
   Future<void> _loadUserData() async {
@@ -119,7 +134,7 @@ class _UserProfileState extends State<UserProfile> {
 
         if (userData.exists) {
           setState(() {
-            String email = userData['userName'];
+            String email = userData['username'];
             userName = email.split('@')[0];
             isSignedIn = true;
             _tempImageFile = userData['profileImageUrl'];
@@ -273,22 +288,20 @@ class _UserProfileState extends State<UserProfile> {
             ),
           ),
         ),
-Expanded(
-              flex: 2,
-              child: TextFormField(
-                controller: _editedUserNameController,
-                onChanged: (value) {
-                  setState(() {
-                    _tempUsername = value;
-                  });
-                },
-                decoration: const InputDecoration(
-                  hintText: 'Enter new username',
-                  hintStyle: TextStyle(
-                    fontFamily: 'Itim',
-                    fontSize: 13,
-                    color: Colors.black,
-                  ),
+        TextFormField(
+          controller: _editedUserNameController,
+          onChanged: (value) {
+              setState(() {
+                _tempUsername = value;
+              });
+          },
+          decoration: const InputDecoration(
+             hintText: 'Enter new username',
+             hintStyle: TextStyle(
+                fontFamily: 'Itim',
+                 fontSize: 13,
+                color: Colors.black,
+              ),
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: Colors.white),
                   ),
@@ -296,7 +309,6 @@ Expanded(
                     borderSide: BorderSide(color: Colors.white),
                   ),
                 ),
-              ),
             ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -314,11 +326,9 @@ Expanded(
               ),
             ),
             GestureDetector(
-              onTap: ()  {
-                 setState(() {
-                    _userName = _tempUsername; 
-                  });
-                  Navigator.pop(context);
+              onTap: () {
+                _updateUsername();
+                Navigator.pop(context);
               },
               child: const Text(
                 'Save',
@@ -427,7 +437,7 @@ Expanded(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                             '$_userName',
+                             userName,
                               style: const TextStyle(
                                 fontFamily: 'Bayon',
                                 fontWeight: FontWeight.bold,
@@ -459,10 +469,12 @@ Expanded(
                     children: [
                       ElevatedButton(
                         onPressed: () {
-                         
+                         setState(() {
+                            _showHistory = !_showHistory;
+                          });
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFFF1B26F),
+                          backgroundColor: const Color(0xFFF1B26F),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -506,7 +518,7 @@ Expanded(
                         _signOut();
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF9D3939),
+                        backgroundColor: const Color(0xFF9D3939),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -524,12 +536,83 @@ Expanded(
                     ),
                     ],
                   ),
+                  const SizedBox(height: 10),
+              // Expanded(
+              // child: ListView.builder(
+              //   itemCount: historyList.length,
+              //   itemBuilder: (context, index) {
+              //     return Padding(
+              //       padding: const EdgeInsets.symmetric(
+              //         horizontal: 20,
+              //         vertical: 10,
+              //       ),
+              //       child: Container(
+              //         padding: EdgeInsets.all(10),
+              //         decoration: BoxDecoration(
+              //           border: Border.all(color: Colors.grey),
+              //           borderRadius: BorderRadius.circular(10),
+              //         ),
+              //         child: Row(
+              //           crossAxisAlignment: CrossAxisAlignment.start,
+              //           children: [
+              //             Container(
+              //               width: 80,
+              //               height: 80,
+              //               decoration: BoxDecoration(
+              //                 borderRadius: BorderRadius.circular(10),
+              //                 image: DecorationImage(
+              //                   image: AssetImage(historyList[index].productImage),
+              //                   fit: BoxFit.cover,
+              //                 ),
+              //               ),
+              //             ),
+              //             SizedBox(width: 10),
+              //             Expanded(
+              //               child: Column(
+              //                 crossAxisAlignment: CrossAxisAlignment.start,
+              //                 children: [
+              //                   Text(
+              //                     historyList[index].productName,
+              //                     style: TextStyle(
+              //                       fontSize: 18,
+              //                       fontWeight: FontWeight.bold,
+              //                     ),
+              //                   ),
+              //                   SizedBox(height: 5),
+              //                   Text(
+              //                     'Price: \$${historyList[index].price.toStringAsFixed(2)}',
+              //                     style: TextStyle(fontSize: 16),
+              //                   ),
+              //                   SizedBox(height: 5),
+              //                   Text(
+              //                     'Quantity: ${historyList[index].quantity}',
+              //                     style: TextStyle(fontSize: 16),
+              //                   ),
+              //                   SizedBox(height: 5),
+              //                   Text(
+              //                     'Total: \$${historyList[index].total.toStringAsFixed(2)}',
+              //                     style: TextStyle(fontSize: 16),
+              //                   ),
+              //                 ],
+              //               ),
+              //             ),
+              //           ],
+              //         ),
+              //       ),
+                
+              //     );
+              //   },
+              // ),
+              //     )
                 ],
               ),
             ),
           ),
         ],
       ),
+              
+              
+
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(
           canvasColor: const Color.fromARGB(255, 214, 240, 238),
@@ -660,7 +743,7 @@ Expanded(
                 //  favoritePodcasts: [],
               );
             case 4:
-              return  UserProfile();
+              return  const UserProfile();
             default:
               return Container();
           }

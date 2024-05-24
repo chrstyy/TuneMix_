@@ -105,11 +105,14 @@ class _LoginScreensState extends State<LoginScreen> {
 
    Future<void> _saveUserDataToFirestore(User user) async {
     try {
+      String email = user.email ?? '';
+      String userName = email.split('@')[0].replaceAll('.', '');
       DocumentReference userDocRef = _database.collection('users').doc(user.uid);
 
       await userDocRef.set({
         'userId': user.uid,
         'email': user.email ?? '',
+        'username': userName,
       });
     } catch (e) {
       print('Error saving user data to Firestore: $e');
