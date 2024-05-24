@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../services/auth_service.dart';
+import 'admin/hs_admin.dart';
 import 'forgot_password.dart';
 import 'home_screen.dart';
 import 'user_profile.dart';
@@ -66,16 +67,26 @@ class _LoginScreensState extends State<LoginScreen> {
       final UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
         password: password,
+        
       );
+
+      String role = email.contains('admin') ? 'admin' : 'user';
 
       // Simpan data pengguna di Firestore
       if (userCredential.user != null) {
         await _saveUserDataToFirestore(userCredential.user!);
 
+        if (role == 'admin') {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomeScreenAdmin()),
+        );
+      } else {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const UserProfile()),
         );
+      }
       } else {
         setState(() {
           _errorText = 'Invalid Email or Password';

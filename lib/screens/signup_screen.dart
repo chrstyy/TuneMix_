@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:gracieusgalerij/screens/admin/hs_admin.dart';
 
 import 'login_screen.dart';
 
@@ -54,6 +55,8 @@ class _SignupScreenState extends State<SignupScreen> {
       return;
     }
 
+    String role = email.contains('admin') ? 'admin' : 'user';
+
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
@@ -67,13 +70,21 @@ class _SignupScreenState extends State<SignupScreen> {
         'last_name': lName,
         'email': _emailController.text,
         'password': password,
-        'confirm_password': cfPw
+        'confirm_password': cfPw,
+        'role': role,
       });
 
-      Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => const LoginScreen()),
-      );
+      if (role == 'admin') {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const LoginScreen()),
+        );
+      } else {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const LoginScreen()),
+        );
+      }
     } catch (error) {
       print(error.toString()); 
     }

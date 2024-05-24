@@ -81,7 +81,6 @@ class _UserProfileState extends State<UserProfile> {
         print("User info found: ${userInfo.data()}");
         setState(() {
           _userName = userInfo['username'] ?? 'No Username';
-           _profileImageUrl = userInfo['profileImageUrl'];
            userName = _userName; 
           _tempUsername = _userName; 
           _editedUserNameController.text = _userName; 
