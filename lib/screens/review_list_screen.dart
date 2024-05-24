@@ -13,23 +13,80 @@ class ReviewListScreen extends StatefulWidget {
 class _ReviewListScreenState extends State<ReviewListScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Review'),
-      ),
-      body: const ReviewList(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const ReviewEditScreen(),
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        body: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Expanded(
+              child: Container(
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [Color(0xFFF8F4E1), Color(0xFFAF8F6F)],
+                    stops: [0, 1],
+                    begin: AlignmentDirectional(0, -1),
+                    end: AlignmentDirectional(0, 1),
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(20, 20, 20, 0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      const Align(
+                        alignment: AlignmentDirectional(-1, 0),
+                        child: Icon(
+                          Icons.arrow_back_rounded,
+                          color: Colors.black,
+                          size: 24,
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).scaffoldBackgroundColor,
+                            boxShadow: const [
+                              BoxShadow(
+                                blurRadius: 4,
+                                color: Color(0x33000000),
+                                offset: Offset(4, 4),
+                                spreadRadius: 3,
+                              )
+                            ],
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(20),
+                              topRight: Radius.circular(20),
+                            ),
+                          ),
+                          child: const Padding(
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(10, 10, 10, 0),
+                            child: ReviewList(),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
-          ); //push bs balek lagi, pushReplacement dbs balek
-       
-        },
-        tooltip: 'Add Review',
-        child: const Icon(Icons.add),
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const ReviewEditScreen(),
+              ),
+            );
+          },
+          tooltip: 'Add Review',
+          child: const Icon(Icons.add),
+        ),
       ),
     );
   }
@@ -72,7 +129,8 @@ class ReviewList extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ReviewEditScreen(review: document),
+                          builder: (context) =>
+                              ReviewEditScreen(review: document),
                         ),
                       );
                     },
@@ -95,8 +153,9 @@ class ReviewList extends StatelessWidget {
                               )
                             : Container(),
                         ListTile(
-                          title: Text(document.title),
-                          subtitle: Text(document.description),
+                          title: Text(document.productName),
+                          subtitle: Text(document.cost),
+                          
                           trailing: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -118,7 +177,7 @@ class ReviewList extends StatelessWidget {
                                       return AlertDialog(
                                         title: const Text('Konfirmasi Hapus'),
                                         content: Text(
-                                            'Yakin ingin menghapus data \'${document.title}\' ?'),
+                                            'Yakin ingin menghapus data \'${document.productName}\' ?'),
                                         actions: <Widget>[
                                           TextButton(
                                             child: const Text('Cancel'),
@@ -129,7 +188,8 @@ class ReviewList extends StatelessWidget {
                                           TextButton(
                                             child: const Text('Hapus'),
                                             onPressed: () {
-                                              ReviewService.deleteReview(document)
+                                              ReviewService.deleteReview(
+                                                      document)
                                                   .whenComplete(() =>
                                                       Navigator.of(context)
                                                           .pop());

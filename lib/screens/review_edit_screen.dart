@@ -15,8 +15,9 @@ class ReviewEditScreen extends StatefulWidget {
 }
 
 class _ReviewEditScreenState extends State<ReviewEditScreen> {
-  final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _productNameController = TextEditingController();
+  final TextEditingController _costController = TextEditingController();
+  final TextEditingController _commentController = TextEditingController();
   File? _imageFile;
   Position? _currentPosition;
 
@@ -24,11 +25,11 @@ class _ReviewEditScreenState extends State<ReviewEditScreen> {
   void initState() {
     super.initState();
     if (widget.review != null) {
-      _titleController.text = widget.review!.title;
-      _descriptionController.text = widget.review!.description;
+      _productNameController.text = widget.review!.productName;
+      _costController.text = widget.review!.cost;
+      _commentController.text = widget.review!.comment;
     }
   }
-
 
   Future<void> _pickImage() async {
     final pickedFile =
@@ -62,20 +63,29 @@ class _ReviewEditScreenState extends State<ReviewEditScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                'Title: ',
+                'Product Name: ',
                 textAlign: TextAlign.start,
               ),
               TextField(
-                controller: _titleController,
+                controller: _productNameController,
               ),
               const Padding(
                 padding: EdgeInsets.only(top: 20),
                 child: Text(
-                  'Description: ',
+                  'Cost: ',
                 ),
               ),
               TextField(
-                controller: _descriptionController,
+                controller: _costController,
+              ),
+              const Padding(
+                padding: EdgeInsets.only(top: 20),
+                child: Text(
+                  'Comment: ',
+                ),
+              ),
+              TextField(
+                controller: _commentController,
               ),
               const Padding(
                 padding: EdgeInsets.only(top: 20),
@@ -88,7 +98,8 @@ class _ReviewEditScreenState extends State<ReviewEditScreen> {
                     )
                   : (widget.review?.imageUrl != null &&
                           Uri.parse(widget.review!.imageUrl!).isAbsolute
-                      ? Image.network(widget.review!.imageUrl!, fit: BoxFit.cover)
+                      ? Image.network(widget.review!.imageUrl!,
+                          fit: BoxFit.cover)
                       : Container()),
               TextButton(
                 onPressed: _pickImage,
@@ -126,8 +137,9 @@ class _ReviewEditScreenState extends State<ReviewEditScreen> {
                       }
                       Review review = Review(
                         id: widget.review?.id,
-                        title: _titleController.text,
-                        description: _descriptionController.text,
+                        productName: _productNameController.text,
+                        cost: _costController.text,
+                        comment: _commentController.text,
                         imageUrl: imageUrl,
                         latitude: _currentPosition?.latitude,
                         longitude: _currentPosition?.longitude,
