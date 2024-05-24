@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:gracieusgalerij/screens/product_detail.dart';
 import 'firebase_options.dart';
 import 'screens/review_list_screen.dart';
 import 'screens/landing_screen.dart';
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         debugShowCheckedModeBanner: false,
-        home: LandingScreen(),
+        home: ProductDetailScreen(),
         initialRoute: '/',
         routes: {
           '/landing': (context) => const LandingScreen(),
