@@ -1,8 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:gracieusgalerij/screens/continue_with_google.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
-import 'ct_screen.dart';
 import 'login_screen.dart';
 import 'signup_screen.dart';
 
@@ -47,7 +49,7 @@ class _LogoState extends State<Logo> with SingleTickerProviderStateMixin {
           'images/logo.png',
           width: 300,
           height: 200,
-          fit: BoxFit.contain,
+          fit: BoxFit.cover,
         ),
       ),
     );
@@ -70,6 +72,60 @@ class _LandingScreenState extends State<LandingScreen> {
   @override
   void dispose() {
     super.dispose();
+  }
+
+  Future<void> _signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      final GoogleSignInAuthentication? googleAuth =
+          await googleUser?.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
+
+      await FirebaseAuth.instance.signInWithCredential(credential);
+
+      Navigator.pushReplacement(
+        context,
+        PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) =>
+              const ContinueWithGoogle(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            const begin = 0.0;
+            const end = 1.0;
+            const curve = Curves.easeInOut;
+
+            var scaleTween = Tween(begin: begin, end: end);
+            var fadeTween = Tween(begin: 0.0, end: 1.0);
+
+            var curvedAnimation = CurvedAnimation(
+              parent: animation,
+              curve: curve,
+            );
+
+            var scaleAnimation = scaleTween.animate(curvedAnimation);
+            var fadeAnimation = fadeTween.animate(curvedAnimation);
+
+            return ScaleTransition(
+              scale: scaleAnimation,
+              child: FadeTransition(
+                opacity: fadeAnimation,
+                child: child,
+              ),
+            );
+          },
+          transitionDuration: const Duration(milliseconds: 500),
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to sign in with Google: $e'),
+        ),
+      );
+    }
   }
 
   @override
@@ -153,8 +209,8 @@ class _LandingScreenState extends State<LandingScreen> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15),
                             side: const BorderSide(
-                              color: Color(0xFF8FB2AD), 
-                              width: 2, 
+                              color: Color(0xFF8FB2AD),
+                              width: 2,
                             ),
                           ),
                         ),
@@ -172,68 +228,30 @@ class _LandingScreenState extends State<LandingScreen> {
                         ),
                       ),
                     ),
-
                     Padding(
                       padding: const EdgeInsets.only(
                           left: 20, right: 20, bottom: 15),
                       child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            PageRouteBuilder(
-                              pageBuilder:
-                                  (context, animation, secondaryAnimation) =>
-                                      const ContinueWithGoogle(),
-                              transitionsBuilder: (context, animation,
-                                  secondaryAnimation, child) {
-                                const begin = 0.0;
-                                const end = 1.0;
-                                const curve = Curves.easeInOut;
-
-                                var scaleTween = Tween(begin: begin, end: end);
-                                var fadeTween = Tween(begin: 0.0, end: 1.0);
-
-                                var curvedAnimation = CurvedAnimation(
-                                  parent: animation,
-                                  curve: curve,
-                                );
-
-                                var scaleAnimation =
-                                    scaleTween.animate(curvedAnimation);
-                                var fadeAnimation =
-                                    fadeTween.animate(curvedAnimation);
-
-                                return ScaleTransition(
-                                  scale: scaleAnimation,
-                                  child: FadeTransition(
-                                    opacity: fadeAnimation,
-                                    child: child,
-                                  ),
-                                );
-                              },
-                              transitionDuration:
-                                  const Duration(milliseconds: 500),
-                            ),
-                          );
-                        },
+                        onPressed: _signInWithGoogle,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Color(0xFFEEF0E5),
                           foregroundColor: Color(0xFF304D30),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15),
                             side: const BorderSide(
-                              color: Color(0xFF8FB2AD), 
-                              width: 2, 
+                              color: Color(0xFF8FB2AD),
+                              width: 2,
                             ),
                           ),
                           minimumSize: const Size(double.infinity, 45),
                         ),
-                         child: const Text('CONTINUE WITH GOOGLE', 
-                         style: TextStyle(
-                            fontFamily: 'OdorMeanChey',
-                            fontSize: 20,
-                            color: Color(0xFF304D30)
-                          ),),
+                        child: const Text(
+                          'CONTINUE WITH GOOGLE',
+                          style: TextStyle(
+                              fontFamily: 'OdorMeanChey',
+                              fontSize: 20,
+                              color: Color(0xFF304D30)),
+                        ),
                       ),
                     ),
                     Align(
