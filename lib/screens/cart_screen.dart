@@ -48,7 +48,7 @@ class _CartScreenState extends State<CartScreen> {
                 children: [
                   // Header
                   Padding(
-                    padding: const EdgeInsets.only(left: 20, right: 20, top: 40),
+                    padding: const EdgeInsets.only(right: 20, top: 40),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -65,117 +65,154 @@ class _CartScreenState extends State<CartScreen> {
                           ),
                           child: Image.asset('images/arrowback.png', width: 35, height: 35),
                         ),
-                        Text(
-                          'Your Cart',
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Your Cart',
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Battambang'
+                              ),
+                            ),
+                            Text(
+                              '${_cartItems.length} Items',
+                              style: const TextStyle(
+                                fontSize: 14,
+                                color: Colors.black,
+                                fontFamily: 'Battambang',
+                              ),
+                            ),
+                          ],
                         ),
+                        //utk tulisan your cart n brp byk items
                         Container(
                           padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                          decoration: BoxDecoration(
-                            color: Colors.black,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Text(
-                            '${_cartItems.length} Items',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 20),
-
                   // Cart Items List
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: _cartItems.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.brown,
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
-                                spreadRadius: 1,
-                                blurRadius: 10,
-                                offset: const Offset(0, 3),
+SingleChildScrollView(
+  child: Column(
+    children: [
+      ListView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: _cartItems.length,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            child: Container(
+              decoration: BoxDecoration(
+                color: const Color(0xFF543310),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: 80,  // Ukuran lebih kecil
+                              height: 80,  // Ukuran lebih kecil
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                image: DecorationImage(
+                                  image: AssetImage(_cartItems[index].image),
+                                  fit: BoxFit.cover,
+                                ),
                               ),
-                            ],
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  width: 100,
-                                  height: 100,
-                                  decoration: BoxDecoration(
-                                    color: Colors.brown[200],
-                                    borderRadius: BorderRadius.circular(10),
-                                    image: DecorationImage(
-                                      image: AssetImage(_cartItems[index].image),
-                                      fit: BoxFit.cover,
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    _cartItems[index].productName,
+                                    style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'Battambang',
                                     ),
                                   ),
-                                ),
-                                const SizedBox(width: 10),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                  const SizedBox(height: 5),
+                                  Row(
                                     children: [
                                       Text(
-                                        _cartItems[index].productName,
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 5),
-                                      Text(
                                         '\$${_cartItems[index].price.toStringAsFixed(2)}',
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontSize: 16,
                                           color: Colors.orange,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                      const SizedBox(height: 5),
                                       Text(
-                                        'Quantity: ${_cartItems[index].quantity}',
-                                        style: TextStyle(
+                                        ' x ${_cartItems[index].quantity}',
+                                        style: const TextStyle(
                                           fontSize: 16,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 5),
-                                      Text(
-                                        'Total: \$${(_cartItems[index].price * _cartItems[index].quantity).toStringAsFixed(2)}',
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
                                         ),
                                       ),
                                     ],
                                   ),
+                                  const SizedBox(height: 5),
+                                  Text(
+                                    'Total: \$${(_cartItems[index].price * _cartItems[index].quantity).toStringAsFixed(2)}',
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            PopupMenuButton(
+                              onSelected: (value) {
+                                // Handle the menu selection
+                                if (value == 'edit') {
+                                  // Edit action
+                                } else if (value == 'delete') {
+                                  // Delete action
+                                }
+                              },
+                              itemBuilder: (context) => [
+                                const PopupMenuItem(
+                                  value: 'edit',
+                                  child: Text('Edit'),
+                                ),
+                                const PopupMenuItem(
+                                  value: 'delete',
+                                  child: Text('Delete'),
                                 ),
                               ],
                             ),
-                          ),
+                          ],
                         ),
-                      );
-                    },
-                  ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    ],
+  ),
+)
+
+
                 ],
               ),
             ),
