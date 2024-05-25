@@ -35,7 +35,6 @@ class ReviewService {
   static Future<void> addReview(Review review) async {
     Map<String, dynamic> newReview = {
       'product_name': review.productName,
-      'cost': review.cost,
       'comment': review.comment,
       'image_url': review.imageUrl,
       'created_at': FieldValue.serverTimestamp(),
@@ -47,7 +46,6 @@ class ReviewService {
   static Future<void> updateReview(Review review) async {
     Map<String, dynamic> updatedReview = {
       'product_name': review.productName,
-      'cost': review.cost,
       'comment': review.comment,
       'image_url': review.imageUrl,
       'created_at': review.createdAt,
@@ -72,7 +70,6 @@ class ReviewService {
         return Review(
           id: doc.id,
           productName: data['product_name'],
-          cost: data['cost'],
           comment: data['comment'],
           imageUrl: data['image_url'],
           createdAt: data['created_at'] != null

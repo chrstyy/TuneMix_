@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Review {
   String? id;
   final String productName;
-  final String cost;
   final String comment;
   String? imageUrl;
   double? latitude;
@@ -14,7 +13,6 @@ class Review {
   Review({
     this.id,
     required this.productName,
-    required this.cost,
     required this.comment,
     this.imageUrl,
     this.latitude,
@@ -28,7 +26,6 @@ class Review {
     return Review(
       id: doc.id,
       productName: data['product_name'],
-      cost: data['cost'],
       comment: data['comment'],
       imageUrl: data['image_url'],
       latitude: data['latitude'] as double,
@@ -41,7 +38,6 @@ class Review {
   Map<String, dynamic> toDocument() {
     return {
       'product_name': productName,
-      'cost': cost,
       'comment': comment,
       'image_url': imageUrl,
       'latitude': latitude,

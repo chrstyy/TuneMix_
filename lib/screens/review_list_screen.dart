@@ -154,8 +154,7 @@ class ReviewList extends StatelessWidget {
                             : Container(),
                         ListTile(
                           title: Text(document.productName),
-                          subtitle: Text(document.cost),
-                          
+                          subtitle: Text(document.comment),
                           trailing: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [

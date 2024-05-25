@@ -15,8 +15,7 @@ class ReviewEditScreen extends StatefulWidget {
 }
 
 class _ReviewEditScreenState extends State<ReviewEditScreen> {
-  final TextEditingController _productNameController = TextEditingController();
-  final TextEditingController _costController = TextEditingController();
+  final TextEditingController _productNController = TextEditingController();
   final TextEditingController _commentController = TextEditingController();
   File? _imageFile;
   Position? _currentPosition;
@@ -25,8 +24,7 @@ class _ReviewEditScreenState extends State<ReviewEditScreen> {
   void initState() {
     super.initState();
     if (widget.review != null) {
-      _productNameController.text = widget.review!.productName;
-      _costController.text = widget.review!.cost;
+      _productNController.text = widget.review!.productName;
       _commentController.text = widget.review!.comment;
     }
   }
@@ -43,10 +41,8 @@ class _ReviewEditScreenState extends State<ReviewEditScreen> {
 
   Future<void> _pickLocation() async {
     final currentPosition = await LocationService.getCurrentPosition();
-    // final currentAddress = await LocationService.getAddressFromLatLng(_currentPosition!);
     setState(() {
       _currentPosition = currentPosition;
-      // _currentAddress = currentAddress;
     });
   }
 
@@ -63,25 +59,16 @@ class _ReviewEditScreenState extends State<ReviewEditScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                'Product Name: ',
+                'Product Name : ',
                 textAlign: TextAlign.start,
               ),
               TextField(
-                controller: _productNameController,
+                controller: _productNController,
               ),
               const Padding(
                 padding: EdgeInsets.only(top: 20),
                 child: Text(
-                  'Cost: ',
-                ),
-              ),
-              TextField(
-                controller: _costController,
-              ),
-              const Padding(
-                padding: EdgeInsets.only(top: 20),
-                child: Text(
-                  'Comment: ',
+                  'Comment : ',
                 ),
               ),
               TextField(
@@ -137,8 +124,7 @@ class _ReviewEditScreenState extends State<ReviewEditScreen> {
                       }
                       Review review = Review(
                         id: widget.review?.id,
-                        productName: _productNameController.text,
-                        cost: _costController.text,
+                        productName: _productNController.text,
                         comment: _commentController.text,
                         imageUrl: imageUrl,
                         latitude: _currentPosition?.latitude,
