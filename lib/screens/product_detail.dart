@@ -12,6 +12,7 @@ class ProductDetailScreen extends StatefulWidget {
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
   int _selectedSizeIndex = 0;
+  int _selectedColorIndex = -1; 
   int _quantity = 1;
 
   List<String> _sizes = ['S', 'M', 'L', 'XL'];
@@ -84,7 +85,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             onTap: () {
                               Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(builder: (context) => CartScreen()),
+                                MaterialPageRoute(builder: (context) => const CartScreen()),
                               );
                             },
                             child: Image.asset('images/cart.png',
@@ -97,7 +98,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             onTap: () {
                               Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(builder: (context) => FavoriteScreen()),
+                                MaterialPageRoute(builder: (context) => const FavoriteScreen()),
                               );
                             },
                             child: Image.asset('images/heart.png',
@@ -118,7 +119,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           width: 353,
                           height: 304,
                           decoration: BoxDecoration(
-                            color: Color(0xFF543310),
+                            color: const Color(0xFF543310),
                             borderRadius: BorderRadius.circular(10),
                             image: const DecorationImage(
                               image: AssetImage('images/product_image.png'),
@@ -128,201 +129,246 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         ),
                       ),
                       Positioned(
-                        top: 220, 
-                        left: 20,
-                        right: 20,
-                        child: Container(
-                          padding: const EdgeInsets.all(20),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(20),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
-                                spreadRadius: 1,
-                                blurRadius: 10,
-                                offset: const Offset(0, 3),
-                              ),
-                            ],
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              // Product name
-                              const Text(
-                                'Product Name',
-                                style: TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
+                        top: 220,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        child: SingleChildScrollView(
+                          child: Container(
+                            width: 393,
+                            height: 598,
+                            padding: const EdgeInsets.all(20),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.1),
+                                  spreadRadius: 1,
+                                  blurRadius: 10,
+                                  offset: const Offset(0, 3),
                                 ),
-                              ),
-                              const SizedBox(height: 10),
-                              // Product price
-                              const Text(
-                                '\$99.99',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.green,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const SizedBox(height: 20),
-                              // Product description
-                              const Text(
-                                'Product description goes here. This is a long description to demonstrate the layout.',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                ),
-                              ),
-                              const SizedBox(height: 20),
-                              // Product sizes
-                              const Text(
-                                'Sizes',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              // Size selection
-                              Wrap(
-                                spacing: 10,
-                                children: List.generate(
-                                  _sizes.length,
-                                  (index) => InkWell(
-                                    onTap: () {
-                                      setState(() {
-                                        _selectedSizeIndex = index;
-                                      });
-                                    },
-                                    child: Container(
-                                      width: 50,
-                                      height: 50,
-                                      decoration: BoxDecoration(
-                                        color: _selectedSizeIndex == index
-                                            ? Colors.orange
-                                            : Colors.white,
-                                        borderRadius: BorderRadius.circular(25),
-                                        border: Border.all(
-                                          color: Colors.orange,
-                                          width: 2,
-                                        ),
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          _sizes[index],
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold,
-                                            color: _selectedSizeIndex == index
-                                                ? Colors.white
-                                                : Colors.black,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
+                              ],
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                const Text(
+                                  'Product Name',
+                                  style: TextStyle(
+                                    fontSize: 30,
+                                    fontFamily: 'Bayon',
                                   ),
                                 ),
-                              ),
-                              const SizedBox(height: 20),
-                              // Product colors
-                              const Text(
-                                'Colors',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              // Color selection
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: List.generate(
-                                  _colors.length,
-                                  (index) => InkWell(
-                                    onTap: () {
-                                      // Handle color selection
-                                    },
-                                    child: Container(
-                                      width: 50,
-                                      height: 50,
-                                      decoration: BoxDecoration(
-                                        color: _colors[index],
-                                        shape: BoxShape.circle,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 20),
-                              // Product quantity
-                              const Text(
-                                'Quantity',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              // Quantity selection
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  GestureDetector(
-                                    onTap: _decrementQuantity,
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: Colors.orange,
-                                        borderRadius: BorderRadius.circular(5),
-                                      ),
-                                      child: const Icon(Icons.remove),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  Text(
-                                    '$_quantity',
-                                    style: const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  GestureDetector(
-                                    onTap: _incrementQuantity,
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: Colors.orange,
-                                        borderRadius: BorderRadius.circular(5),
-                                      ),
-                                      child: const Icon(Icons.add),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 20),
-                              // Add to cart button
-                              ElevatedButton(
-                                onPressed: () {
-                                  // Handle add to cart
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.orange,
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 15,
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                ),
-                                child: const Text(
-                                  'Add to Cart',
+                                const SizedBox(height: 3),
+                                const Text(
+                                  '\$99.99',
                                   style: TextStyle(
                                     fontSize: 20,
-                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xFFFF8A00),
+                                    fontFamily: 'Battambang',
                                   ),
                                 ),
-                              ),
-                            ],
+                                const Text(
+                                  '\nRaih tampilan modis dan nyaman dengan Crop Sweater terbaru kami. Dibuat dari bahan berkualitas tinggi yang lembut dan elastis, sweater ini dirancang khusus untuk memberikan kenyamanan maksimal sepanjang hari.'
+                                  '\nDengan potongan crop yang trendi, sweater ini sempurna untuk gaya kasual yang chic.',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                const SizedBox(height: 20),
+                                Container(
+                                  width: 380,
+                                  height: 200,
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFFF1B26F), 
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          width: 322,
+                                          height: 120,
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.circular(10),
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(10),
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  children: [
+                                                    const Text(
+                                                      'Colors',
+                                                      style: TextStyle(
+                                                        fontSize: 20,
+                                                        fontFamily: 'Bayon',
+                                                      ),
+                                                    ),
+                                                    Row(
+                                                      children: List.generate(
+                                                        _colors.length,
+                                                        (index) => InkWell(
+                                                          onTap: () {
+                                                            setState(() {
+                                                              _selectedColorIndex = index;
+                                                            });
+                                                          },
+                                                          child: Container(
+                                                            width: 36,
+                                                            height: 36,
+                                                            margin: const EdgeInsets.only(left: 8),
+                                                            decoration: BoxDecoration(
+                                                              color: _colors[index],
+                                                              shape: BoxShape.circle,
+                                                              border: Border.all(
+                                                                color: _selectedColorIndex == index
+                                                                    ? const Color(0xFF543310)
+                                                                    : Colors.transparent,
+                                                                width: 4,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                const SizedBox(height: 20),
+                                                Row(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  children: [
+                                                    const Text(
+                                                      'Sizes',
+                                                      style: TextStyle(
+                                                        fontSize: 20,
+                                                        fontFamily: 'Bayon',
+                                                      ),
+                                                    ),
+                                                    Wrap(
+                                                      spacing: 10,
+                                                      children: List.generate(
+                                                        _sizes.length,
+                                                        (index) => InkWell(
+                                                          onTap: () {
+                                                            setState(() {
+                                                              _selectedSizeIndex = index;
+                                                            });
+                                                          },
+                                                          child: Container(
+                                                            width: 36,
+                                                            height: 36,
+                                                            decoration: BoxDecoration(
+                                                              color: _selectedSizeIndex == index
+                                                                  ? const Color(0xFF543310)
+                                                                  : Colors.white,
+                                                              borderRadius: BorderRadius.circular(25),
+                                                              border: Border.all(
+                                                                color: const Color(0xFF543310),
+                                                                width: _selectedSizeIndex == index ? 2 : 1,
+                                                              ),
+                                                            ),
+                                                            child: Center(
+                                                              child: Text(
+                                                                _sizes[index],
+                                                                style: TextStyle(
+                                                                  fontSize: 18,
+                                                                  fontWeight: FontWeight.bold,
+                                                                  color: _selectedSizeIndex == index
+                                                                      ? Colors.white
+                                                                      : Colors.black,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(height: 5),
+                                        // Quantity selection
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            GestureDetector(
+                                              onTap: _decrementQuantity,
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(5),
+                                                ),
+                                                child: const Icon(Icons.remove_circle_outline),
+                                              ),
+                                            ),
+                                            const SizedBox(width: 10),
+                                            Text(
+                                              '$_quantity',
+                                              style: const TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            const SizedBox(width: 10),
+                                            GestureDetector(
+                                              onTap: _incrementQuantity,
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(5),
+                                                ),
+                                                child: const Icon(Icons.add_circle_outline),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        // Add to cart button
+                                        Center(
+                                          child: SizedBox(
+                                            width: 108,
+                                            height: 27,
+                                            child: ElevatedButton(
+                                              onPressed: () {
+                                                // Handle add to cart
+                                              },
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor: const Color(0xFFFFE8C8),
+                                                padding: EdgeInsets.zero,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(30),
+                                                ),
+                                              ),
+                                              child: const Row(
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    'Add to Cart',
+                                                    style: TextStyle(
+                                                      fontSize: 14,
+                                                      fontWeight: FontWeight.bold,
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
