@@ -245,12 +245,17 @@ class _LandingScreenState extends State<LandingScreen> {
                           ),
                           minimumSize: const Size(double.infinity, 45),
                         ),
-                        child: const Text(
-                          'CONTINUE WITH GOOGLE',
-                          style: TextStyle(
+                        child: Container(
+                          height: 40,
+                          alignment: Alignment.center,
+                          child: const Text(
+                            'CONTINUE WITH GOOGLE',
+                            style: TextStyle(
                               fontFamily: 'OdorMeanChey',
+                              color: Color(0xFF304D30),
                               fontSize: 20,
-                              color: Color(0xFF304D30)),
+                            ),
+                          ),
                         ),
                       ),
                     ),
