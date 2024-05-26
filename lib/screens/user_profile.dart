@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:gracieusgalerij/screens/cart_screen.dart';
+import 'package:gracieusgalerij/screens/fav_screen.dart';
 import 'package:gracieusgalerij/screens/home_screen.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -610,11 +612,9 @@ class _UserProfileState extends State<UserProfile> {
         ],
       ),
               
-              
-
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(
-          canvasColor: const Color.fromARGB(255, 214, 240, 238),
+          canvasColor: const Color(0xFFE2DFD0),
         ),
         child: BottomNavigationBar(
           currentIndex: _currentIndex,
@@ -629,8 +629,8 @@ class _UserProfileState extends State<UserProfile> {
               icon: Icon(
                 Icons.home,
                 color: _currentIndex == 0
-                    ? Colors.deepPurple
-                    : const Color.fromARGB(255, 48, 162, 159),
+                    ? Color(0xFF0500FF)
+                    :  Colors.black,
               ),
               label: 'Home',
             ),
@@ -638,8 +638,8 @@ class _UserProfileState extends State<UserProfile> {
               icon: Icon(
                 Icons.search,
                 color: _currentIndex == 1
-                    ? Colors.deepPurple
-                    : const Color.fromARGB(255, 48, 162, 159),
+                    ? Color(0xFF0500FF)
+                    : Colors.black,
               ),
               label: 'Search',
             ),
@@ -651,8 +651,8 @@ class _UserProfileState extends State<UserProfile> {
                 width: 24,
                 height: 24,
                 color: _currentIndex == 2
-                    ? Colors.deepPurple
-                    : const Color.fromARGB(255, 48, 162, 159),
+                    ?Color(0xFF0500FF)
+                    : Colors.black,
               ),
               label: 'Story',
             ),
@@ -660,8 +660,8 @@ class _UserProfileState extends State<UserProfile> {
               icon: Icon(
                 Icons.favorite,
                 color: _currentIndex == 3
-                    ? Colors.deepPurple
-                    : const Color.fromARGB(255, 48, 162, 159),
+                    ? Color(0xFF0500FF)
+                    : Colors.black,
               ),
               label: 'Favorite',
             ),
@@ -669,8 +669,8 @@ class _UserProfileState extends State<UserProfile> {
               icon: Icon(
                 Icons.account_circle_rounded,
                 color: _currentIndex == 4
-                    ? Colors.deepPurple
-                    : const Color.fromARGB(255, 48, 162, 159),
+                    ? Color(0xFF0500FF)
+                    : Colors.black,
               ),
               label: 'Account',
             ),
@@ -735,12 +735,9 @@ class _UserProfileState extends State<UserProfile> {
             case 1:
              // return const SearchScreen();
             case 2:
-             //return const StoryListScreen();
+             return const CartScreen();
             case 3:
-              return const HomeScreen(
-                // favoriteSongs: [],
-                //  favoritePodcasts: [],
-              );
+              return const FavoriteScreen();
             case 4:
               return  const UserProfile();
             default:
