@@ -130,7 +130,6 @@ class DatabaseService {
     }
   }
 
-  // Menghapus produk dari favorit
   Future<void> removeFromFavorites(String userId, String productId) async {
     try {
       await _database.collection('favorites').doc(userId).collection('products').doc(productId).delete();
@@ -140,7 +139,6 @@ class DatabaseService {
     }
   }
 
-  // Mengambil daftar favorit dari user
   Stream<List<Product>> getFavoriteProducts(String userId) {
     return _database.collection('favorites').doc(userId).collection('products').snapshots().map(
           (snapshot) => snapshot.docs
