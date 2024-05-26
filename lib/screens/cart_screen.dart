@@ -125,13 +125,7 @@ class _CartScreenState extends State<CartScreen> {
                       Expanded(
                         child: ElevatedButton(
                           onPressed: () {
-                            Navigator.pop(context);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => PaymentSuccessScreen(),
-                              ),
-                            );
+                           _showSuccessDialog(context);
                           },
                           child: const Text(
                             'Close',
@@ -156,7 +150,6 @@ class _CartScreenState extends State<CartScreen> {
 
   void _showCreditCardDetailsSheet(BuildContext context) {
     String? creditCardNumber;
-    String? bankAccountName;
     String? bankName;
     String? password;
 
@@ -243,23 +236,22 @@ class _CartScreenState extends State<CartScreen> {
                           onPressed: () {
                             // Validate input
                             if (creditCardNumber != null &&
-                                bankAccountName != null &&
                                 bankName != null &&
                                 password != null) {
                               _processCreditCardPayment(
                                 context,
                                 creditCardNumber!,
-                                bankAccountName!,
                                 bankName!,
                                 double.parse(getTotalPayment().toStringAsFixed(2)),
                                 int.parse(password!),
                               );
+                              _showSuccessDialog(context);
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text('Please fill in all fields.'),
                                 ),
-                              );
+                              );                     
                             }
                           },
                           child: const Text(
@@ -276,7 +268,7 @@ class _CartScreenState extends State<CartScreen> {
                       Expanded(
                         child: ElevatedButton(
                           onPressed: () {
-                            Navigator.pop(context); // Close the bottom sheet
+                            Navigator.pop(context); 
                           },
                           child: const Text(
                             'Close',
@@ -306,52 +298,88 @@ class _CartScreenState extends State<CartScreen> {
       context: context,
       builder: (BuildContext context) {
         return Container(
-  padding: const EdgeInsets.all(16),
-  child: Column(
-    mainAxisSize: MainAxisSize.min,
-    crossAxisAlignment: CrossAxisAlignment.center,
-    children: [
-      const Text(
-        'Scan this QR Code with your banking app:',
-        style: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-      const SizedBox(height: 20),
-      // Container(
-      //   child: QrImage(
-      //     data: qrisUrl,
-      //     version: QrVersions.auto,
-      //     size: 200.0,
-      //   ),
-      // ),
-      const SizedBox(height: 20),
-      ElevatedButton(
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        child: const Text('Close'),
-      ),
-    ],
-  ),
-);
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Text(
+                'Scan this QR Code with your banking app:',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 20),
+              // Container(
+              //   child: QrImage(
+              //     data: qrisUrl,
+              //     version: QrVersions.auto,
+              //     size: 200.0,
+              //   ),
+              // ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('Close'),
+              ),
+            ],
+          ),
+        );
 
       },
     );
   }
 
-void _processCreditCardPayment(BuildContext context, String cardNumber, String accountName, String bankName, double totalAmount, int password) {
-    // Here you can implement the logic to process the credit card payment
-    // For demonstration purposes, we will simply show a success message and navigate to the success screen
+  void _processCreditCardPayment(BuildContext context, String cardNumber, String bankName, double totalAmount, int password) {
+    // Simulate payment process here
+    Future.delayed(const Duration(seconds: 2), () {
+      Navigator.pop(context); 
+      bool paymentSuccessful = true; 
 
-    Navigator.pop(context); // Close the bottom sheet
+      if (paymentSuccessful) {
+        _showSuccessDialog(context);
+      } 
+      
+    });
+  }
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => PaymentSuccessScreen(),
-      ),
+
+   void _showSuccessDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: const Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.check_circle,
+                color: Colors.green,
+                size: 80,
+              ),
+              SizedBox(height: 20),
+              Text(
+                'Payment Successfully',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -430,132 +458,171 @@ void _processCreditCardPayment(BuildContext context, String cardNumber, String a
                   SingleChildScrollView(
                     child: Column(
                       children: [
-                        ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: _cartItems.length,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: const Color(0xFF543310),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10),
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.circular(10),
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(10),
-                                          child: Row(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                width: 80,
-                                                height: 80,
-                                                decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.circular(10),
-                                                  image: DecorationImage(
-                                                    fit: BoxFit.cover,
-                                                    image: AssetImage(_cartItems[index].image),
-                                                  ),
-                                                ),
-                                              ),
-                                              const SizedBox(width: 10),
-                                              Expanded(
-                                                child: Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      _cartItems[index].productName,
-                                                      style: const TextStyle(
-                                                        fontSize: 18,
-                                                        fontWeight: FontWeight.bold,
-                                                        fontFamily: 'Battambang'
-                                                      ),
-                                                    ),
-                                                    const SizedBox(height: 5),
-                                                    Text(
-                                                      '\$${_cartItems[index].price.toStringAsFixed(2)}',
-                                                      style: const TextStyle(
-                                                        fontSize: 16,
-                                                        color: Colors.orange,
-                                                        fontWeight: FontWeight.bold,
-                                                        fontFamily: 'Battambang'
-                                                      ),
-                                                    ),
-                                                    const SizedBox(height: 5),
-                                                    Text(
-                                                      'Quantity: ${_cartItems[index].quantity}',
-                                                      style: const TextStyle(
-                                                        fontSize: 16,
-                                                        fontWeight: FontWeight.bold,
-                                                        fontFamily: 'Battambang'
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              PopupMenuButton(
-                                                onSelected: (value) {
-                                                  // Handle the menu selection
-                                                  if (value == 'edit') {
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) => ProductDetailScreen(cartItem: _cartItems[index]),
-                                                      ),
-                                                    );
-                                                  } else if (value == 'delete') {
-                                                    // Delete action
-                                                  }
-                                                },
-                                                itemBuilder: (context) => [
-                                                  const PopupMenuItem(
-                                                    value: 'edit',
-                                                    child: Text(
-                                                      'Edit',
-                                                      style: TextStyle(
-                                                        fontFamily: 'Battambang',
-                                                        fontSize: 15
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  const PopupMenuItem(
-                                                    value: 'delete',
-                                                    child: Text(
-                                                      'Delete',
-                                                      style: TextStyle(
-                                                        fontFamily: 'Battambang',
-                                                        fontSize: 15
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ],
+ListView.builder(
+  shrinkWrap: true,
+  physics: NeverScrollableScrollPhysics(),
+  itemCount: _cartItems.length,
+  itemBuilder: (context, index) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      child: Container(
+        decoration: BoxDecoration(
+          color: const Color(0xFF543310),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 80,
+                        height: 80,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: AssetImage(_cartItems[index].image),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    _cartItems[index].productName,
+                                    style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'Battambang',
+                                    ),
                                   ),
                                 ),
-                              ),
-                            );
-                          },
+                                PopupMenuButton(
+                                  onSelected: (value) {
+                                    if (value == 'edit') {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => ProductDetailScreen(cartItem: _cartItems[index]),
+                                        ),
+                                      );
+                                    } else if (value == 'delete') {
+                                      // Delete action
+                                    }
+                                  },
+                                  itemBuilder: (context) => [
+                                    const PopupMenuItem(
+                                      value: 'edit',
+                                      child: Text(
+                                        'Edit',
+                                        style: TextStyle(
+                                          fontFamily: 'Battambang',
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                    ),
+                                    const PopupMenuItem(
+                                      value: 'delete',
+                                      child: Text(
+                                        'Delete',
+                                        style: TextStyle(
+                                          fontFamily: 'Battambang',
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+
+                            const SizedBox(height: 5),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      '\$${_cartItems[index].price.toStringAsFixed(2)}',
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.orange,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: 'Battambang',
+                                      ),
+                                    ),
+                                    Text(
+                                      '  x ${_cartItems[index].quantity}',
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: 'Battambang',
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Text(
+                                    '   \$${(_cartItems[index].price * _cartItems[index].quantity).toStringAsFixed(2)}',
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'Battambang',
+                                      color: Colors.orange
+                                    ),
+                                    textAlign: TextAlign.right,
+                                  ),
+                              ],
+                            ),
+                          ],
                         ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  },
+),
+
+
                         const SizedBox(height: 20),
                         ElevatedButton(
                           onPressed: () {
                             _showPaymentSheet(context);
                           },
-                          child: const Text('Payment'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFFF1B26F),
+                            shape: const StadiumBorder(),
+                            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 40),
+                          ),
+                          child: const Text(
+                            'Payment',
+                            style: TextStyle(
+                              fontFamily: 'Bayon',
+                              color: Colors.black,
+                              fontSize: 18,
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -584,7 +651,7 @@ void _processCreditCardPayment(BuildContext context, String cardNumber, String a
               icon: Icon(
                 Icons.home,
                 color: _currentIndex == 0
-                    ? Color(0xFF0500FF)
+                    ? const Color(0xFF0500FF)
                     :  Colors.black,
               ),
               label: 'Home',
@@ -593,7 +660,7 @@ void _processCreditCardPayment(BuildContext context, String cardNumber, String a
               icon: Icon(
                 Icons.search,
                 color: _currentIndex == 1
-                    ? Color(0xFF0500FF)
+                    ? const Color(0xFF0500FF)
                     : Colors.black,
               ),
               label: 'Search',
@@ -606,7 +673,7 @@ void _processCreditCardPayment(BuildContext context, String cardNumber, String a
                 width: 24,
                 height: 24,
                 color: _currentIndex == 2
-                    ?Color(0xFF0500FF)
+                    ?const Color(0xFF0500FF)
                     : Colors.black,
               ),
               label: 'Story',
@@ -615,7 +682,7 @@ void _processCreditCardPayment(BuildContext context, String cardNumber, String a
               icon: Icon(
                 Icons.favorite,
                 color: _currentIndex == 3
-                    ? Color(0xFF0500FF)
+                    ? const Color(0xFF0500FF)
                     : Colors.black,
               ),
               label: 'Favorite',
@@ -624,7 +691,7 @@ void _processCreditCardPayment(BuildContext context, String cardNumber, String a
               icon: Icon(
                 Icons.account_circle_rounded,
                 color: _currentIndex == 4
-                    ? Color(0xFF0500FF)
+                    ? const Color(0xFF0500FF)
                     : Colors.black,
               ),
               label: 'Account',
@@ -719,22 +786,6 @@ class CartItem {
   });
 }
 
-class PaymentSuccessScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Payment Success'),
-      ),
-      body: const Center(
-        child: Text(
-          'Payment Successful!',
-          style: TextStyle(fontSize: 24),
-        ),
-      ),
-    );
-  }
-}
 
 class ProductDetailScreen extends StatelessWidget {
   final CartItem cartItem;

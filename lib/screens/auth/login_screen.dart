@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../../services/auth_service.dart';
+import '../../services/database_service.dart';
 import '../admin/hs_admin.dart';
 import 'forgot_password.dart';
 import '../home_screen.dart';
@@ -30,7 +30,7 @@ class _LoginScreensState extends State<LoginScreen> {
   String _emailError = '';
   String _passwordError = '';
 
-  final AuthService _authService = AuthService();
+  final DatabaseService _authService = DatabaseService();
   final FirebaseFirestore _database = FirebaseFirestore.instance;
 
   bool isFieldsValid() {

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gracieusgalerij/screens/cart_screen.dart';
-
 import 'user_profile.dart';
 
 class FavoriteScreen extends StatefulWidget {
@@ -32,67 +31,63 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                 end: AlignmentDirectional(0, 1),
               ),
             ),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 5, top: 30),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0x004B39EF),
-                            elevation: 0,
-                            side: const BorderSide(
-                              color: Colors.transparent,
-                            ),
-                          ),
-                          child: Image.asset('images/arrowback.png', width: 35, height: 35),
-                        ),
-                        Container(
-                          width: 152,
-                          height: 83,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            image: const DecorationImage(
-                              fit: BoxFit.cover,
-                              image: AssetImage('images/logo.png'), 
-                            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 5, top: 30),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0x004B39EF),
+                          elevation: 0,
+                          side: const BorderSide(
+                            color: Colors.transparent,
                           ),
                         ),
-                      ],
+                        child: Image.asset('images/arrowback.png', width: 35, height: 35),
+                      ),
+                      Container(
+                        width: 152,
+                        height: 83,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          image: const DecorationImage(
+                            fit: BoxFit.cover,
+                            image: AssetImage('images/logo.png'),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: List.generate(
+                          10, // Ganti jumlah sesuai dengan jumlah item favorit Anda
+                          (index) => Padding(
+                            padding: const EdgeInsets.only(bottom: 16.0),
+                            child: FavoriteItem(
+                              productName: 'Product ${index + 1}',
+                              brandName: 'Brand Name',
+                              imageUrl: 'images/product_${index + 1}.png', // Ganti dengan gambar produk Anda
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                  Padding(
-  padding: const EdgeInsets.all(16.0),
-  child: Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      ListView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: 10, // Ganti jumlah sesuai dengan jumlah item favorit Anda
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 16.0),
-            child: FavoriteItem(
-              productName: 'Product ${index + 1}',
-              brandName: 'Brand Name',
-              imageUrl: 'images/product_${index + 1}.png', // Ganti dengan gambar produk Anda
-            ),
-          );
-        },
-      ),
-    ],
-  ),
-),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ],
@@ -214,62 +209,62 @@ class FavoriteItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-  height: 89,
-  child: Container(
-    width: 417,
-    decoration: BoxDecoration(
-      color: const Color(0xFF543310),
-      borderRadius: BorderRadius.circular(10),
-    ),
-    child: Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 70,
-            height: 72,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                image: AssetImage(imageUrl),
-              ),
-            ),
-          ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 10.0), 
-                  child: Text(
-                    brandName,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Bayon',
-                    ),
+      height: 89,
+      child: Container(
+        width: 417,
+        decoration: BoxDecoration(
+          color: const Color(0xFF543310),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: 70,
+                height: 72,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: AssetImage(imageUrl),
                   ),
                 ),
-                const SizedBox(height: 4),
-                  Text(
-                    productName,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: Colors.white,
-                      fontFamily: 'Bayon',
-                    ),
-                  ),
-                ],
               ),
-            ),
-          ],
+              const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: Text(
+                        brandName,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Bayon',
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      productName,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: Colors.white,
+                        fontFamily: 'Bayon',
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
-    ),
-  );
+    );
   }
 }

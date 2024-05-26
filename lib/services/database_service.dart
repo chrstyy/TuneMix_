@@ -5,7 +5,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as path;
 
-class AuthService {
+import '../models/product.dart';
+
+class DatabaseService {
   static final FirebaseAuth _auth = FirebaseAuth.instance;
   static final FirebaseFirestore _database = FirebaseFirestore.instance;
   static final CollectionReference _userCollection =
@@ -117,5 +119,33 @@ class AuthService {
         return doc.data() as Map<String, dynamic>;
       }).toList();
     });
+  }
+
+  Future<void> addToFavorites(String userId, Product product) async {
+    try {
+      await _database.collection('favorites').doc(userId).collection('products').doc(product.id).set(product.toFirestore());
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
+
+  // Menghapus produk dari favorit
+  Future<void> removeFromFavorites(String userId, String productId) async {
+    try {
+      await _database.collection('favorites').doc(userId).collection('products').doc(productId).delete();
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
+
+  // Mengambil daftar favorit dari user
+  Stream<List<Product>> getFavoriteProducts(String userId) {
+    return _database.collection('favorites').doc(userId).collection('products').snapshots().map(
+          (snapshot) => snapshot.docs
+              .map((doc) => Product.fromFirestore(doc.data(), doc.id))
+              .toList(),
+        );
   }
 }

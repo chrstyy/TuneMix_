@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 
+import '../models/product.dart';
+import '../services/database_service.dart';
 import 'cart_screen.dart';
 import 'fav_screen.dart';
 
 class ProductDetailScreen extends StatefulWidget {
-  const ProductDetailScreen({Key? key, required CartItem cartItem}) : super(key: key);
+  const ProductDetailScreen({super.key, required CartItem cartItem, required this.product});
+
+  final Product product;
 
   @override
   State<ProductDetailScreen> createState() => _ProductDetailScreenState();
@@ -14,6 +18,15 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   int _selectedSizeIndex = 0;
   int _selectedColorIndex = -1; 
   int _quantity = 1;
+
+  final db = DatabaseService(); 
+  late Stream<List<Product>> favoriteProductsStream;
+
+    @override
+  void initState() {
+    super.initState();
+    favoriteProductsStream = db.getFavoriteProducts('user_id'); // Ganti dengan user_id yang sesuai
+  }
 
   List<String> _sizes = ['S', 'M', 'L', 'XL'];
   List<Color> _colors = [

@@ -29,7 +29,11 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         debugShowCheckedModeBanner: false,
+<<<<<<< Updated upstream
         home: HomeScreen(),
+=======
+        home: CartScreen(),
+>>>>>>> Stashed changes
         initialRoute: '/',
         routes: {
           '/landing': (context) => const LandingScreen(),
