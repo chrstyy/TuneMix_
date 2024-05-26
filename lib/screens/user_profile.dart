@@ -23,7 +23,8 @@ class _UserProfileState extends State<UserProfile> {
   String userName = '';
   String _userName = 'Initial Username';
   bool isSignedIn = false;
-  final TextEditingController _editedUserNameController = TextEditingController();
+  final TextEditingController _editedUserNameController =
+      TextEditingController();
   bool isDarkMode = false;
 
   AuthService _authService = AuthService();
@@ -32,7 +33,7 @@ class _UserProfileState extends State<UserProfile> {
   File? _imageFile;
   File? _tempImageFile;
   String _tempUsername = '';
-   String _profileImageUrl = '';
+  String _profileImageUrl = '';
 
   bool _showHistory = false;
 
@@ -40,34 +41,34 @@ class _UserProfileState extends State<UserProfile> {
   void initState() {
     super.initState();
     _loadUserData();
-     _getUserInfo();
+    _getUserInfo();
   }
 
   void _signOut() async {
-      try {
-        await FirebaseAuth.instance.signOut();
-        setState(() {
-          isSignedIn = false;
-        });
-      } catch (e) {
-        print('Error signing out: $e');
-      }
-
-      WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
-        Navigator.of(context).popUntil((route) => route.isFirst);
+    try {
+      await FirebaseAuth.instance.signOut();
+      setState(() {
+        isSignedIn = false;
       });
-
-      WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
-        Navigator.pushReplacementNamed(context, '/landing');
-      });
-
-      _loadUserData();
+    } catch (e) {
+      print('Error signing out: $e');
     }
+
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+      Navigator.of(context).popUntil((route) => route.isFirst);
+    });
+
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+      Navigator.pushReplacementNamed(context, '/landing');
+    });
+
+    _loadUserData();
+  }
 
   Future<void> choosePhoto(ImageSource source) async {
     await _authService.editPhoto(source);
     setState(() {
-        _tempImageFile = _authService.imageFile;
+      _tempImageFile = _authService.imageFile;
     });
     Navigator.pop(context);
   }
@@ -78,51 +79,47 @@ class _UserProfileState extends State<UserProfile> {
       DocumentSnapshot userInfo =
           await _database.collection('users').doc(user.uid).get();
 
-
       if (userInfo.exists) {
         print("User info found: ${userInfo.data()}");
         setState(() {
           _userName = userInfo['username'] ?? 'No Username';
-           userName = _userName; 
-          _tempUsername = _userName; 
-          _editedUserNameController.text = _userName; 
+          userName = _userName;
+          _tempUsername = _userName;
+          _editedUserNameController.text = _userName;
         });
       }
     }
   }
 
   Future<void> _updateUsername() async {
-  String newUsername = _editedUserNameController.text.trim();
-  print('Attempting to update username to: $newUsername');
-  if (newUsername.isEmpty) {
-    print('Username cannot be empty');
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Username cannot be empty')),
-    );
-    return;
-  }
-
-  try {
-    User? user = _auth.currentUser;
-    if (user != null) {
-      await _database.collection('users').doc(user.uid).update({
-        'username': newUsername,
-      });
-
-      setState(() {
-        _userName = newUsername;
-        userName = newUsername;
-      });
-
+    String newUsername = _editedUserNameController.text.trim();
+    print('Attempting to update username to: $newUsername');
+    if (newUsername.isEmpty) {
+      print('Username cannot be empty');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Username cannot be empty')),
+      );
+      return;
     }
-  } catch (e) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Failed to update username')),
-    );
+
+    try {
+      User? user = _auth.currentUser;
+      if (user != null) {
+        await _database.collection('users').doc(user.uid).update({
+          'username': newUsername,
+        });
+
+        setState(() {
+          _userName = newUsername;
+          userName = newUsername;
+        });
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Failed to update username')),
+      );
+    }
   }
-}
-
-
 
   Future<void> _loadUserData() async {
     try {
@@ -192,160 +189,160 @@ class _UserProfileState extends State<UserProfile> {
   }
 
   Widget _buildEditOptions(BuildContext context) {
-  return Container(
-    padding: const EdgeInsets.all(16),
-    color: Colors.transparent,
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        const Padding(
-          padding: EdgeInsets.only(bottom: 16.0),
-          child: Text(
-            'CHANGE PROFILE PHOTO',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Concert One',
-            ),
-          ),
-        ),
-        GestureDetector(
-          onTap: ()=> choosePhoto(ImageSource.gallery),
-          child: const Center(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text('Choose from Library'),
-                Divider(color: Colors.black),
-              ],
-            ),
-          ),
-        ),
-        GestureDetector(
-          onTap: () => choosePhoto(ImageSource.camera),
-          child: const Center(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text('Take Photo'),
-                Divider(color: Colors.black),
-              ],
-            ),
-          ),
-        ),
-        GestureDetector(
-          onTap: ()  => _authService.removeCurrentPhoto(),
-          child: const Center(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text('Remove Current Photo'),
-                Divider(color: Colors.black),
-              ],
-            ),
-          ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text(
-                'Cancel',
-                style: TextStyle(
-                  fontFamily: 'Itim',
-                  color: Colors.black,
-                ),
+    return Container(
+      padding: const EdgeInsets.all(16),
+      color: Colors.transparent,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const Padding(
+            padding: EdgeInsets.only(bottom: 16.0),
+            child: Text(
+              'CHANGE PROFILE PHOTO',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Concert One',
               ),
             ),
-          ],
-        ),
-      ],
-    ),
-  );
-}
-
- Widget _builUsernameUpdate(BuildContext context) {
-  return Container(
-    padding: const EdgeInsets.all(16),
-    color: Colors.transparent,
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        const Padding(
-          padding: EdgeInsets.only(bottom: 16.0),
-          child: Text(
-            'CHANGE USERNAME',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Concert One',
+          ),
+          GestureDetector(
+            onTap: () => choosePhoto(ImageSource.gallery),
+            child: const Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text('Choose from Library'),
+                  Divider(color: Colors.black),
+                ],
+              ),
             ),
           ),
-        ),
-        TextFormField(
-          controller: _editedUserNameController,
-          onChanged: (value) {
+          GestureDetector(
+            onTap: () => choosePhoto(ImageSource.camera),
+            child: const Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text('Take Photo'),
+                  Divider(color: Colors.black),
+                ],
+              ),
+            ),
+          ),
+          GestureDetector(
+            onTap: () => _authService.removeCurrentPhoto(),
+            child: const Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text('Remove Current Photo'),
+                  Divider(color: Colors.black),
+                ],
+              ),
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text(
+                  'Cancel',
+                  style: TextStyle(
+                    fontFamily: 'Itim',
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _builUsernameUpdate(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      color: Colors.transparent,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const Padding(
+            padding: EdgeInsets.only(bottom: 16.0),
+            child: Text(
+              'CHANGE USERNAME',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Concert One',
+              ),
+            ),
+          ),
+          TextFormField(
+            controller: _editedUserNameController,
+            onChanged: (value) {
               setState(() {
                 _tempUsername = value;
               });
-          },
-          decoration: const InputDecoration(
-             hintText: 'Enter new username',
-             hintStyle: TextStyle(
+            },
+            decoration: const InputDecoration(
+              hintText: 'Enter new username',
+              hintStyle: TextStyle(
                 fontFamily: 'Itim',
-                 fontSize: 13,
+                fontSize: 13,
                 color: Colors.black,
               ),
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
-                  ),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
-                  ),
-                ),
-            ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text(
-                'Cancel',
-                style: TextStyle(
-                  fontFamily: 'Itim',
-                  color: Colors.black,
-                ),
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.white),
+              ),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.white),
               ),
             ),
-            GestureDetector(
-              onTap: () {
-                _updateUsername();
-                Navigator.pop(context);
-              },
-              child: const Text(
-                'Save',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontFamily: 'Itim',
-                  fontSize: 15,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text(
+                  'Cancel',
+                  style: TextStyle(
+                    fontFamily: 'Itim',
+                    color: Colors.black,
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
-      ],
-    ),
-  );
-}
+              GestureDetector(
+                onTap: () {
+                  _updateUsername();
+                  Navigator.pop(context);
+                },
+                child: const Text(
+                  'Save',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontFamily: 'Itim',
+                    fontSize: 15,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -401,44 +398,45 @@ class _UserProfileState extends State<UserProfile> {
                                 decoration: const BoxDecoration(
                                   shape: BoxShape.circle,
                                 ),
-                                child:  _tempImageFile == null
-                                      ? Image.network(
-                                          'https://images.unsplash.com/photo-1519283053578-3efb9d2e71bd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NTYyMDF8MHwxfHNlYXJjaHw4fHxjYXJ0b29uJTIwcHJvZmlsZXxlbnwwfHx8fDE3MDI5MTExMzl8MA&ixlib=rb-4.0.3&q=80&w=1080',
-                                          fit: BoxFit.cover,
-                                        )
-                                      : Image.file(_tempImageFile!, fit: BoxFit.cover),
-                                            ),
-                                            Positioned(
-                                              bottom: 0,
-                                              right: 0,
-                                              left: 83,
-                                              child: Container(
-                                                decoration: const BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  color: Colors.white,
-                                                ),
-                                                child: IconButton(
-                                                  onPressed: () {
-                                                    _showEditOptions(context);
-                                                  },
-                                                  icon: const Icon(
-                                                    Icons.edit,
-                                                    color: Colors.black,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
+                                child: _tempImageFile == null
+                                    ? Image.network(
+                                        'https://images.unsplash.com/photo-1519283053578-3efb9d2e71bd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NTYyMDF8MHwxfHNlYXJjaHw4fHxjYXJ0b29uJTIwcHJvZmlsZXxlbnwwfHx8fDE3MDI5MTExMzl8MA&ixlib=rb-4.0.3&q=80&w=1080',
+                                        fit: BoxFit.cover,
+                                      )
+                                    : Image.file(_tempImageFile!,
+                                        fit: BoxFit.cover),
+                              ),
+                              Positioned(
+                                bottom: 0,
+                                right: 0,
+                                left: 83,
+                                child: Container(
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.white,
+                                  ),
+                                  child: IconButton(
+                                    onPressed: () {
+                                      _showEditOptions(context);
+                                    },
+                                    icon: const Icon(
+                                      Icons.edit,
+                                      color: Colors.black,
                                     ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                       const SizedBox(width: 20),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                             userName,
+                              userName,
                               style: const TextStyle(
                                 fontFamily: 'Bayon',
                                 fontWeight: FontWeight.bold,
@@ -453,11 +451,10 @@ class _UserProfileState extends State<UserProfile> {
                               child: const Text(
                                 'Edit Username',
                                 style: TextStyle(
-                                  fontFamily: 'Belgrano', 
-                                  fontSize: 11,
-                                  color: Colors.red,
-                                  decoration: TextDecoration.underline
-                                ),
+                                    fontFamily: 'Belgrano',
+                                    fontSize: 11,
+                                    color: Colors.red,
+                                    decoration: TextDecoration.underline),
                               ),
                             ),
                           ],
@@ -470,7 +467,7 @@ class _UserProfileState extends State<UserProfile> {
                     children: [
                       ElevatedButton(
                         onPressed: () {
-                         setState(() {
+                          setState(() {
                             _showHistory = !_showHistory;
                           });
                         },
@@ -515,103 +512,101 @@ class _UserProfileState extends State<UserProfile> {
                       ),
                       const SizedBox(width: 65),
                       ElevatedButton(
-                      onPressed: () {
-                        _signOut();
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF9D3939),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+                        onPressed: () {
+                          _signOut();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF9D3939),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          fixedSize: const Size(91, 28),
                         ),
-                        fixedSize: const Size(91, 28),
-                      ),
-                      child: const Text(
-                        'LOGOUT',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontFamily: 'Bayon',
-                          fontSize: 15,
-                          color: Colors.white
+                        child: const Text(
+                          'LOGOUT',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontFamily: 'Bayon',
+                              fontSize: 15,
+                              color: Colors.white),
                         ),
                       ),
-                    ),
                     ],
                   ),
                   const SizedBox(height: 10),
-              // Expanded(
-              // child: ListView.builder(
-              //   itemCount: historyList.length,
-              //   itemBuilder: (context, index) {
-              //     return Padding(
-              //       padding: const EdgeInsets.symmetric(
-              //         horizontal: 20,
-              //         vertical: 10,
-              //       ),
-              //       child: Container(
-              //         padding: EdgeInsets.all(10),
-              //         decoration: BoxDecoration(
-              //           border: Border.all(color: Colors.grey),
-              //           borderRadius: BorderRadius.circular(10),
-              //         ),
-              //         child: Row(
-              //           crossAxisAlignment: CrossAxisAlignment.start,
-              //           children: [
-              //             Container(
-              //               width: 80,
-              //               height: 80,
-              //               decoration: BoxDecoration(
-              //                 borderRadius: BorderRadius.circular(10),
-              //                 image: DecorationImage(
-              //                   image: AssetImage(historyList[index].productImage),
-              //                   fit: BoxFit.cover,
-              //                 ),
-              //               ),
-              //             ),
-              //             SizedBox(width: 10),
-              //             Expanded(
-              //               child: Column(
-              //                 crossAxisAlignment: CrossAxisAlignment.start,
-              //                 children: [
-              //                   Text(
-              //                     historyList[index].productName,
-              //                     style: TextStyle(
-              //                       fontSize: 18,
-              //                       fontWeight: FontWeight.bold,
-              //                     ),
-              //                   ),
-              //                   SizedBox(height: 5),
-              //                   Text(
-              //                     'Price: \$${historyList[index].price.toStringAsFixed(2)}',
-              //                     style: TextStyle(fontSize: 16),
-              //                   ),
-              //                   SizedBox(height: 5),
-              //                   Text(
-              //                     'Quantity: ${historyList[index].quantity}',
-              //                     style: TextStyle(fontSize: 16),
-              //                   ),
-              //                   SizedBox(height: 5),
-              //                   Text(
-              //                     'Total: \$${historyList[index].total.toStringAsFixed(2)}',
-              //                     style: TextStyle(fontSize: 16),
-              //                   ),
-              //                 ],
-              //               ),
-              //             ),
-              //           ],
-              //         ),
-              //       ),
-                
-              //     );
-              //   },
-              // ),
-              //     )
+                  // Expanded(
+                  // child: ListView.builder(
+                  //   itemCount: historyList.length,
+                  //   itemBuilder: (context, index) {
+                  //     return Padding(
+                  //       padding: const EdgeInsets.symmetric(
+                  //         horizontal: 20,
+                  //         vertical: 10,
+                  //       ),
+                  //       child: Container(
+                  //         padding: EdgeInsets.all(10),
+                  //         decoration: BoxDecoration(
+                  //           border: Border.all(color: Colors.grey),
+                  //           borderRadius: BorderRadius.circular(10),
+                  //         ),
+                  //         child: Row(
+                  //           crossAxisAlignment: CrossAxisAlignment.start,
+                  //           children: [
+                  //             Container(
+                  //               width: 80,
+                  //               height: 80,
+                  //               decoration: BoxDecoration(
+                  //                 borderRadius: BorderRadius.circular(10),
+                  //                 image: DecorationImage(
+                  //                   image: AssetImage(historyList[index].productImage),
+                  //                   fit: BoxFit.cover,
+                  //                 ),
+                  //               ),
+                  //             ),
+                  //             SizedBox(width: 10),
+                  //             Expanded(
+                  //               child: Column(
+                  //                 crossAxisAlignment: CrossAxisAlignment.start,
+                  //                 children: [
+                  //                   Text(
+                  //                     historyList[index].productName,
+                  //                     style: TextStyle(
+                  //                       fontSize: 18,
+                  //                       fontWeight: FontWeight.bold,
+                  //                     ),
+                  //                   ),
+                  //                   SizedBox(height: 5),
+                  //                   Text(
+                  //                     'Price: \$${historyList[index].price.toStringAsFixed(2)}',
+                  //                     style: TextStyle(fontSize: 16),
+                  //                   ),
+                  //                   SizedBox(height: 5),
+                  //                   Text(
+                  //                     'Quantity: ${historyList[index].quantity}',
+                  //                     style: TextStyle(fontSize: 16),
+                  //                   ),
+                  //                   SizedBox(height: 5),
+                  //                   Text(
+                  //                     'Total: \$${historyList[index].total.toStringAsFixed(2)}',
+                  //                     style: TextStyle(fontSize: 16),
+                  //                   ),
+                  //                 ],
+                  //               ),
+                  //             ),
+                  //           ],
+                  //         ),
+                  //       ),
+
+                  //     );
+                  //   },
+                  // ),
+                  //     )
                 ],
               ),
             ),
           ),
         ],
       ),
-              
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(
           canvasColor: const Color(0xFFE2DFD0),
@@ -628,49 +623,37 @@ class _UserProfileState extends State<UserProfile> {
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.home,
-                color: _currentIndex == 0
-                    ? Color(0xFF0500FF)
-                    :  Colors.black,
+                color: _currentIndex == 0 ? Color(0xFF0500FF) : Colors.black,
               ),
               label: 'Home',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.search,
-                color: _currentIndex == 1
-                    ? Color(0xFF0500FF)
-                    : Colors.black,
+                color: _currentIndex == 1 ? Color(0xFF0500FF) : Colors.black,
               ),
               label: 'Search',
             ),
             BottomNavigationBarItem(
               icon: Image.asset(
-                _currentIndex == 2
-                    ? 'images/basket.png'
-                    : 'images/basket.png',
+                _currentIndex == 2 ? 'images/basket.png' : 'images/basket.png',
                 width: 24,
                 height: 24,
-                color: _currentIndex == 2
-                    ?Color(0xFF0500FF)
-                    : Colors.black,
+                color: _currentIndex == 2 ? Color(0xFF0500FF) : Colors.black,
               ),
               label: 'Story',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.favorite,
-                color: _currentIndex == 3
-                    ? Color(0xFF0500FF)
-                    : Colors.black,
+                color: _currentIndex == 3 ? Color(0xFF0500FF) : Colors.black,
               ),
               label: 'Favorite',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.account_circle_rounded,
-                color: _currentIndex == 4
-                    ? Color(0xFF0500FF)
-                    : Colors.black,
+                color: _currentIndex == 4 ? Color(0xFF0500FF) : Colors.black,
               ),
               label: 'Account',
             ),
@@ -731,15 +714,15 @@ class _UserProfileState extends State<UserProfile> {
         pageBuilder: (context, animation, secondaryAnimation) {
           switch (index) {
             case 0:
-             // return const HomeScreen();
+            // return const HomeScreen();
             case 1:
-             // return const SearchScreen();
+            // return const SearchScreen();
             case 2:
-             return const CartScreen();
+              return const CartScreen();
             case 3:
               return const FavoriteScreen();
             case 4:
-              return  const UserProfile();
+              return const UserProfile();
             default:
               return Container();
           }

@@ -5,10 +5,10 @@ import 'package:path/path.dart' as path;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
-class ReviewService {
+class NoteService {
   static final FirebaseFirestore _database = FirebaseFirestore.instance;
-  static final CollectionReference _reviewsCollection =
-      _database.collection('reviews');
+  static final CollectionReference _notesCollection =
+      _database.collection('notes');
 
   static final FirebaseStorage _storage = FirebaseStorage.instance;
 
@@ -32,45 +32,45 @@ class ReviewService {
     }
   }
 
-  static Future<void> addReview(Review review) async {
-    Map<String, dynamic> newReview = {
-      'product_name': review.productName,
-      'comment': review.comment,
-      'image_url': review.imageUrl,
+  static Future<void> addNote(Note note) async {
+    Map<String, dynamic> newNote = {
+      'title': note.title,
+      'description': note.description,
+      'image_url': note.imageUrl,
       'created_at': FieldValue.serverTimestamp(),
       'updated_at': FieldValue.serverTimestamp(),
     };
-    await _reviewsCollection.add(newReview);
+    await _notesCollection.add(newNote);
   }
 
-  static Future<void> updateReview(Review review) async {
-    Map<String, dynamic> updatedReview = {
-      'product_name': review.productName,
-      'comment': review.comment,
-      'image_url': review.imageUrl,
-      'created_at': review.createdAt,
+  static Future<void> updateNote(Note note) async {
+    Map<String, dynamic> updatedNote = {
+      'title': note.title,
+      'description': note.description,
+      'image_url': note.imageUrl,
+      'created_at': note.createdAt,
       'updated_at': FieldValue.serverTimestamp(),
     };
 
-    await _reviewsCollection.doc(review.id).update(updatedReview);
+    await _notesCollection.doc(note.id).update(updatedNote);
   }
 
-  static Future<void> deleteReview(Review review) async {
-    await _reviewsCollection.doc(review.id).delete();
+  static Future<void> deleteNote(Note note) async {
+    await _notesCollection.doc(note.id).delete();
   }
 
-  static Future<QuerySnapshot> retrieveReviews() {
-    return _reviewsCollection.get();
+  static Future<QuerySnapshot> retrieveNotes() {
+    return _notesCollection.get();
   }
 
-  static Stream<List<Review>> getReviewList() {
-    return _reviewsCollection.snapshots().map((snapshot) {
+  static Stream<List<Note>> getNoteList() {
+    return _notesCollection.snapshots().map((snapshot) {
       return snapshot.docs.map((doc) {
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-        return Review(
+        return Note(
           id: doc.id,
-          productName: data['productName'],
-          comment: data['comment'],
+          title: data['title'],
+          description: data['description'],
           imageUrl: data['image_url'],
           createdAt: data['created_at'] != null
               ? data['created_at'] as Timestamp

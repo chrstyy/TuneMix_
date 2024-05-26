@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:gracieusgalerij/screens/review_edit_screen.dart';
+import 'package:gracieusgalerij/screens/note_edit_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../services/review_services.dart';
+import '../services/note_services.dart';
 
-class ReviewListScreen extends StatefulWidget {
-  const ReviewListScreen({super.key});
+class NoteListScreen extends StatefulWidget {
+  const NoteListScreen({super.key});
 
   @override
-  State<ReviewListScreen> createState() => _ReviewListScreenState();
+  State<NoteListScreen> createState() => _NoteListScreenState();
 }
 
-class _ReviewListScreenState extends State<ReviewListScreen> {
+class _NoteListScreenState extends State<NoteListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +24,7 @@ class _ReviewListScreenState extends State<ReviewListScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const ReviewEditScreen(),
+              builder: (context) => const NoteEditScreen(),
             ),
           ); //push bs balek lagi, pushReplacement dbs balek
          
@@ -53,7 +53,7 @@ class NoteList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: ReviewService.getReviewList(),
+      stream: NoteService.getNoteList(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
@@ -73,9 +73,15 @@ class NoteList extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ReviewEditScreen(review: document),
+                          builder: (context) => NoteEditScreen(note: document),
                         ),
                       );
+                      // showDialog(
+                      //   context: context,
+                      //   builder: (context) {
+                      //     return NoteDialog(note: document);
+                      //   },
+                      // );
                     },
                     child: Column(
                       children: [
@@ -96,8 +102,8 @@ class NoteList extends StatelessWidget {
                               )
                             : Container(),
                         ListTile(
-                          title: Text(document.productName),
-                          subtitle: Text(document.comment),
+                          title: Text(document.title),
+                          subtitle: Text(document.description),
                           trailing: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -119,7 +125,7 @@ class NoteList extends StatelessWidget {
                                       return AlertDialog(
                                         title: const Text('Konfirmasi Hapus'),
                                         content: Text(
-                                            'Yakin ingin menghapus data \'${document.productName}\' ?'),
+                                            'Yakin ingin menghapus data \'${document.title}\' ?'),
                                         actions: <Widget>[
                                           TextButton(
                                             child: const Text('Cancel'),
@@ -130,7 +136,7 @@ class NoteList extends StatelessWidget {
                                           TextButton(
                                             child: const Text('Hapus'),
                                             onPressed: () {
-                                              ReviewService.deleteReview(document)
+                                              NoteService.deleteNote(document)
                                                   .whenComplete(() =>
                                                       Navigator.of(context)
                                                           .pop());

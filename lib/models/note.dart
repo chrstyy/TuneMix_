@@ -1,19 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Review {
+class Note {
   String? id;
-  final String productName;
-  final String comment;
+  final String title;
+  final String description;
   String? imageUrl;
   double? latitude;
   double? longitude;
   Timestamp? createdAt;
   Timestamp? updatedAt;
 
-  Review({
+  Note({
     this.id,
-    required this.productName,
-    required this.comment,
+    required this.title,
+    required this.description,
     this.imageUrl,
     this.latitude,
     this.longitude,
@@ -21,12 +21,12 @@ class Review {
     this.updatedAt,
   });
 
-  factory Review.fromDocument(DocumentSnapshot doc) {
+  factory Note.fromDocument(DocumentSnapshot doc) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-    return Review(
+    return Note(
       id: doc.id,
-      productName: data['product_name'],
-      comment: data['comment'],
+      title: data['title'],
+      description: data['description'],
       imageUrl: data['image_url'],
       latitude: data['latitude'] as double,
       longitude: data['longitude'] as double,
@@ -37,8 +37,8 @@ class Review {
 
   Map<String, dynamic> toDocument() {
     return {
-      'product_name': productName,
-      'comment': comment,
+      'title': title,
+      'description': description,
       'image_url': imageUrl,
       'latitude': latitude,
       'longitude': longitude,

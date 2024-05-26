@@ -3,29 +3,29 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:gracieusgalerij/models/note.dart';
 import 'package:gracieusgalerij/services/location_services.dart';
-import 'package:gracieusgalerij/services/review_services.dart';
+import 'package:gracieusgalerij/services/note_services.dart';
 import 'package:image_picker/image_picker.dart';
 
-class ReviewEditScreen extends StatefulWidget {
-  final Review? review;
-  const ReviewEditScreen({super.key, this.review});
+class NoteEditScreen extends StatefulWidget {
+  final Note? note;
+  const NoteEditScreen({super.key, this.note});
 
   @override
-  State<ReviewEditScreen> createState() => _ReviewEditScreenState();
+  State<NoteEditScreen> createState() => _NoteEditScreenState();
 }
 
-class _ReviewEditScreenState extends State<ReviewEditScreen> {
-  final TextEditingController _productNameController = TextEditingController();
-  final TextEditingController _commentController = TextEditingController();
+class _NoteEditScreenState extends State<NoteEditScreen> {
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
   File? _imageFile;
   Position? _currentPosition;
 
   @override
   void initState() {
     super.initState();
-    if (widget.review != null) {
-      _productNameController.text = widget.review!.productName;
-      _commentController.text = widget.review!.comment;
+    if (widget.note != null) {
+      _titleController.text = widget.note!.title;
+      _descriptionController.text = widget.note!.description;
     }
   }
 
@@ -53,7 +53,7 @@ class _ReviewEditScreenState extends State<ReviewEditScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.review == null ? 'Add Reviews' : 'Update Reviews'),
+        title: Text(widget.note == null ? 'Add Notes' : 'Update Notes'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
@@ -66,7 +66,7 @@ class _ReviewEditScreenState extends State<ReviewEditScreen> {
                 textAlign: TextAlign.start,
               ),
               TextField(
-                controller: _productNameController,
+                controller: _titleController,
               ),
               const Padding(
                 padding: EdgeInsets.only(top: 20),
@@ -75,7 +75,7 @@ class _ReviewEditScreenState extends State<ReviewEditScreen> {
                 ),
               ),
               TextField(
-                controller: _commentController,
+                controller: _descriptionController,
               ),
               const Padding(
                 padding: EdgeInsets.only(top: 20),
@@ -86,9 +86,9 @@ class _ReviewEditScreenState extends State<ReviewEditScreen> {
                       aspectRatio: 16 / 9,
                       child: Image.file(_imageFile!, fit: BoxFit.cover),
                     )
-                  : (widget.review?.imageUrl != null &&
-                          Uri.parse(widget.review!.imageUrl!).isAbsolute
-                      ? Image.network(widget.review!.imageUrl!, fit: BoxFit.cover)
+                  : (widget.note?.imageUrl != null &&
+                          Uri.parse(widget.note!.imageUrl!).isAbsolute
+                      ? Image.network(widget.note!.imageUrl!, fit: BoxFit.cover)
                       : Container()),
               TextButton(
                 onPressed: _pickImage,
@@ -120,29 +120,29 @@ class _ReviewEditScreenState extends State<ReviewEditScreen> {
                     onPressed: () async {
                       String? imageUrl;
                       if (_imageFile != null) {
-                        imageUrl = await ReviewService.uploadImage(_imageFile!);
+                        imageUrl = await NoteService.uploadImage(_imageFile!);
                       } else {
-                        imageUrl = widget.review?.imageUrl;
+                        imageUrl = widget.note?.imageUrl;
                       }
-                      Review review = Review(
-                        id: widget.review?.id,
-                        productName: _productNameController.text,
-                        comment: _commentController.text,
+                      Note note = Note(
+                        id: widget.note?.id,
+                        title: _titleController.text,
+                        description: _descriptionController.text,
                         imageUrl: imageUrl,
                         latitude: _currentPosition?.latitude,
                         longitude: _currentPosition?.longitude,
-                        createdAt: widget.review?.createdAt,
+                        createdAt: widget.note?.createdAt,
                       );
 
-                      if (widget.review == null) {
-                        ReviewService.addReview(review)
+                      if (widget.note == null) {
+                        NoteService.addNote(note)
                             .whenComplete(() => Navigator.of(context).pop());
                       } else {
-                        ReviewService.updateReview(review)
+                        NoteService.updateNote(note)
                             .whenComplete(() => Navigator.of(context).pop());
                       }
                     },
-                    child: Text(widget.review == null ? 'Add' : 'Update'),
+                    child: Text(widget.note == null ? 'Add' : 'Update'),
                   ),
                 ],
               ),
