@@ -15,7 +15,7 @@ void main() async {
   if (Firebase.apps.isEmpty) {
     await Firebase.initializeApp();
   }
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -24,18 +24,35 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'GracieusGalerij',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        debugShowCheckedModeBanner: false,
-        home: UserProfile(),
-        initialRoute: '/',
-        routes: {
-          '/landing': (context) => const LandingScreen(),
-          '/view': (context) => const UserProfile(),
-          '/signup': (context) => const SignupScreen(),
-          '/login': (context) => const LoginScreen(),
-        });
+      title: 'GracieusGalerij',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      debugShowCheckedModeBanner: false,
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const LandingScreen(),
+        '/landing': (context) => const LandingScreen(),
+        '/view': (context) => const UserProfile(),
+        '/signup': (context) => const SignupScreen(),
+        '/login': (context) => const LoginScreen(),
+        '/cart': (context) => const CartScreen(),
+        '/favorites': (context) => const FavoriteScreen(),
+        '/home': (context) => const HomeScreen(),
+        '/notes': (context) => const NoteListScreen(),
+      //  '/product_detail': (context) =>  ProductDetailScreen(productId: ''), 
+      },
+      // onGenerateRoute: (settings) {
+      //   if (settings.name == '/product_detail') {
+      //     final args = settings.arguments as String;
+      //     return MaterialPageRoute(
+      //       builder: (context) {
+      //         builder: (context) => ProductDetailScreen(productId: args['productId'] as String),
+      //       },
+      //     );
+      //   }
+      //   return null;
+      // },
+    );
   }
 }

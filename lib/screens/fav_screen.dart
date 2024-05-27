@@ -11,6 +11,20 @@ class FavoriteScreen extends StatefulWidget {
 
 class _FavoriteScreenState extends State<FavoriteScreen> {
   int _currentIndex = 3;
+  List<Map<String, String>> favoriteItems = List.generate(
+    10,
+    (index) => {
+      'productName': 'Product ${index + 1}',
+      'brandName': 'Brand Name',
+      'imageUrl': 'images/product_${index + 1}.png',
+    },
+  );
+
+  void _removeFromFavorites(int index) {
+    setState(() {
+      favoriteItems.removeAt(index);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,13 +87,15 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: List.generate(
-                          10, // Ganti jumlah sesuai dengan jumlah item favorit Anda
+                          favoriteItems.length,
                           (index) => Padding(
                             padding: const EdgeInsets.only(bottom: 16.0),
                             child: FavoriteItem(
-                              productName: 'Product ${index + 1}',
-                              brandName: 'Brand Name',
-                              imageUrl: 'images/product_${index + 1}.png', // Ganti dengan gambar produk Anda
+                              index: index,
+                              productName: favoriteItems[index]['productName']!,
+                              brandName: favoriteItems[index]['brandName']!,
+                              imageUrl: favoriteItems[index]['imageUrl']!,
+                              onRemove: _removeFromFavorites,
                             ),
                           ),
                         ),
@@ -195,15 +211,19 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
 }
 
 class FavoriteItem extends StatelessWidget {
+  final int index;
   final String productName;
   final String brandName;
   final String imageUrl;
+  final Function(int) onRemove;
 
   const FavoriteItem({
     Key? key,
+    required this.index,
     required this.productName,
     required this.brandName,
     required this.imageUrl,
+    required this.onRemove,
   }) : super(key: key);
 
   @override
@@ -219,7 +239,7 @@ class FavoriteItem extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
                 width: 70,
@@ -236,17 +256,15 @@ class FavoriteItem extends StatelessWidget {
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10.0),
-                      child: Text(
-                        brandName,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'Bayon',
-                        ),
+                    Text(
+                      brandName,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Bayon',
                       ),
                     ),
                     const SizedBox(height: 4),
@@ -260,6 +278,10 @@ class FavoriteItem extends StatelessWidget {
                     ),
                   ],
                 ),
+              ),
+              IconButton(
+                onPressed: () => onRemove(index),
+                icon: const Icon(Icons.favorite, color: Colors.red),
               ),
             ],
           ),

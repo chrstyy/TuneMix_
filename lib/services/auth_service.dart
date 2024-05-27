@@ -7,7 +7,7 @@ import 'package:path/path.dart' as path;
 
 import '../models/product.dart';
 
-class DatabaseService {
+class AuthService {
   static final FirebaseAuth _auth = FirebaseAuth.instance;
   static final FirebaseFirestore _database = FirebaseFirestore.instance;
   static final CollectionReference _userCollection =
@@ -119,31 +119,5 @@ class DatabaseService {
         return doc.data() as Map<String, dynamic>;
       }).toList();
     });
-  }
-
-  Future<void> addToFavorites(String userId, Product product) async {
-    try {
-      await _database.collection('favorites').doc(userId).collection('products').doc(product.id).set(product.toFirestore());
-    } catch (e) {
-      print(e);
-      rethrow;
-    }
-  }
-
-  Future<void> removeFromFavorites(String userId, String productId) async {
-    try {
-      await _database.collection('favorites').doc(userId).collection('products').doc(productId).delete();
-    } catch (e) {
-      print(e);
-      rethrow;
-    }
-  }
-
-  Stream<List<Product>> getFavoriteProducts(String userId) {
-    return _database.collection('favorites').doc(userId).collection('products').snapshots().map(
-          (snapshot) => snapshot.docs
-              .map((doc) => Product.fromFirestore(doc.data(), doc.id))
-              .toList(),
-        );
   }
 }

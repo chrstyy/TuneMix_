@@ -9,7 +9,7 @@ import 'package:gracieusgalerij/screens/fav_screen.dart';
 import 'package:gracieusgalerij/screens/home_screen.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../services/database_service.dart';
+import '../services/auth_service.dart';
 
 class UserProfile extends StatefulWidget {
   const UserProfile({Key? key}) : super(key: key);
@@ -27,7 +27,7 @@ class _UserProfileState extends State<UserProfile> {
       TextEditingController();
   bool isDarkMode = false;
 
-  DatabaseService _authService = DatabaseService();
+  AuthService _authService = AuthService();
   final FirebaseFirestore _database = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   File? _imageFile;
