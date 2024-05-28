@@ -41,48 +41,49 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyC_sQTXNxI5TcHAjFjHrXfrjcCNiUGuBBs',
-    appId: '1:743602971084:web:254b2dfd7000d592673d69',
-    messagingSenderId: '743602971084',
-    projectId: 'gracieusg',
-    authDomain: 'gracieusg.firebaseapp.com',
-    storageBucket: 'gracieusg.appspot.com',
-    measurementId: 'G-H21Z44JM5Z',
+    apiKey: 'AIzaSyAX7S-2tk2beQ8D0DHx5tiZo0dB7dA1tLU',
+    appId: '1:1062247362235:web:7fd3b3f65b40e36c3f039e',
+    messagingSenderId: '1062247362235',
+    projectId: 'gracie-c0a95',
+    authDomain: 'gracie-c0a95.firebaseapp.com',
+    storageBucket: 'gracie-c0a95.appspot.com',
+    measurementId: 'G-820V7GD2MG',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAihVpb2KwRCR9ItAbdj4SWuuVW50sWbK8',
-    appId: '1:743602971084:android:d52e95ca804970dc673d69',
-    messagingSenderId: '743602971084',
-    projectId: 'gracieusg',
-    storageBucket: 'gracieusg.appspot.com',
+    apiKey: 'AIzaSyAnmKCDA3HeyCDrPAyjwVsK2Jb086yrGLo',
+    appId: '1:1062247362235:android:75f9c7e6fb32dbd73f039e',
+    messagingSenderId: '1062247362235',
+    projectId: 'gracie-c0a95',
+    storageBucket: 'gracie-c0a95.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCxFDDNmRYv2_BtWI_-zzJV93T07q8cryk',
-    appId: '1:743602971084:ios:9f0692e339f1b8e3673d69',
-    messagingSenderId: '743602971084',
-    projectId: 'gracieusg',
-    storageBucket: 'gracieusg.appspot.com',
+    apiKey: 'AIzaSyAjJ0OTRaT1gc-xDIXp4BzJRXgqEJQO-j4',
+    appId: '1:1062247362235:ios:0c6ba35828f6de253f039e',
+    messagingSenderId: '1062247362235',
+    projectId: 'gracie-c0a95',
+    storageBucket: 'gracie-c0a95.appspot.com',
     iosBundleId: 'com.example.flutterApplication1',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyCxFDDNmRYv2_BtWI_-zzJV93T07q8cryk',
-    appId: '1:743602971084:ios:9f0692e339f1b8e3673d69',
-    messagingSenderId: '743602971084',
-    projectId: 'gracieusg',
-    storageBucket: 'gracieusg.appspot.com',
+    apiKey: 'AIzaSyAjJ0OTRaT1gc-xDIXp4BzJRXgqEJQO-j4',
+    appId: '1:1062247362235:ios:0c6ba35828f6de253f039e',
+    messagingSenderId: '1062247362235',
+    projectId: 'gracie-c0a95',
+    storageBucket: 'gracie-c0a95.appspot.com',
     iosBundleId: 'com.example.flutterApplication1',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyC_sQTXNxI5TcHAjFjHrXfrjcCNiUGuBBs',
-    appId: '1:743602971084:web:63ae02622e52a66b673d69',
-    messagingSenderId: '743602971084',
-    projectId: 'gracieusg',
-    authDomain: 'gracieusg.firebaseapp.com',
-    storageBucket: 'gracieusg.appspot.com',
-    measurementId: 'G-XMR1K47J9N',
+    apiKey: 'AIzaSyAX7S-2tk2beQ8D0DHx5tiZo0dB7dA1tLU',
+    appId: '1:1062247362235:web:fd817d4cc838385e3f039e',
+    messagingSenderId: '1062247362235',
+    projectId: 'gracie-c0a95',
+    authDomain: 'gracie-c0a95.firebaseapp.com',
+    storageBucket: 'gracie-c0a95.appspot.com',
+    measurementId: 'G-DGEVGS3S15',
   );
+
 }
