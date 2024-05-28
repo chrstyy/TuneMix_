@@ -3,6 +3,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:gracieusgalerij/screens/fav_screen.dart';
+import 'package:gracieusgalerij/screens/product_detail.dart';
 import '../../services/auth_service.dart';
 import '../admin/hs_admin.dart';
 import 'forgot_password.dart';
@@ -80,7 +82,7 @@ class _LoginScreensState extends State<LoginScreen> {
         } else {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const HomeScreen()),
+            MaterialPageRoute(builder: (context) => const FavoriteScreen()),
           );
         }
       } else {

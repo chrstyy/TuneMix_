@@ -14,10 +14,7 @@ class ProductDetailScreen extends StatefulWidget {
 }
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
-  int _selectedSizeIndex = 0;
-  int _selectedColorIndex = -1;
   int _quantity = 1;
-
   final db = ProductService();
   late Stream<List<Product>> favoriteProductsStream;
 
@@ -26,14 +23,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     super.initState();
     favoriteProductsStream = db.getFavoriteProducts('user_id'); // Ganti dengan user_id yang sesuai
   }
-
-  List<String> _sizes = ['S', 'M', 'L', 'XL'];
-  List<Color> _colors = [
-    Colors.red,
-    Colors.green,
-    Colors.blue,
-    Colors.yellow,
-  ];
 
   void _incrementQuantity() {
     setState(() {
@@ -70,15 +59,15 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             children: [
               Container(
                 decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color(0xFFF8F4E1),
-              Color(0xFFAF8F6F),
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
+                  gradient: LinearGradient(
+                    colors: [
+                      Color(0xFFF8F4E1),
+                      Color(0xFFAF8F6F),
+                    ],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ),
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -195,195 +184,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                       product.description,
                                       style: const TextStyle(
                                         fontSize: 16,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 20),
-                                    Container(
-                                      width: 380,
-                                      height: 200,
-                                      decoration: BoxDecoration(
-                                        color: const Color(0xFFF1B26F),
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            Container(
-                                              width: 322,
-                                              height: 120,
-                                              decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius: BorderRadius.circular(10),
-                                              ),
-                                              child: Padding(
-                                                padding: const EdgeInsets.all(10),
-                                                child: Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    Row(
-                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                      children: [
-                                                        const Text(
-                                                          'Colors',
-                                                          style: TextStyle(
-                                                            fontSize: 20,
-                                                            fontFamily: 'Bayon',
-                                                          ),
-                                                        ),
-                                                        Row(
-                                                          children: List.generate(
-                                                            _colors.length,
-                                                            (index) => InkWell(
-                                                              onTap: () {
-                                                                setState(() {
-                                                                  _selectedColorIndex = index;
-                                                                });
-                                                              },
-                                                              child: Container(
-                                                                width: 36,
-                                                                height: 36,
-                                                                margin: const EdgeInsets.only(left: 8),
-                                                                decoration: BoxDecoration(
-                                                                  color: _colors[index],
-                                                                  shape: BoxShape.circle,
-                                                                  border: Border.all(
-                                                                    color: _selectedColorIndex == index
-                                                                        ? const Color(0xFF543310)
-                                                                        : Colors.transparent,
-                                                                    width: 4,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    const SizedBox(height: 20),
-                                                    Row(
-                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                      children: [
-                                                        const Text(
-                                                          'Sizes',
-                                                          style: TextStyle(
-                                                            fontSize: 20,
-                                                            fontFamily: 'Bayon',
-                                                          ),
-                                                        ),
-                                                        Wrap(
-                                                          spacing: 10,
-                                                          children: List.generate(
-                                                            _sizes.length,
-                                                            (index) => InkWell(
-                                                              onTap: () {
-                                                                setState(() {
-                                                                  _selectedSizeIndex = index;
-                                                                });
-                                                              },
-                                                              child: Container(
-                                                                width: 36,
-                                                                height: 36,
-                                                                decoration: BoxDecoration(
-                                                                  color: _selectedSizeIndex == index
-                                                                      ? const Color(0xFF543310)
-                                                                      : Colors.white,
-                                                                  borderRadius: BorderRadius.circular(25),
-                                                                  border: Border.all(
-                                                                    color: const Color(0xFF543310),
-                                                                    width: _selectedSizeIndex == index ? 2 : 1,
-                                                                  ),
-                                                                ),
-                                                                child: Center(
-                                                                  child: Text(
-                                                                    _sizes[index],
-                                                                    style: TextStyle(
-                                                                      fontSize: 18,
-                                                                      fontWeight: FontWeight.bold,
-                                                                      color: _selectedSizeIndex == index
-                                                                          ? Colors.white
-                                                                          : Colors.black,
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                            const SizedBox(height: 5),
-                                            Row(
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              children: [
-                                                GestureDetector(
-                                                  onTap: _decrementQuantity,
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.circular(5),
-                                                    ),
-                                                    child: const Icon(Icons.remove_circle_outline),
-                                                  ),
-                                                ),
-                                                const SizedBox(width: 10),
-                                                Text(
-                                                  '$_quantity',
-                                                  style: const TextStyle(
-                                                    fontSize: 20,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                                const SizedBox(width: 10),
-                                                GestureDetector(
-                                                  onTap: _incrementQuantity,
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.circular(5),
-                                                    ),
-                                                    child: const Icon(Icons.add_circle_outline),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            Center(
-                                              child: SizedBox(
-                                                width: 108,
-                                                height: 27,
-                                                child: ElevatedButton(
-                                                  onPressed: () {
-                                                    // Handle add to cart
-                                                  },
-                                                  style: ElevatedButton.styleFrom(
-                                                    backgroundColor: const Color(0xFFFFE8C8),
-                                                    padding: EdgeInsets.zero,
-                                                    shape: RoundedRectangleBorder(
-                                                      borderRadius: BorderRadius.circular(30),
-                                                    ),
-                                                  ),
-                                                  child: const Row(
-                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                    children: [
-                                                      Text(
-                                                        'Add to Cart',
-                                                        style: TextStyle(
-                                                          fontSize: 14,
-                                                          fontWeight: FontWeight.bold,
-                                                          color: Colors.black,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
                                       ),
                                     ),
                                   ],
