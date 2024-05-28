@@ -38,7 +38,7 @@ class _CartScreenState extends State<CartScreen> {
     return total;
   }
 
-    void _showPaymentSheet(BuildContext context) {
+  void _showPaymentSheet(BuildContext context) {
     String? creditCardNumber;
     String? bankAccountName;
     String? bankName;
@@ -126,7 +126,7 @@ class _CartScreenState extends State<CartScreen> {
                       Expanded(
                         child: ElevatedButton(
                           onPressed: () {
-                           _showSuccessDialog(context);
+                            _showSuccessDialog(context);
                           },
                           child: const Text(
                             'Close',
@@ -192,9 +192,9 @@ class _CartScreenState extends State<CartScreen> {
                       ),
                       value: bankName,
                       items: <String>[
-                        'BCA', 
-                        'BNI', 
-                        'BRI', 
+                        'BCA',
+                        'BNI',
+                        'BRI',
                         'Mandiri',
                         'Danamon',
                         'Bank Mega',
@@ -204,8 +204,7 @@ class _CartScreenState extends State<CartScreen> {
                         'Bank CIMB Niaga',
                         'HSBC',
                         'UOB'
-                      ]
-                          .map<DropdownMenuItem<String>>((String value) {
+                      ].map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
                           child: Text(value),
@@ -243,7 +242,8 @@ class _CartScreenState extends State<CartScreen> {
                                 context,
                                 creditCardNumber!,
                                 bankName!,
-                                double.parse(getTotalPayment().toStringAsFixed(2)),
+                                double.parse(
+                                    getTotalPayment().toStringAsFixed(2)),
                                 int.parse(password!),
                               );
                               _showSuccessDialog(context);
@@ -252,7 +252,7 @@ class _CartScreenState extends State<CartScreen> {
                                 const SnackBar(
                                   content: Text('Please fill in all fields.'),
                                 ),
-                              );                     
+                              );
                             }
                           },
                           child: const Text(
@@ -269,7 +269,7 @@ class _CartScreenState extends State<CartScreen> {
                       Expanded(
                         child: ElevatedButton(
                           onPressed: () {
-                            Navigator.pop(context); 
+                            Navigator.pop(context);
                           },
                           child: const Text(
                             'Close',
@@ -293,7 +293,8 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   void _processQRISPayment(BuildContext context) {
-    final qrisUrl = 'qris://payment?amount=${getTotalPayment()}&merchant=MERCHANT_ID';
+    final qrisUrl =
+        'qris://payment?amount=${getTotalPayment()}&merchant=MERCHANT_ID';
 
     showModalBottomSheet(
       context: context,
@@ -329,26 +330,24 @@ class _CartScreenState extends State<CartScreen> {
             ],
           ),
         );
-
       },
     );
   }
 
-  void _processCreditCardPayment(BuildContext context, String cardNumber, String bankName, double totalAmount, int password) {
+  void _processCreditCardPayment(BuildContext context, String cardNumber,
+      String bankName, double totalAmount, int password) {
     // Simulate payment process here
     Future.delayed(const Duration(seconds: 2), () {
-      Navigator.pop(context); 
-      bool paymentSuccessful = true; 
+      Navigator.pop(context);
+      bool paymentSuccessful = true;
 
       if (paymentSuccessful) {
         _showSuccessDialog(context);
-      } 
-      
+      }
     });
   }
 
-
-   void _showSuccessDialog(BuildContext context) {
+  void _showSuccessDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -426,7 +425,8 @@ class _CartScreenState extends State<CartScreen> {
                               color: Colors.transparent,
                             ),
                           ),
-                          child: Image.asset('images/arrowback.png', width: 35, height: 35),
+                          child: Image.asset('images/arrowback.png',
+                              width: 35, height: 35),
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -434,10 +434,9 @@ class _CartScreenState extends State<CartScreen> {
                             const Text(
                               'Your Cart',
                               style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'Battambang'
-                              ),
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Battambang'),
                             ),
                             Text(
                               '${_cartItems.length} Items',
@@ -450,7 +449,8 @@ class _CartScreenState extends State<CartScreen> {
                           ],
                         ),
                         Container(
-                          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 8, horizontal: 16),
                         ),
                       ],
                     ),
@@ -465,7 +465,8 @@ class _CartScreenState extends State<CartScreen> {
                           itemCount: _cartItems.length,
                           itemBuilder: (context, index) {
                             return Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
                               child: Container(
                                 decoration: BoxDecoration(
                                   color: const Color(0xFF543310),
@@ -478,62 +479,84 @@ class _CartScreenState extends State<CartScreen> {
                                       Container(
                                         decoration: BoxDecoration(
                                           color: Colors.white,
-                                          borderRadius: BorderRadius.circular(10),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
                                         ),
                                         child: Padding(
                                           padding: const EdgeInsets.all(10),
                                           child: Row(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Container(
                                                 width: 80,
                                                 height: 80,
                                                 decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.circular(10),
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
                                                   image: DecorationImage(
                                                     fit: BoxFit.cover,
-                                                    image: AssetImage(_cartItems[index].image),
+                                                    image: AssetImage(
+                                                        _cartItems[index]
+                                                            .image),
                                                   ),
                                                 ),
                                               ),
                                               const SizedBox(width: 10),
                                               Expanded(
                                                 child: Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
                                                   children: [
                                                     Row(
-                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
                                                       children: [
                                                         Expanded(
                                                           child: Text(
-                                                            _cartItems[index].productName,
-                                                            style: const TextStyle(
+                                                            _cartItems[index]
+                                                                .productName,
+                                                            style:
+                                                                const TextStyle(
                                                               fontSize: 18,
-                                                              fontWeight: FontWeight.bold,
-                                                              fontFamily: 'Battambang',
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontFamily:
+                                                                  'Battambang',
                                                             ),
                                                           ),
                                                         ),
                                                         PopupMenuButton(
                                                           onSelected: (value) {
-                                                            if (value == 'edit') {
+                                                            if (value ==
+                                                                'edit') {
                                                               Navigator.push(
                                                                 context,
                                                                 MaterialPageRoute(
-                                                                  builder: (context) => ProductDetailScreen(productId: '',),
+                                                                  builder:
+                                                                      (context) =>
+                                                                          SongDetailScreen(
+                                                                    songId: '',
+                                                                  ),
                                                                 ),
                                                               );
-                                                            } else if (value == 'delete') {
+                                                            } else if (value ==
+                                                                'delete') {
                                                               // Delete action
                                                             }
                                                           },
-                                                          itemBuilder: (context) => [
+                                                          itemBuilder:
+                                                              (context) => [
                                                             const PopupMenuItem(
                                                               value: 'edit',
                                                               child: Text(
                                                                 'Edit',
-                                                                style: TextStyle(
-                                                                  fontFamily: 'Battambang',
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontFamily:
+                                                                      'Battambang',
                                                                   fontSize: 15,
                                                                 ),
                                                               ),
@@ -542,8 +565,10 @@ class _CartScreenState extends State<CartScreen> {
                                                               value: 'delete',
                                                               child: Text(
                                                                 'Delete',
-                                                                style: TextStyle(
-                                                                  fontFamily: 'Battambang',
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontFamily:
+                                                                      'Battambang',
                                                                   fontSize: 15,
                                                                 ),
                                                               ),
@@ -552,42 +577,56 @@ class _CartScreenState extends State<CartScreen> {
                                                         ),
                                                       ],
                                                     ),
-
                                                     const SizedBox(height: 5),
                                                     Row(
-                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
                                                       children: [
                                                         Row(
                                                           children: [
                                                             Text(
                                                               '\$${_cartItems[index].price.toStringAsFixed(2)}',
-                                                              style: const TextStyle(
+                                                              style:
+                                                                  const TextStyle(
                                                                 fontSize: 16,
-                                                                color: Colors.orange,
-                                                                fontWeight: FontWeight.bold,
-                                                                fontFamily: 'Battambang',
+                                                                color: Colors
+                                                                    .orange,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                fontFamily:
+                                                                    'Battambang',
                                                               ),
                                                             ),
                                                             Text(
                                                               '  x ${_cartItems[index].quantity}',
-                                                              style: const TextStyle(
+                                                              style:
+                                                                  const TextStyle(
                                                                 fontSize: 16,
-                                                                fontWeight: FontWeight.bold,
-                                                                fontFamily: 'Battambang',
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                fontFamily:
+                                                                    'Battambang',
                                                               ),
                                                             ),
                                                           ],
                                                         ),
                                                         Text(
-                                                            '   \$${(_cartItems[index].price * _cartItems[index].quantity).toStringAsFixed(2)}',
-                                                            style: const TextStyle(
+                                                          '   \$${(_cartItems[index].price * _cartItems[index].quantity).toStringAsFixed(2)}',
+                                                          style: const TextStyle(
                                                               fontSize: 16,
-                                                              fontWeight: FontWeight.bold,
-                                                              fontFamily: 'Battambang',
-                                                              color: Colors.orange
-                                                            ),
-                                                            textAlign: TextAlign.right,
-                                                          ),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontFamily:
+                                                                  'Battambang',
+                                                              color: Colors
+                                                                  .orange),
+                                                          textAlign:
+                                                              TextAlign.right,
+                                                        ),
                                                       ],
                                                     ),
                                                   ],
@@ -612,7 +651,8 @@ class _CartScreenState extends State<CartScreen> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFFF1B26F),
                             shape: const StadiumBorder(),
-                            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 40),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 15, horizontal: 40),
                           ),
                           child: const Text(
                             'Payment',
@@ -632,7 +672,6 @@ class _CartScreenState extends State<CartScreen> {
           ),
         ],
       ),
-
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(
           canvasColor: const Color(0xFFE2DFD0),
@@ -649,49 +688,42 @@ class _CartScreenState extends State<CartScreen> {
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.home,
-                color: _currentIndex == 0
-                    ? const Color(0xFF0500FF)
-                    :  Colors.black,
+                color:
+                    _currentIndex == 0 ? const Color(0xFF0500FF) : Colors.black,
               ),
               label: 'Home',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.search,
-                color: _currentIndex == 1
-                    ? const Color(0xFF0500FF)
-                    : Colors.black,
+                color:
+                    _currentIndex == 1 ? const Color(0xFF0500FF) : Colors.black,
               ),
               label: 'Search',
             ),
             BottomNavigationBarItem(
               icon: Image.asset(
-                _currentIndex == 2
-                    ? 'images/basket.png'
-                    : 'images/basket.png',
+                _currentIndex == 2 ? 'images/basket.png' : 'images/basket.png',
                 width: 24,
                 height: 24,
-                color: _currentIndex == 2
-                    ?const Color(0xFF0500FF)
-                    : Colors.black,
+                color:
+                    _currentIndex == 2 ? const Color(0xFF0500FF) : Colors.black,
               ),
               label: 'Story',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.favorite,
-                color: _currentIndex == 3
-                    ? const Color(0xFF0500FF)
-                    : Colors.black,
+                color:
+                    _currentIndex == 3 ? const Color(0xFF0500FF) : Colors.black,
               ),
               label: 'Favorite',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.account_circle_rounded,
-                color: _currentIndex == 4
-                    ? const Color(0xFF0500FF)
-                    : Colors.black,
+                color:
+                    _currentIndex == 4 ? const Color(0xFF0500FF) : Colors.black,
               ),
               label: 'Account',
             ),
@@ -752,15 +784,15 @@ class _CartScreenState extends State<CartScreen> {
         pageBuilder: (context, animation, secondaryAnimation) {
           switch (index) {
             case 0:
-             // return const HomeScreen();
+            // return const HomeScreen();
             case 1:
-             // return const SearchScreen();
+            // return const SearchScreen();
             case 2:
-             return const CartScreen();
+              return const CartScreen();
             case 3:
               return const FavoriteScreen();
             case 4:
-              return  const UserProfile();
+              return const UserProfile();
             default:
               return Container();
           }
@@ -768,7 +800,6 @@ class _CartScreenState extends State<CartScreen> {
       ),
     );
   }
-  
 }
 
 class CartItem {

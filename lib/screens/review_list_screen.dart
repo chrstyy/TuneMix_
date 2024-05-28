@@ -287,7 +287,6 @@ class ReviewList extends StatelessWidget {
                                       const Color.fromARGB(255, 255, 225, 225),
                                   onRatingUpdate: (rating) {
                                     print(rating);
-                                    // Update rating in your data model or wherever necessary
                                   },
                                 ),
                               ],

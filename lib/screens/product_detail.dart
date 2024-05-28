@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:gracieusgalerij/services/product_service.dart';
-import '../models/product.dart';
+import 'package:gracieusgalerij/models/song.dart';
+import 'package:gracieusgalerij/services/song_service.dart';
 import 'cart_screen.dart';
 import 'fav_screen.dart';
 
-class ProductDetailScreen extends StatefulWidget {
-  const ProductDetailScreen({Key? key, required this.productId}) : super(key: key);
+class SongDetailScreen extends StatefulWidget {
+  const SongDetailScreen({Key? key, required this.songId}) : super(key: key);
 
-  final String productId;
+  final String songId;
 
   @override
-  State<ProductDetailScreen> createState() => _ProductDetailScreenState();
+  State<SongDetailScreen> createState() => _SongDetailScreenState();
 }
 
-class _ProductDetailScreenState extends State<ProductDetailScreen> {
+class _SongDetailScreenState extends State<SongDetailScreen> {
   int _quantity = 1;
-  final db = ProductService();
-  late Stream<List<Product>> favoriteProductsStream;
+  final db = SongService();
+  late Stream<List<Song>> favoriteSongsStream;
 
   @override
   void initState() {
     super.initState();
-    favoriteProductsStream = db.getFavoriteProducts('user_id'); // Ganti dengan user_id yang sesuai
+    favoriteSongsStream = db.getFavoriteSongs('user_id'); // Ganti dengan user_id yang sesuai
   }
 
   void _incrementQuantity() {
@@ -41,20 +41,20 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder<Product>(
-        future: db.getProductById(widget.productId),
+      body: FutureBuilder<Song>(
+        future: db.getSongById(widget.songId),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }
           if (snapshot.hasError) {
-            return const Center(child: Text('Error loading product'));
+            return const Center(child: Text('Error loading song'));
           }
           if (!snapshot.hasData) {
-            return const Center(child: Text('Product not found'));
+            return const Center(child: Text('Song not found'));
           }
 
-          final product = snapshot.data!;
+          final song = snapshot.data!;
           return Stack(
             children: [
               Container(
@@ -133,7 +133,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 color: const Color(0xFF543310),
                                 borderRadius: BorderRadius.circular(10),
                                 image: DecorationImage(
-                                  image: NetworkImage(product.imageProduct),
+                                  image: NetworkImage(song.imageSong),
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -165,7 +165,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.stretch,
                                   children: [
                                     Text(
-                                      product.productName,
+                                      song.songTitle,
                                       style: const TextStyle(
                                         fontSize: 30,
                                         fontFamily: 'Bayon',
@@ -173,7 +173,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                     ),
                                     const SizedBox(height: 3),
                                     Text(
-                                      '\$${product.price}',
+                                      '\$${song.price}',
                                       style: const TextStyle(
                                         fontSize: 20,
                                         color: Color(0xFFFF8A00),
@@ -181,7 +181,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                       ),
                                     ),
                                     Text(
-                                      product.description,
+                                      song.description,
                                       style: const TextStyle(
                                         fontSize: 16,
                                       ),

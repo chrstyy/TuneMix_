@@ -1,18 +1,77 @@
 import 'package:flutter/material.dart';
-import 'package:gracieusgalerij/screens/cart_screen.dart';
-import 'package:gracieusgalerij/screens/fav_screen.dart';
-import 'package:gracieusgalerij/screens/user_profile.dart';
-import 'package:path/path.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class HomeScreenAdmin extends StatefulWidget {
+  const HomeScreenAdmin({Key? key}) : super(key: key);
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<HomeScreenAdmin> createState() => _HomeScreenAdminState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
-  int _currentIndex = 0;
+class _HomeScreenAdminState extends State<HomeScreenAdmin> {
+  final TextEditingController _productNameController = TextEditingController();
+  final TextEditingController _brandNameController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _priceController = TextEditingController();
+  File? _image;
+
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  Future<void> _pickImage() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path);
+      });
+    }
+  }
+
+  Future<void> _uploadProduct() async {
+    if (_productNameController.text.isEmpty ||
+        _brandNameController.text.isEmpty ||
+        _descriptionController.text.isEmpty ||
+        _priceController.text.isEmpty ||
+        _image == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('Please fill all fields and pick an image')),
+      );
+      return;
+    }
+
+    final imageName = _image!.path.split('/').last;
+    final storageRef =
+        FirebaseStorage.instance.ref().child('products/$imageName');
+    await storageRef.putFile(_image!);
+    final imageUrl = await storageRef.getDownloadURL();
+
+    final product = {
+      'brand_name': _brandNameController.text,
+      'product_name': _productNameController.text,
+      'description': _descriptionController.text,
+      'price': double.parse(_priceController.text),
+      'image_product': imageUrl,
+    };
+
+    await _firestore.collection('products').add(product);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Product added successfully')),
+    );
+
+    _productNameController.clear();
+    _brandNameController.clear();
+    _descriptionController.clear();
+    _priceController.clear();
+    setState(() {
+      _image = null;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: const EdgeInsetsDirectional.fromSTEB(20, 20, 0, 0),
           child: SingleChildScrollView(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(8),
@@ -120,201 +179,107 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      const Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 20, 0),
+                Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.only(top: 20, right: 20),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Special Offer',
+                            style: TextStyle(
+                              fontFamily: 'Bayon',
+                              fontSize: 20,
+                            ),
+                          ),
+                          Icon(
+                            Icons.arrow_drop_down,
+                            color: Colors.black,
+                            size: 24,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Align(
+                      alignment: const AlignmentDirectional(-1, 0),
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Text(
-                              'Special Offer',
-                              style: TextStyle(
-                                fontFamily: 'Bayon',
-                                fontSize: 20,
+                            Padding(
+                              padding: const EdgeInsets.only(right: 10),
+                              child: Container(
+                                width: 100,
+                                height: 150,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFF543310),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Padding(
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              5, 5, 5, 5),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(8),
+                                        child: Image.asset(
+                                          'images of song',
+                                          width: 150,
+                                          height: 100,
+                                          fit: BoxFit.contain,
+                                        ),
+                                      ),
+                                    ),
+                                    const Text(
+                                      'Song artist',
+                                      style: TextStyle(
+                                        fontFamily: 'Bayon',
+                                        fontSize: 15,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                            Icon(
-                              Icons.arrow_drop_down,
-                              color: Colors.black,
-                              size: 24,
                             ),
                           ],
                         ),
                       ),
-                      Align(
-                        alignment: const AlignmentDirectional(-1, 0),
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(right: 10),
-                                child: Container(
-                                  width: 100,
-                                  height: 150,
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFF543310),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(5, 5, 5, 5),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          child: Image.asset(
-                                            'images/logo.png',
-                                            width: 150,
-                                            height: 100,
-                                            fit: BoxFit.contain,
-                                          ),
-                                        ),
-                                      ),
-                                      const Text('Special Offer',
-                                          style: TextStyle(
-                                            fontFamily: 'Bayon',
-                                            fontSize: 15,
-                                          )),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 10),
-                                child: Container(
-                                  width: 100,
-                                  height: 150,
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFF543310),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(5, 5, 5, 5),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          child: Image.asset(
-                                            'images/logo.png',
-                                            width: 150,
-                                            height: 100,
-                                            fit: BoxFit.contain,
-                                          ),
-                                        ),
-                                      ),
-                                      const Text('Special Offer',
-                                          style: TextStyle(
-                                            fontFamily: 'Bayon',
-                                            fontSize: 15,
-                                          )),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 10),
-                                child: Container(
-                                  width: 100,
-                                  height: 150,
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFF543310),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(5, 5, 5, 5),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          child: Image.asset(
-                                            'images/logo.png',
-                                            width: 150,
-                                            height: 100,
-                                            fit: BoxFit.contain,
-                                          ),
-                                        ),
-                                      ),
-                                      const Text('Special Offer',
-                                          style: TextStyle(
-                                            fontFamily: 'Bayon',
-                                            fontSize: 15,
-                                          )),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 10),
-                                child: Container(
-                                  width: 100,
-                                  height: 150,
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFF543310),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(5, 5, 5, 5),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          child: Image.asset(
-                                            'images/logo.png',
-                                            width: 150,
-                                            height: 100,
-                                            fit: BoxFit.contain,
-                                          ),
-                                        ),
-                                      ),
-                                      const Text('Special Offer',
-                                          style: TextStyle(
-                                            fontFamily: 'Bayon',
-                                            fontSize: 15,
-                                          )),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
                 const Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
-                  child: Text(
-                    'Category',
-                    style: TextStyle(
-                      fontFamily: 'Bayon',
-                      fontSize: 20,
-                    ),
+                  padding: EdgeInsets.only(top: 20, right: 20),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Genre',
+                        style: TextStyle(
+                          fontFamily: 'Bayon',
+                          fontSize: 20,
+                        ),
+                      ),
+                      Icon(
+                        Icons.edit_note_rounded,
+                        color: Colors.black,
+                        size: 24,
+                      ),
+                    ],
                   ),
                 ),
                 Container(
                   width: double.infinity,
                   height: 70,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: Color(0xFF543310),
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(10),
@@ -328,6 +293,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
+                          
                           Padding(
                             padding: const EdgeInsets.only(right: 10),
                             child: ElevatedButton(
@@ -343,7 +309,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                               child: const Text(
-                                'texthdsjs',
+                                'Pop',
                                 style: TextStyle(
                                   fontFamily: 'Readex Pro',
                                   color: Colors.white,
@@ -367,7 +333,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                               child: const Text(
-                                'text',
+                                'Jazz',
                                 style: TextStyle(
                                   fontFamily: 'Readex Pro',
                                   color: Colors.white,
@@ -391,31 +357,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                               child: const Text(
-                                'texthdsjs',
-                                style: TextStyle(
-                                  fontFamily: 'Readex Pro',
-                                  color: Colors.white,
-                                  letterSpacing: 0,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 10),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                print('Button pressed ...');
-                              },
-                              style: ElevatedButton.styleFrom(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 24),
-                                elevation: 3,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                              child: const Text(
-                                'text',
+                                'RocknRoll',
                                 style: TextStyle(
                                   fontFamily: 'Readex Pro',
                                   color: Colors.white,
@@ -615,104 +557,48 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: Theme(
-        data: Theme.of(context).copyWith(
-          canvasColor: const Color(0xFFE2DFD0),
-        ),
-        child: BottomNavigationBar(
-          currentIndex: _currentIndex,
-          onTap: (index) {
-            setState(() {
-              _currentIndex = index;
-              _navigateToPage(index);
-            });
-          },
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home,
-                color: _currentIndex == 0 ? Color(0xFF0500FF) : Colors.black,
-              ),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.search,
-                color: _currentIndex == 1 ? Color(0xFF0500FF) : Colors.black,
-              ),
-              label: 'Search',
-            ),
-            BottomNavigationBarItem(
-              icon: Image.asset(
-                _currentIndex == 2 ? 'images/basket.png' : 'images/basket.png',
-                width: 24,
-                height: 24,
-                color: _currentIndex == 2 ? Color(0xFF0500FF) : Colors.black,
-              ),
-              label: 'Story',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.favorite,
-                color: _currentIndex == 3 ? Color(0xFF0500FF) : Colors.black,
-              ),
-              label: 'Favorite',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.account_circle_rounded,
-                color: _currentIndex == 4 ? Color(0xFF0500FF) : Colors.black,
-              ),
-              label: 'Account',
-            ),
-          ],
-          showUnselectedLabels: false,
-          showSelectedLabels: false,
-        ),
-      ),
+      // appBar: AppBar(
+      //   title: Text('Admin - Add Product'),
+      // ),
+      // body: Padding(
+      //   padding: const EdgeInsets.all(16.0),
+      //   child: SingleChildScrollView(
+      //     child: Column(
+      //       children: [
+      //         TextField(
+      //           controller: _productNameController,
+      //           decoration: InputDecoration(labelText: 'Product Name'),
+      //         ),
+      //         TextField(
+      //           controller: _brandNameController,
+      //           decoration: InputDecoration(labelText: 'Brand Name'),
+      //         ),
+      //         TextField(
+      //           controller: _descriptionController,
+      //           decoration: InputDecoration(labelText: 'Description'),
+      //         ),
+      //         TextField(
+      //           controller: _priceController,
+      //           decoration: InputDecoration(labelText: 'Price'),
+      //           keyboardType: TextInputType.number,
+      //         ),
+      //         SizedBox(height: 20),
+      //         _image == null
+      //             ? Text('No image selected')
+      //             : Image.file(_image!, height: 150),
+      //         ElevatedButton(
+      //           onPressed: _pickImage,
+      //           child: Text('Pick Image'),
+      //         ),
+      //         SizedBox(height: 20),
+      //         ElevatedButton(
+      //           onPressed: _uploadProduct,
+      //           child: Text('Add Product'),
+      //         ),
+      //       ],
+      //     ),
+      //   ),
+      // ),
     );
   }
-}
-
-void _navigateToPage(int index) {
-  var routeBuilder;
-  switch (index) {
-    case 0:
-      routeBuilder = '/home';
-      break;
-    case 1:
-      routeBuilder = '/search';
-      break;
-    case 2:
-      routeBuilder = '/basket';
-      break;
-    case 3:
-      routeBuilder = '/fav';
-      break;
-    case 4:
-      routeBuilder = '/account';
-      break;
-  }
-
-  Navigator.pushReplacement(
-    context as BuildContext,
-    PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) {
-        switch (index) {
-          case 0:
-            return const HomeScreen();
-          case 1:
-          // return const SearchScreen();
-          case 2:
-            return const CartScreen();
-          case 3:
-            return const FavoriteScreen();
-          case 4:
-            return const UserProfile();
-          default:
-            return Container();
-        }
-      },
-    ),
-  );
 }

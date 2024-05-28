@@ -6,7 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gracieusgalerij/screens/fav_screen.dart';
 import 'package:gracieusgalerij/screens/product_detail.dart';
 import '../../services/auth_service.dart';
-import '../admin/hs_admin.dart';
+import '../admin/home_admin.dart';
 import 'forgot_password.dart';
 import '../home_screen.dart';
 

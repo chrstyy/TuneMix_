@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:gracieusgalerij/screens/admin/hs_admin.dart';
+import 'package:gracieusgalerij/screens/admin/home_admin.dart';
 
 import 'login_screen.dart';
 
