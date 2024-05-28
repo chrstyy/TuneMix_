@@ -64,7 +64,8 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                             color: Colors.transparent,
                           ),
                         ),
-                        child: Image.asset('images/arrowback.png', width: 35, height: 35),
+                        child: Image.asset('images/arrowback.png',
+                            width: 35, height: 35),
                       ),
                       Container(
                         width: 152,
@@ -124,14 +125,16 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.home,
-                color: _currentIndex == 0 ? const Color(0xFF0500FF) : Colors.black,
+                color:
+                    _currentIndex == 0 ? const Color(0xFF0500FF) : Colors.black,
               ),
               label: 'Home',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.search,
-                color: _currentIndex == 1 ? const Color(0xFF0500FF) : Colors.black,
+                color:
+                    _currentIndex == 1 ? const Color(0xFF0500FF) : Colors.black,
               ),
               label: 'Search',
             ),
@@ -140,21 +143,24 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                 _currentIndex == 2 ? 'images/basket.png' : 'images/basket.png',
                 width: 24,
                 height: 24,
-                color: _currentIndex == 2 ? const Color(0xFF0500FF) : Colors.black,
+                color:
+                    _currentIndex == 2 ? const Color(0xFF0500FF) : Colors.black,
               ),
               label: 'Story',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.favorite,
-                color: _currentIndex == 3 ? const Color(0xFF0500FF) : Colors.black,
+                color:
+                    _currentIndex == 3 ? const Color(0xFF0500FF) : Colors.black,
               ),
               label: 'Favorite',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.account_circle_rounded,
-                color: _currentIndex == 4 ? const Color(0xFF0500FF) : Colors.black,
+                color:
+                    _currentIndex == 4 ? const Color(0xFF0500FF) : Colors.black,
               ),
               label: 'Account',
             ),
@@ -192,9 +198,9 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
         pageBuilder: (context, animation, secondaryAnimation) {
           switch (index) {
             case 0:
-              // return const HomeScreen();
+            // return const HomeScreen();
             case 1:
-              // return const SearchScreen();
+            // return const SearchScreen();
             case 2:
               return const CartScreen();
             case 3:

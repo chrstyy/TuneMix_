@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
         '/favorites': (context) => const FavoriteScreen(),
         '/home': (context) => const HomeScreen(),
         '/notes': (context) => const NoteListScreen(),
-      //  '/product_detail': (context) =>  ProductDetailScreen(productId: ''), 
+        //  '/product_detail': (context) =>  ProductDetailScreen(productId: ''),
       },
       // onGenerateRoute: (settings) {
       //   if (settings.name == '/product_detail') {
