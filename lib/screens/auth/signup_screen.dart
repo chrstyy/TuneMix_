@@ -126,17 +126,16 @@ class _SignupScreenState extends State<SignupScreen> {
           Container(
             height: double.infinity,
             width: double.infinity,
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Color(0xFFF8F4E1),
-                  Color(0xFFAF8F6F),
-                ],
-                stops: [0.33, 1],
-                begin: AlignmentDirectional(0, -1),
-                end: AlignmentDirectional(0, 1),
-              ),
-            ),
+             decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Color(0xFFF8F4E1),
+              Color(0xFFAF8F6F),
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,

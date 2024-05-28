@@ -70,16 +70,15 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             children: [
               Container(
                 decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Color(0xFFF8F4E1),
-                      Color(0xFFAF8F6F),
-                    ],
-                    stops: [0.33, 1],
-                    begin: AlignmentDirectional(0, -1),
-                    end: AlignmentDirectional(0, 1),
-                  ),
-                ),
+          gradient: LinearGradient(
+            colors: [
+              Color(0xFFF8F4E1),
+              Color(0xFFAF8F6F),
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gracieusgalerij/screens/cart_screen.dart';
 import 'package:gracieusgalerij/screens/fav_screen.dart';
 import 'package:gracieusgalerij/screens/home_screen.dart';
-import 'package:gracieusgalerij/screens/note_list_screen.dart';
+import 'package:gracieusgalerij/screens/review_list_screen.dart';
 import 'screens/landing_screen.dart';
 import 'screens/auth/login_screen.dart';
 import 'screens/auth/signup_screen.dart';
@@ -24,12 +24,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'GracieusGalerij',
+      title: 'TuneMix',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
       debugShowCheckedModeBanner: false,
-      initialRoute: '/',
+      initialRoute: '/review',
       routes: {
         '/': (context) => const LandingScreen(),
         '/landing': (context) => const LandingScreen(),
@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
         '/cart': (context) => const CartScreen(),
         '/favorites': (context) => const FavoriteScreen(),
         '/home': (context) => const HomeScreen(),
-        '/notes': (context) => const NoteListScreen(),
+        '/review': (context) => const ReviewListScreen(),
         //  '/product_detail': (context) =>  ProductDetailScreen(productId: ''),
       },
       // onGenerateRoute: (settings) {

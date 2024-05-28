@@ -113,19 +113,15 @@ void _updatePassword(String newPassword) async {
           ),
           Container(
             decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Color(0xFFFFE7E7),
-                  Color(0xD5F4D3D4),
-                  Color(0x3D6C5278),
-                  Color(0x9DD6EDB2),
-                  Color(0xB97DAEA5),
-                ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                stops: [0.0, 0.25, 0.5, 0.75, 1.0],
-              ),
-            ),
+          gradient: LinearGradient(
+            colors: [
+              Color(0xFFF8F4E1),
+              Color(0xFFAF8F6F),
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
             padding: const EdgeInsets.all(16),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

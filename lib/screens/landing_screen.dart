@@ -137,16 +137,15 @@ class _LandingScreenState extends State<LandingScreen> {
           padding:
               const EdgeInsets.only(top: 100, left: 20, right: 20, bottom: 20),
           decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Color(0xFFF8F4E1),
-                Color(0xFFAF8F6F),
-              ],
-              stops: [0.33, 1],
-              begin: AlignmentDirectional(0, -1),
-              end: AlignmentDirectional(0, 1),
-            ),
+          gradient: LinearGradient(
+            colors: [
+              Color(0xFFF8F4E1),
+              Color(0xFFAF8F6F),
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
           ),
+        ),
           child: Column(
             children: [
               const Expanded(

@@ -12,7 +12,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _currentIndex = 4;
+  int _currentIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,10 +21,12 @@ class _HomeScreenState extends State<HomeScreen> {
         height: double.infinity,
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFFF8F4E1), Color(0xFFAF8F6F)],
-            stops: [0, 1],
-            begin: AlignmentDirectional(0, -1),
-            end: AlignmentDirectional(0, 1),
+            colors: [
+              Color(0xFFF8F4E1),
+              Color(0xFFAF8F6F),
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
           ),
         ),
         child: Padding(

@@ -1,34 +1,33 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:gracieusgalerij/models/note.dart';
+import 'package:gracieusgalerij/models/review.dart';
 import 'package:gracieusgalerij/services/location_services.dart';
-import 'package:gracieusgalerij/services/note_services.dart';
+import 'package:gracieusgalerij/services/review_services.dart';
 import 'package:image_picker/image_picker.dart';
 
-class NoteEditScreen extends StatefulWidget {
-  final Note? note;
-  const NoteEditScreen({super.key, this.note});
+class ReviewEditScreen extends StatefulWidget {
+  final Review? review;
+  const ReviewEditScreen({super.key, this.review});
 
   @override
-  State<NoteEditScreen> createState() => _NoteEditScreenState();
+  State<ReviewEditScreen> createState() => _ReviewEditScreenState();
 }
 
-class _NoteEditScreenState extends State<NoteEditScreen> {
+class _ReviewEditScreenState extends State<ReviewEditScreen> {
   final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _commentController = TextEditingController();
   File? _imageFile;
   Position? _currentPosition;
 
   @override
   void initState() {
     super.initState();
-    if (widget.note != null) {
-      _titleController.text = widget.note!.title;
-      _descriptionController.text = widget.note!.description;
+    if (widget.review != null) {
+      _titleController.text = widget.review!.title;
+      _commentController.text = widget.review!.comment;
     }
   }
-
 
   Future<void> _pickImage() async {
     final pickedFile =
@@ -53,7 +52,7 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.note == null ? 'Add Notes' : 'Update Notes'),
+        title: Text(widget.review == null ? 'Add Reviews' : 'Update Reviews'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
@@ -71,11 +70,11 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
               const Padding(
                 padding: EdgeInsets.only(top: 20),
                 child: Text(
-                  'Description: ',
+                  'Comment: ',
                 ),
               ),
               TextField(
-                controller: _descriptionController,
+                controller: _commentController,
               ),
               const Padding(
                 padding: EdgeInsets.only(top: 20),
@@ -86,9 +85,10 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
                       aspectRatio: 16 / 9,
                       child: Image.file(_imageFile!, fit: BoxFit.cover),
                     )
-                  : (widget.note?.imageUrl != null &&
-                          Uri.parse(widget.note!.imageUrl!).isAbsolute
-                      ? Image.network(widget.note!.imageUrl!, fit: BoxFit.cover)
+                  : (widget.review?.imageUrl != null &&
+                          Uri.parse(widget.review!.imageUrl!).isAbsolute
+                      ? Image.network(widget.review!.imageUrl!,
+                          fit: BoxFit.cover)
                       : Container()),
               TextButton(
                 onPressed: _pickImage,
@@ -120,29 +120,29 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
                     onPressed: () async {
                       String? imageUrl;
                       if (_imageFile != null) {
-                        imageUrl = await NoteService.uploadImage(_imageFile!);
+                        imageUrl = await ReviewService.uploadImage(_imageFile!);
                       } else {
-                        imageUrl = widget.note?.imageUrl;
+                        imageUrl = widget.review?.imageUrl;
                       }
-                      Note note = Note(
-                        id: widget.note?.id,
+                      Review review = Review(
+                        id: widget.review?.id,
                         title: _titleController.text,
-                        description: _descriptionController.text,
+                        comment: _commentController.text,
                         imageUrl: imageUrl,
                         latitude: _currentPosition?.latitude,
                         longitude: _currentPosition?.longitude,
-                        createdAt: widget.note?.createdAt,
+                        createdAt: widget.review?.createdAt,
                       );
 
-                      if (widget.note == null) {
-                        NoteService.addNote(note)
+                      if (widget.review == null) {
+                        ReviewService.addReview(review)
                             .whenComplete(() => Navigator.of(context).pop());
                       } else {
-                        NoteService.updateNote(note)
+                        ReviewService.updateReview(review)
                             .whenComplete(() => Navigator.of(context).pop());
                       }
                     },
-                    child: Text(widget.note == null ? 'Add' : 'Update'),
+                    child: Text(widget.review == null ? 'Add' : 'Update'),
                   ),
                 ],
               ),

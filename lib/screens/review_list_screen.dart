@@ -1,43 +1,105 @@
 import 'package:flutter/material.dart';
-import 'package:gracieusgalerij/screens/note_edit_screen.dart';
+import 'package:gracieusgalerij/screens/review_edit_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../services/note_services.dart';
+import '../services/review_services.dart';
 
-class NoteListScreen extends StatefulWidget {
-  const NoteListScreen({super.key});
+class ReviewListScreen extends StatefulWidget {
+  const ReviewListScreen({super.key});
 
   @override
-  State<NoteListScreen> createState() => _NoteListScreenState();
+  State<ReviewListScreen> createState() => _ReviewListScreenState();
 }
 
-class _NoteListScreenState extends State<NoteListScreen> {
+class _ReviewListScreenState extends State<ReviewListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Notes'),
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFFF8F4E1), Color(0xFFAF8F6F)],
+            stops: [0, 1],
+            begin: AlignmentDirectional(0, -1),
+            end: AlignmentDirectional(0, 1),
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              const Row(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Icon(
+                    Icons.arrow_back,
+                    color: Colors.black,
+                    size: 24,
+                  ),
+                  Expanded(
+                    child: Align(
+                      alignment: AlignmentDirectional(0, 0),
+                      child: Text(
+                        'Reviews',
+                        style: TextStyle(fontFamily: 'Bayon', fontSize: 25),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const Divider(
+                thickness: 3,
+                color: Colors.black,
+              ),
+              Expanded(
+                child: Container(
+                  width: double.infinity,
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
+                    ),
+                  ),
+                  child: const ReviewList(),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
-      body: const NoteList(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const NoteEditScreen(),
+      floatingActionButton: Stack(
+        children: [
+          FloatingActionButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ReviewEditScreen(),
+                ),
+              ); //push bs balek lagi, pushReplacement dbs balek
+            },
+            tooltip: 'Add Review',
+            backgroundColor: Colors.teal,
+            shape: const CircleBorder(),
+            elevation: 20,
+            child: const Icon(
+              Icons.add,
+              color: Colors.white,
+              size: 30,
             ),
-          ); //push bs balek lagi, pushReplacement dbs balek
-         
-        },
-        tooltip: 'Add Note',
-        child: const Icon(Icons.add),
+          ),
+        ],
       ),
     );
   }
 }
 
-class NoteList extends StatelessWidget {
-  const NoteList({super.key});
+class ReviewList extends StatelessWidget {
+  const ReviewList({super.key});
 
   Future<void> _launchMaps(double latitude, double longitude) async {
     Uri googleUrl = Uri.parse(
@@ -46,14 +108,13 @@ class NoteList extends StatelessWidget {
       await launchUrl(googleUrl);
     } catch (e) {
       print('Could not open the map: $e');
-      // Optionally, show a message to the user
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: NoteService.getNoteList(),
+      stream: ReviewService.getReviewList(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
@@ -73,15 +134,10 @@ class NoteList extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => NoteEditScreen(note: document),
+                          builder: (context) =>
+                              ReviewEditScreen(review: document),
                         ),
                       );
-                      // showDialog(
-                      //   context: context,
-                      //   builder: (context) {
-                      //     return NoteDialog(note: document);
-                      //   },
-                      // );
                     },
                     child: Column(
                       children: [
@@ -103,7 +159,7 @@ class NoteList extends StatelessWidget {
                             : Container(),
                         ListTile(
                           title: Text(document.title),
-                          subtitle: Text(document.description),
+                          subtitle: Text(document.comment),
                           trailing: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -136,7 +192,8 @@ class NoteList extends StatelessWidget {
                                           TextButton(
                                             child: const Text('Hapus'),
                                             onPressed: () {
-                                              NoteService.deleteNote(document)
+                                              ReviewService.deleteReview(
+                                                      document)
                                                   .whenComplete(() =>
                                                       Navigator.of(context)
                                                           .pop());
