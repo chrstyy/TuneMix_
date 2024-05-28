@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:gracieusgalerij/screens/review_edit_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -99,7 +100,7 @@ class _ReviewListScreenState extends State<ReviewListScreen> {
 }
 
 class ReviewList extends StatelessWidget {
-  const ReviewList({super.key});
+  const ReviewList({Key? key});
 
   Future<void> _launchMaps(double latitude, double longitude) async {
     Uri googleUrl = Uri.parse(
@@ -126,90 +127,197 @@ class ReviewList extends StatelessWidget {
             );
           default:
             return ListView(
-              padding: const EdgeInsets.only(bottom: 80),
+              padding: const EdgeInsets.all(10),
               children: snapshot.data!.map((document) {
-                return Card(
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              ReviewEditScreen(review: document),
-                        ),
-                      );
-                    },
+                return Container(
+                  margin: const EdgeInsets.only(bottom: 10),
+                  decoration: BoxDecoration(
+                    color: Color.fromARGB(255, 105, 64, 7),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        document.imageUrl != null &&
-                                Uri.parse(document.imageUrl!).isAbsolute
-                            ? ClipRRect(
-                                borderRadius: const BorderRadius.only(
-                                  topLeft: Radius.circular(16),
-                                  topRight: Radius.circular(16),
-                                ),
-                                child: Image.network(
-                                  document.imageUrl!,
-                                  fit: BoxFit.cover,
-                                  alignment: Alignment.center,
-                                  width: double.infinity,
-                                  height: 150,
-                                ),
-                              )
-                            : Container(),
-                        ListTile(
-                          title: Text(document.title),
-                          subtitle: Text(document.comment),
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              IconButton(
-                                icon: const Icon(Icons.map),
-                                onPressed: document.latitude != null &&
-                                        document.longitude != null
-                                    ? () {
-                                        _launchMaps(document.latitude!,
-                                            document.longitude!);
-                                      }
-                                    : null, // Disable the button if latitude or longitude is null
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              document.title,
+                              style: const TextStyle(
+                                fontFamily: 'Bayon',
+                                fontSize: 23,
+                                color: Colors.white,
                               ),
-                              InkWell(
-                                onTap: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title: const Text('Konfirmasi Hapus'),
-                                        content: Text(
-                                            'Yakin ingin menghapus data \'${document.title}\' ?'),
-                                        actions: <Widget>[
-                                          TextButton(
-                                            child: const Text('Cancel'),
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                          ),
-                                          TextButton(
-                                            child: const Text('Hapus'),
-                                            onPressed: () {
-                                              ReviewService.deleteReview(
-                                                      document)
-                                                  .whenComplete(() =>
-                                                      Navigator.of(context)
-                                                          .pop());
-                                            },
-                                          ),
-                                        ],
+                            ),
+                            const Text(
+                              'created/updated at',
+                              style: TextStyle(
+                                fontFamily: 'Battambang',
+                                fontSize: 13,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 10),
+                        Row(
+                          children: [
+                            Container(
+                              width: 70,
+                              height: 70,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: document.imageUrl != null &&
+                                        Uri.parse(document.imageUrl!).isAbsolute
+                                    ? DecorationImage(
+                                        image: NetworkImage(document.imageUrl!),
+                                        fit: BoxFit.cover,
+                                      )
+                                    : null,
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            const Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Username',
+                                    style: TextStyle(
+                                      fontFamily: 'Readex Pro',
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.location_pin,
+                                        color: Colors.white,
+                                        size: 18,
+                                      ),
+                                      Text(
+                                        'Pick location...',
+                                        style: TextStyle(
+                                          fontFamily: 'Readex Pro',
+                                          fontSize: 10,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                PopupMenuButton<String>(
+                                  icon: const Icon(
+                                    Icons.more_vert,
+                                    color: Colors.white,
+                                  ),
+                                  onSelected: (String value) {
+                                    if (value == 'edit') {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              ReviewEditScreen(
+                                                  review: document),
+                                        ),
                                       );
-                                    },
-                                  );
-                                },
-                                child: const Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 10),
-                                  child: Icon(Icons.delete),
+                                    } else if (value == 'delete') {
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: const Text('Confirm Delete'),
+                                            content: Text(
+                                                'Are you sure want to delete this \'${document.title}\' ?'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                child: const Text('Cancel'),
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                              ),
+                                              TextButton(
+                                                child: const Text('Delete'),
+                                                onPressed: () {
+                                                  ReviewService.deleteReview(
+                                                          document)
+                                                      .whenComplete(() =>
+                                                          Navigator.of(context)
+                                                              .pop());
+                                                },
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    }
+                                  },
+                                  itemBuilder: (BuildContext context) =>
+                                      <PopupMenuEntry<String>>[
+                                    const PopupMenuItem<String>(
+                                      value: 'edit',
+                                      child: Text('Edit'),
+                                    ),
+                                    const PopupMenuItem<String>(
+                                      value: 'delete',
+                                      child: Text('Delete'),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                            ],
+                                const SizedBox(height: 5),
+                                RatingBar.builder(
+                                  initialRating: document.rating ?? 0,
+                                  minRating: 1,
+                                  direction: Axis.horizontal,
+                                  allowHalfRating: true,
+                                  itemCount: 5,
+                                  itemSize: 20,
+                                  itemBuilder: (context, _) => const Icon(
+                                    Icons.star,
+                                    color: Color.fromARGB(255, 10, 223, 205),
+                                  ),
+                                  unratedColor:
+                                      const Color.fromARGB(255, 255, 225, 225),
+                                  onRatingUpdate: (rating) {
+                                    print(rating);
+                                    // Update rating in your data model or wherever necessary
+                                  },
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        const Divider(
+                          thickness: 1,
+                          color: Colors.white,
+                        ),
+                        Container(
+                          width: 90,
+                          height: 90,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            image: document.imageUrl != null &&
+                                    Uri.parse(document.imageUrl!).isAbsolute
+                                ? DecorationImage(
+                                    image: NetworkImage(document.imageUrl!),
+                                    fit: BoxFit.cover,
+                                  )
+                                : null,
+                          ),
+                        ),
+                        Text(
+                          document.comment,
+                          style: const TextStyle(
+                            fontFamily: 'Basic',
+                            fontSize: 16,
+                            color: Colors.white,
                           ),
                         ),
                       ],

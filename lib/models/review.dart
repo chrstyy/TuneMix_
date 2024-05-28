@@ -7,6 +7,7 @@ class Review {
   String? imageUrl;
   double? latitude;
   double? longitude;
+  double? rating;
   Timestamp? createdAt;
   Timestamp? updatedAt;
 
@@ -17,6 +18,7 @@ class Review {
     this.imageUrl,
     this.latitude,
     this.longitude,
+    this.rating,
     this.createdAt,
     this.updatedAt,
   });
@@ -30,6 +32,7 @@ class Review {
       imageUrl: data['image_url'],
       latitude: data['latitude'] as double,
       longitude: data['longitude'] as double,
+      rating: data['rating'] as double,
       createdAt: data['created_at'] as Timestamp,
       updatedAt: data['updated_at'] as Timestamp,
     );
@@ -42,6 +45,7 @@ class Review {
       'image_url': imageUrl,
       'latitude': latitude,
       'longitude': longitude,
+      'rating': rating,
       'created_at': createdAt,
       'updated_at': updatedAt,
     };
