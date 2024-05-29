@@ -282,7 +282,23 @@ class ReviewList extends StatelessWidget {
                                       ],
                                     ),
                                     onTap: () {
-                                      _pickLocation(context);
+                                      document.latitude != null &&
+                                              document.longitude != null
+                                          ? () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      GoogleMapsScreen(
+                                                    latitude:
+                                                        document.latitude!,
+                                                    longitude:
+                                                        document.longitude!,
+                                                  ),
+                                                ),
+                                              );
+                                            }
+                                          : null;
                                     },
                                   ),
                                 ],
