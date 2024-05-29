@@ -1,5 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:gracieusgalerij/screens/google_maps_screen.dart';
 import 'package:gracieusgalerij/screens/review_edit_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -13,6 +17,36 @@ class ReviewListScreen extends StatefulWidget {
 }
 
 class _ReviewListScreenState extends State<ReviewListScreen> {
+  String userName = '';
+  String profileImageUrl = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    try {
+      User? currentUser = FirebaseAuth.instance.currentUser;
+      if (currentUser != null) {
+        DocumentSnapshot userData = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(currentUser.uid)
+            .get();
+
+        if (userData.exists) {
+          setState(() {
+            userName = userData['username'] ?? 'No Username';
+            profileImageUrl = userData['profileImageUrl'] ?? '';
+          });
+        }
+      }
+    } catch (e) {
+      print('Error fetching user data: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,7 +99,8 @@ class _ReviewListScreenState extends State<ReviewListScreen> {
                       topRight: Radius.circular(20),
                     ),
                   ),
-                  child: const ReviewList(),
+                  child: ReviewList(
+                      userName: userName, profileImageUrl: profileImageUrl),
                 ),
               ),
             ],
@@ -81,7 +116,7 @@ class _ReviewListScreenState extends State<ReviewListScreen> {
                 MaterialPageRoute(
                   builder: (context) => const ReviewEditScreen(),
                 ),
-              ); //push bs balek lagi, pushReplacement dbs balek
+              );
             },
             tooltip: 'Add Review',
             backgroundColor: Colors.teal,
@@ -100,7 +135,12 @@ class _ReviewListScreenState extends State<ReviewListScreen> {
 }
 
 class ReviewList extends StatelessWidget {
-  const ReviewList({Key? key});
+  final String userName;
+  final String profileImageUrl;
+
+  const ReviewList(
+      {Key? key, required this.userName, required this.profileImageUrl})
+      : super(key: key);
 
   Future<void> _launchMaps(double latitude, double longitude) async {
     Uri googleUrl = Uri.parse(
@@ -109,6 +149,24 @@ class ReviewList extends StatelessWidget {
       await launchUrl(googleUrl);
     } catch (e) {
       print('Could not open the map: $e');
+    }
+  }
+
+  Future<void> _pickLocation(BuildContext context) async {
+    final LatLng initialLocation =
+        const LatLng(37.7749, -122.4194); // default location
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => GoogleMapsScreen(
+          latitude: initialLocation.latitude,
+          longitude: initialLocation.longitude,
+        ),
+      ),
+    );
+
+    if (result != null && result is LatLng) {
+      print('Selected location: ${result.latitude}, ${result.longitude}');
     }
   }
 
@@ -132,7 +190,7 @@ class ReviewList extends StatelessWidget {
                 return Container(
                   margin: const EdgeInsets.only(bottom: 10),
                   decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 105, 64, 7),
+                    color: const Color.fromARGB(255, 105, 64, 7),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Padding(
@@ -164,48 +222,48 @@ class ReviewList extends StatelessWidget {
                         const SizedBox(height: 10),
                         Row(
                           children: [
-                            Container(
-                              width: 70,
-                              height: 70,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: document.imageUrl != null &&
-                                        Uri.parse(document.imageUrl!).isAbsolute
-                                    ? DecorationImage(
-                                        image: NetworkImage(document.imageUrl!),
-                                        fit: BoxFit.cover,
-                                      )
-                                    : null,
-                              ),
+                            CircleAvatar(
+                              radius: 35,
+                              backgroundImage: profileImageUrl.isNotEmpty
+                                  ? NetworkImage(profileImageUrl)
+                                  : null,
+                              child: profileImageUrl.isEmpty
+                                  ? const Icon(Icons.person, size: 35)
+                                  : null,
                             ),
                             const SizedBox(width: 10),
-                            const Expanded(
+                            Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Username',
-                                    style: TextStyle(
+                                    userName,
+                                    style: const TextStyle(
                                       fontFamily: 'Readex Pro',
                                       color: Colors.white,
                                     ),
                                   ),
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.location_pin,
-                                        color: Colors.white,
-                                        size: 18,
-                                      ),
-                                      Text(
-                                        'Pick location...',
-                                        style: TextStyle(
-                                          fontFamily: 'Readex Pro',
-                                          fontSize: 10,
+                                  InkWell(
+                                    child: const Row(
+                                      children: [
+                                        Icon(
+                                          Icons.location_pin,
                                           color: Colors.white,
+                                          size: 18,
                                         ),
-                                      ),
-                                    ],
+                                        Text(
+                                          'Pick location...',
+                                          style: TextStyle(
+                                            fontFamily: 'Readex Pro',
+                                            fontSize: 10,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    onTap: () {
+                                      _pickLocation(context);
+                                    },
                                   ),
                                 ],
                               ),
@@ -225,7 +283,8 @@ class ReviewList extends StatelessWidget {
                                         MaterialPageRoute(
                                           builder: (context) =>
                                               ReviewEditScreen(
-                                                  review: document),
+                                            review: document,
+                                          ),
                                         ),
                                       );
                                     } else if (value == 'delete') {

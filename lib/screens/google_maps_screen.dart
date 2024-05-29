@@ -18,6 +18,7 @@ class _GoogleMapsScreenState extends State<GoogleMapsScreen> {
   late CameraPosition _cameraPosition;
   late Set<Marker> _markers;
   late MarkerId _markerId;
+  LatLng? _selectedLocation;
 
   @override
   void initState() {
@@ -43,11 +44,35 @@ class _GoogleMapsScreenState extends State<GoogleMapsScreen> {
     );
   }
 
+  void _onMapTapped(LatLng location) {
+    setState(() {
+      _selectedLocation = location;
+      _markers = {
+        Marker(
+          markerId: _markerId,
+          position: location,
+          infoWindow: const InfoWindow(
+            title: 'Selected Location',
+          ),
+        ),
+      };
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Google Maps'),
+        actions: [
+          if (_selectedLocation != null)
+            IconButton(
+              icon: const Icon(Icons.check),
+              onPressed: () {
+                Navigator.pop(context, _selectedLocation);
+              },
+            ),
+        ],
       ),
       body: GoogleMap(
         myLocationEnabled: true,
@@ -55,6 +80,7 @@ class _GoogleMapsScreenState extends State<GoogleMapsScreen> {
         mapType: MapType.normal,
         initialCameraPosition: _cameraPosition,
         markers: _markers,
+        onTap: _onMapTapped,
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
           Future.delayed(const Duration(milliseconds: 500), () {

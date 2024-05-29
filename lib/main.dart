@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:gracieusgalerij/screens/admin/edit_product_detail_admin.dart';
+import 'package:gracieusgalerij/screens/admin/home_admin.dart';
 import 'package:gracieusgalerij/screens/cart_screen.dart';
 import 'package:gracieusgalerij/screens/fav_screen.dart';
 import 'package:gracieusgalerij/screens/home_screen.dart';
@@ -29,22 +30,21 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: EditProductDetail(),
       debugShowCheckedModeBanner: false,
-      // initialRoute: '/',
-
-      // routes: {
-      //   '/': (context) => const LandingScreen(),
-      //   '/landing': (context) => const LandingScreen(),
-      //   '/view': (context) => const UserProfile(),
-      //   '/signup': (context) => const SignupScreen(),
-      //   '/login': (context) => const LoginScreen(),
-      //   '/cart': (context) => const CartScreen(),
-      //   '/favorites': (context) => const FavoriteScreen(),
-      //   '/home': (context) => const HomeScreen(),
-      //   '/review': (context) => const ReviewListScreen(),
-      //   //  '/product_detail': (context) =>  ProductDetailScreen(productId: ''),
-      // },
+      initialRoute: '/review',
+      routes: {
+        '/': (context) => const LandingScreen(),
+        '/landing': (context) => const LandingScreen(),
+        '/view': (context) => const UserProfile(),
+        '/signup': (context) => const SignupScreen(),
+        '/login': (context) => const LoginScreen(),
+        '/cart': (context) => const CartScreen(),
+        '/favorites': (context) => const FavoriteScreen(),
+        '/home': (context) => const HomeScreen(),
+        '/home_adm': (context) => const HomeScreenAdmin(),
+        '/review': (context) => const ReviewListScreen(),
+        //  '/product_detail': (context) =>  ProductDetailScreen(productId: ''),
+      },
       // onGenerateRoute: (settings) {
       //   if (settings.name == '/product_detail') {
       //     final args = settings.arguments as String;
