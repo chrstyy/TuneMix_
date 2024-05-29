@@ -18,12 +18,14 @@ class _GoogleMapsScreenState extends State<GoogleMapsScreen> {
   late CameraPosition _cameraPosition;
   late Set<Marker> _markers;
   late MarkerId _markerId;
+  late LatLng _selectedLocation;
 
   @override
   void initState() {
     super.initState();
+    _selectedLocation = LatLng(widget.latitude, widget.longitude);
     _cameraPosition = CameraPosition(
-      target: LatLng(widget.latitude, widget.longitude),
+      target: _selectedLocation,
       zoom: 15,
     );
 
@@ -34,11 +36,17 @@ class _GoogleMapsScreenState extends State<GoogleMapsScreen> {
     _markers.add(
       Marker(
         markerId: _markerId,
-        position: LatLng(widget.latitude, widget.longitude),
+        position: _selectedLocation,
         infoWindow: const InfoWindow(
           title: 'Your target location',
           snippet: 'a good place to visit',
         ),
+        draggable: true,
+        onDragEnd: (newPosition) {
+          setState(() {
+            _selectedLocation = newPosition;
+          });
+        },
       ),
     );
   }
@@ -48,6 +56,14 @@ class _GoogleMapsScreenState extends State<GoogleMapsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Google Maps'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.check),
+            onPressed: () {
+              Navigator.pop(context, _selectedLocation);
+            },
+          ),
+        ],
       ),
       body: GoogleMap(
         myLocationEnabled: true,
@@ -57,8 +73,23 @@ class _GoogleMapsScreenState extends State<GoogleMapsScreen> {
         markers: _markers,
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
-          Future.delayed(const Duration(milliseconds: 500), () {
-            controller.showMarkerInfoWindow(_markerId);
+        },
+        onTap: (LatLng position) {
+          setState(() {
+            _selectedLocation = position;
+            _markers.clear();
+            _markers.add(
+              Marker(
+                markerId: _markerId,
+                position: _selectedLocation,
+                draggable: true,
+                onDragEnd: (newPosition) {
+                  setState(() {
+                    _selectedLocation = newPosition;
+                  });
+                },
+              ),
+            );
           });
         },
       ),

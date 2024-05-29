@@ -51,102 +51,197 @@ class _ReviewEditScreenState extends State<ReviewEditScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.review == null ? 'Add Reviews' : 'Update Reviews'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Title: ',
-                textAlign: TextAlign.start,
-              ),
-              TextField(
-                controller: _titleController,
-              ),
-              const Padding(
-                padding: EdgeInsets.only(top: 20),
-                child: Text(
-                  'Comment: ',
+      // appBar: AppBar(
+      //   title: Text(widget.review == null ? 'Add Reviews' : 'Edit Reviews'),
+      // ),
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFFF8F4E1), Color(0xFFAF8F6F)],
+            stops: [0, 1],
+            begin: AlignmentDirectional(0, -1),
+            end: AlignmentDirectional(0, 1),
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 20, right: 20, left: 20),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Icon(
+                      Icons.arrow_back,
+                      color: Colors.black,
+                      size: 24,
+                    ),
+                    Expanded(
+                      child: Align(
+                        alignment: AlignmentDirectional(0, 0),
+                        child: Text(
+                          widget.review == null
+                              ? 'Add Reviews'
+                              : 'Edit Reviews',
+                          style: TextStyle(
+                            fontFamily: 'Bayon',
+                            fontSize: 25,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-              TextField(
-                controller: _commentController,
-              ),
-              const Padding(
-                padding: EdgeInsets.only(top: 20),
-                child: Text('Image: '),
-              ),
-              _imageFile != null
-                  ? AspectRatio(
-                      aspectRatio: 16 / 9,
-                      child: Image.file(_imageFile!, fit: BoxFit.cover),
-                    )
-                  : (widget.review?.imageUrl != null &&
-                          Uri.parse(widget.review!.imageUrl!).isAbsolute
-                      ? Image.network(widget.review!.imageUrl!,
-                          fit: BoxFit.cover)
-                      : Container()),
-              TextButton(
-                onPressed: _pickImage,
-                child: const Text('Pick Image'),
-              ),
-              TextButton(
-                onPressed: _pickLocation,
-                child: const Text('Get Current Location'),
-              ),
-              Text('LAT: ${_currentPosition?.latitude ?? ""}'),
-              Text('LNG: ${_currentPosition?.longitude ?? ""}'),
-              // Text('ADDRESS: ${_currentAddress ?? ""}'),
-
-              const SizedBox(
-                height: 20,
-              ),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: const Text('Cancel'),
+                const Divider(
+                  thickness: 3,
+                  color: Colors.black,
+                ),
+                Container(
+                  width: double.infinity,
+                  decoration: const BoxDecoration(
+                    color: Color.fromARGB(255, 105, 64, 7),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
                     ),
                   ),
-                  ElevatedButton(
-                    onPressed: () async {
-                      String? imageUrl;
-                      if (_imageFile != null) {
-                        imageUrl = await ReviewService.uploadImage(_imageFile!);
-                      } else {
-                        imageUrl = widget.review?.imageUrl;
-                      }
-                      Review review = Review(
-                        id: widget.review?.id,
-                        title: _titleController.text,
-                        comment: _commentController.text,
-                        imageUrl: imageUrl,
-                        latitude: _currentPosition?.latitude,
-                        longitude: _currentPosition?.longitude,
-                        createdAt: widget.review?.createdAt,
-                      );
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Title : ',
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                            fontFamily: 'Bayon',
+                            fontSize: 20,
+                            color: Colors.white,
+                          ),
+                        ),
+                        TextField(
+                          controller: _titleController,
+                          style: TextStyle(
+                            fontFamily: 'Basic',
+                            fontSize: 16,
+                            color: Colors.white,
+                          ),
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 20),
+                          child: Text(
+                            'Comment : ',
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                              fontFamily: 'Bayon',
+                              fontSize: 20,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        TextField(
+                          controller: _commentController,
+                          style: TextStyle(
+                            fontFamily: 'Basic',
+                            fontSize: 16,
+                            color: Colors.white,
+                          ),
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 20),
+                          child: Text(
+                            'Image : ',
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                              fontFamily: 'Bayon',
+                              fontSize: 20,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        _imageFile != null
+                            ? AspectRatio(
+                                aspectRatio: 16 / 9,
+                                child:
+                                    Image.file(_imageFile!, fit: BoxFit.cover),
+                              )
+                            : (widget.review?.imageUrl != null &&
+                                    Uri.parse(widget.review!.imageUrl!)
+                                        .isAbsolute
+                                ? Image.network(widget.review!.imageUrl!,
+                                    fit: BoxFit.cover)
+                                : Container()),
+                        TextButton(
+                          onPressed: _pickImage,
+                          child: const Text(
+                            'Pick Image',
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: _pickLocation,
+                          child: const Text('Get Current Location'),
+                        ),
+                        Text('LAT: ${_currentPosition?.latitude ?? ""}'),
+                        Text('LNG: ${_currentPosition?.longitude ?? ""}'),
+                        // Text('ADDRESS: ${_currentAddress ?? ""}'),
 
-                      if (widget.review == null) {
-                        ReviewService.addReview(review)
-                            .whenComplete(() => Navigator.of(context).pop());
-                      } else {
-                        ReviewService.updateReview(review)
-                            .whenComplete(() => Navigator.of(context).pop());
-                      }
-                    },
-                    child: Text(widget.review == null ? 'Add' : 'Update'),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          children: [
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('Cancel'),
+                              ),
+                            ),
+                            ElevatedButton(
+                              onPressed: () async {
+                                String? imageUrl;
+                                if (_imageFile != null) {
+                                  imageUrl = await ReviewService.uploadImage(
+                                      _imageFile!);
+                                } else {
+                                  imageUrl = widget.review?.imageUrl;
+                                }
+                                Review review = Review(
+                                  id: widget.review?.id,
+                                  title: _titleController.text,
+                                  comment: _commentController.text,
+                                  imageUrl: imageUrl,
+                                  latitude: _currentPosition?.latitude,
+                                  longitude: _currentPosition?.longitude,
+                                  createdAt: widget.review?.createdAt,
+                                );
+
+                                if (widget.review == null) {
+                                  ReviewService.addReview(review).whenComplete(
+                                      () => Navigator.of(context).pop());
+                                } else {
+                                  ReviewService.updateReview(review)
+                                      .whenComplete(
+                                          () => Navigator.of(context).pop());
+                                }
+                              },
+                              child: Text(
+                                  widget.review == null ? 'Add' : 'Update'),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ],
-              ),
-            ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

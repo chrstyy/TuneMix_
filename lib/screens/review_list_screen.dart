@@ -63,7 +63,7 @@ class _ReviewListScreenState extends State<ReviewListScreen> {
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.only(top: 20, right: 20, left: 20),
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: [
@@ -150,39 +150,11 @@ class ReviewList extends StatelessWidget {
       await launchUrl(googleUrl);
     } catch (e) {
       print('Could not open the map: $e');
-      // Optionally, show a message to the user
     }
   }
 
-  Future<void> _pickLocation(BuildContext context) async {
-    const LatLng initialLocation =
-        LatLng(37.7749, -122.4194); // default location
-    final result = await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => GoogleMapsScreen(
-          latitude: initialLocation.latitude,
-          longitude: initialLocation.longitude,
-        ),
-      ),
-    );
-
-    if (result != null && result is LatLng) {
-      print('Selected location: ${result.latitude}, ${result.longitude}');
-    }
-  }
-
-//  Future<void> _pickLocation() async {
-//     final currentPosition = await LocationService.getCurrentPosition();
-//     // final currentAddress = await LocationService.getAddressFromLatLng(_currentPosition!);
-//     setState(() {
-//       _currentPosition = currentPosition;
-//       // _currentAddress = currentAddress;
-//     });
-//   }
   String _formatTimestamp(Timestamp timestamp) {
     DateTime dateTime = timestamp.toDate();
-    // Format the dateTime into your desired format, e.g., 'yyyy-MM-dd HH:mm:ss'
     return DateFormat('yyyy-MM-dd HH:mm:ss').format(dateTime);
   }
 
@@ -196,9 +168,7 @@ class ReviewList extends StatelessWidget {
         }
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const Center(child: CircularProgressIndicator());
           default:
             return ListView(
               padding: const EdgeInsets.all(10),
@@ -281,24 +251,27 @@ class ReviewList extends StatelessWidget {
                                         ),
                                       ],
                                     ),
-                                    onTap: () {
-                                      document.latitude != null &&
-                                              document.longitude != null
-                                          ? () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      GoogleMapsScreen(
-                                                    latitude:
-                                                        document.latitude!,
-                                                    longitude:
-                                                        document.longitude!,
-                                                  ),
-                                                ),
-                                              );
-                                            }
-                                          : null;
+                                    onTap: () async {
+                                      if (document.latitude != null &&
+                                          document.longitude != null) {
+                                        LatLng? selectedLocation =
+                                            await Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                GoogleMapsScreen(
+                                              latitude: document.latitude!,
+                                              longitude: document.longitude!,
+                                            ),
+                                          ),
+                                        );
+
+                                        if (selectedLocation != null) {
+                                          // Handle the selected location (update the review with new coordinates, etc.)
+                                          print(
+                                              'Selected Location: ${selectedLocation.latitude}, ${selectedLocation.longitude}');
+                                        }
+                                      }
                                     },
                                   ),
                                 ],
@@ -308,10 +281,8 @@ class ReviewList extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 PopupMenuButton<String>(
-                                  icon: const Icon(
-                                    Icons.more_vert,
-                                    color: Colors.white,
-                                  ),
+                                  icon: const Icon(Icons.more_vert,
+                                      color: Colors.white),
                                   onSelected: (String value) {
                                     if (value == 'edit') {
                                       Navigator.push(
