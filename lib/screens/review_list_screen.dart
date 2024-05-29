@@ -5,6 +5,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:gracieusgalerij/screens/google_maps_screen.dart';
 import 'package:gracieusgalerij/screens/review_edit_screen.dart';
+import 'package:intl/intl.dart'; // tambahkan impor ini
 import 'package:url_launcher/url_launcher.dart';
 
 import '../services/review_services.dart';
@@ -149,12 +150,13 @@ class ReviewList extends StatelessWidget {
       await launchUrl(googleUrl);
     } catch (e) {
       print('Could not open the map: $e');
+      // Optionally, show a message to the user
     }
   }
 
   Future<void> _pickLocation(BuildContext context) async {
-    final LatLng initialLocation =
-        const LatLng(37.7749, -122.4194); // default location
+    const LatLng initialLocation =
+        LatLng(37.7749, -122.4194); // default location
     final result = await Navigator.push(
       context,
       MaterialPageRoute(
@@ -168,6 +170,20 @@ class ReviewList extends StatelessWidget {
     if (result != null && result is LatLng) {
       print('Selected location: ${result.latitude}, ${result.longitude}');
     }
+  }
+
+//  Future<void> _pickLocation() async {
+//     final currentPosition = await LocationService.getCurrentPosition();
+//     // final currentAddress = await LocationService.getAddressFromLatLng(_currentPosition!);
+//     setState(() {
+//       _currentPosition = currentPosition;
+//       // _currentAddress = currentAddress;
+//     });
+//   }
+  String _formatTimestamp(Timestamp timestamp) {
+    DateTime dateTime = timestamp.toDate();
+    // Format the dateTime into your desired format, e.g., 'yyyy-MM-dd HH:mm:ss'
+    return DateFormat('yyyy-MM-dd HH:mm:ss').format(dateTime);
   }
 
   @override
@@ -209,9 +225,13 @@ class ReviewList extends StatelessWidget {
                                 color: Colors.white,
                               ),
                             ),
-                            const Text(
-                              'created/updated at',
-                              style: TextStyle(
+                            Text(
+                              document.updatedAt != null
+                                  ? ' ${_formatTimestamp(document.updatedAt!)}'
+                                  : document.createdAt != null
+                                      ? ' ${_formatTimestamp(document.createdAt!)}'
+                                      : 'Date not available',
+                              style: const TextStyle(
                                 fontFamily: 'Battambang',
                                 fontSize: 13,
                                 color: Colors.white,
@@ -356,20 +376,20 @@ class ReviewList extends StatelessWidget {
                           thickness: 1,
                           color: Colors.white,
                         ),
-                        Container(
-                          width: 90,
-                          height: 90,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            image: document.imageUrl != null &&
-                                    Uri.parse(document.imageUrl!).isAbsolute
-                                ? DecorationImage(
+                        document.imageUrl != null &&
+                                Uri.parse(document.imageUrl!).isAbsolute
+                            ? Container(
+                                width: 90,
+                                height: 90,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  image: DecorationImage(
                                     image: NetworkImage(document.imageUrl!),
                                     fit: BoxFit.cover,
-                                  )
-                                : null,
-                          ),
-                        ),
+                                  ),
+                                ),
+                              )
+                            : Container(),
                         Text(
                           document.comment,
                           style: const TextStyle(
