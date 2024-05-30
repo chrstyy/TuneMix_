@@ -5,6 +5,7 @@ import 'package:gracieusgalerij/screens/admin/home_admin.dart';
 import 'package:gracieusgalerij/screens/cart_screen.dart';
 import 'package:gracieusgalerij/screens/fav_screen.dart';
 import 'package:gracieusgalerij/screens/home_screen.dart';
+import 'package:gracieusgalerij/screens/review_edit_screen.dart';
 import 'package:gracieusgalerij/screens/review_list_screen.dart';
 import 'screens/landing_screen.dart';
 import 'screens/auth/login_screen.dart';
@@ -31,8 +32,8 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       debugShowCheckedModeBanner: false,
-      
-      initialRoute: '/',
+
+      initialRoute: '/review_edit',
       routes: {
         '/': (context) => const LandingScreen(),
         '/landing': (context) => const LandingScreen(),
@@ -44,6 +45,7 @@ class MyApp extends StatelessWidget {
         '/home': (context) => const HomeScreen(),
         '/home_adm': (context) => const HomeScreenAdmin(),
         '/review': (context) => const ReviewListScreen(),
+        '/review_edit': (context) => const ReviewEditScreen(),
         '/edit': (context) => const EditProductDetail(),
         //  '/product_detail': (context) =>  ProductDetailScreen(productId: ''),
       },

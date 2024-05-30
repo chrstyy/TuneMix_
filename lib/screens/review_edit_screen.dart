@@ -51,9 +51,6 @@ class _ReviewEditScreenState extends State<ReviewEditScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text(widget.review == null ? 'Add Reviews' : 'Edit Reviews'),
-      // ),
       body: Container(
         width: double.infinity,
         height: double.infinity,
@@ -74,19 +71,24 @@ class _ReviewEditScreenState extends State<ReviewEditScreen> {
                 Row(
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    Icon(
-                      Icons.arrow_back,
-                      color: Colors.black,
-                      size: 24,
+                    IconButton(
+                      icon: const Icon(
+                        Icons.arrow_back,
+                        color: Colors.black,
+                        size: 24,
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
                     ),
                     Expanded(
                       child: Align(
-                        alignment: AlignmentDirectional(0, 0),
+                        alignment: const AlignmentDirectional(0, 0),
                         child: Text(
                           widget.review == null
                               ? 'Add Reviews'
                               : 'Edit Reviews',
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontFamily: 'Bayon',
                             fontSize: 25,
                           ),
@@ -102,7 +104,7 @@ class _ReviewEditScreenState extends State<ReviewEditScreen> {
                 Container(
                   width: double.infinity,
                   decoration: const BoxDecoration(
-                    color: Color.fromARGB(255, 105, 64, 7),
+                    color: Color.fromARGB(255, 84, 51, 16),
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(20),
                       topRight: Radius.circular(20),
@@ -124,7 +126,7 @@ class _ReviewEditScreenState extends State<ReviewEditScreen> {
                         ),
                         TextField(
                           controller: _titleController,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontFamily: 'Basic',
                             fontSize: 16,
                             color: Colors.white,
@@ -144,7 +146,7 @@ class _ReviewEditScreenState extends State<ReviewEditScreen> {
                         ),
                         TextField(
                           controller: _commentController,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontFamily: 'Basic',
                             fontSize: 16,
                             color: Colors.white,

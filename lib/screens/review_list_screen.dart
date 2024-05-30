@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:gracieusgalerij/screens/google_maps_screen.dart';
+import 'package:gracieusgalerij/screens/pick_location.dart';
 import 'package:gracieusgalerij/screens/review_edit_screen.dart';
 import 'package:intl/intl.dart'; // tambahkan impor ini
 import 'package:url_launcher/url_launcher.dart';
@@ -67,15 +67,20 @@ class _ReviewListScreenState extends State<ReviewListScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: [
-              const Row(
+              Row(
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  Icon(
-                    Icons.arrow_back,
-                    color: Colors.black,
-                    size: 24,
+                  IconButton(
+                    icon: const Icon(
+                      Icons.arrow_back,
+                      color: Colors.black,
+                      size: 24,
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
                   ),
-                  Expanded(
+                  const Expanded(
                     child: Align(
                       alignment: AlignmentDirectional(0, 0),
                       child: Text(
@@ -135,7 +140,7 @@ class _ReviewListScreenState extends State<ReviewListScreen> {
   }
 }
 
-class ReviewList extends StatelessWidget {
+class ReviewList extends StatefulWidget {
   final String userName;
   final String profileImageUrl;
 
@@ -143,13 +148,23 @@ class ReviewList extends StatelessWidget {
       {Key? key, required this.userName, required this.profileImageUrl})
       : super(key: key);
 
-  Future<void> _launchMaps(double latitude, double longitude) async {
-    Uri googleUrl = Uri.parse(
-        'https://www.google.com/maps/search/?api=1&query=$latitude,$longitude');
-    try {
-      await launchUrl(googleUrl);
-    } catch (e) {
-      print('Could not open the map: $e');
+  @override
+  State<ReviewList> createState() => _ReviewListState();
+}
+
+class _ReviewListState extends State<ReviewList> {
+  String pickedLocation = 'Pick location...';
+
+  Future<void> _pickLocation() async {
+    final LatLng? selectedLocation = await Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => LocationPicker()),
+    );
+
+    if (selectedLocation != null) {
+      setState(() {
+        pickedLocation =
+            '(${selectedLocation.latitude}, ${selectedLocation.longitude})';
+      });
     }
   }
 
@@ -176,7 +191,7 @@ class ReviewList extends StatelessWidget {
                 return Container(
                   margin: const EdgeInsets.only(bottom: 10),
                   decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 105, 64, 7),
+                    color: const Color.fromARGB(255, 84, 51, 16),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Padding(
@@ -210,154 +225,151 @@ class ReviewList extends StatelessWidget {
                           ],
                         ),
                         const SizedBox(height: 10),
-                        Row(
-                          children: [
-                            CircleAvatar(
-                              radius: 35,
-                              backgroundImage: profileImageUrl.isNotEmpty
-                                  ? NetworkImage(profileImageUrl)
-                                  : null,
-                              child: profileImageUrl.isEmpty
-                                  ? const Icon(Icons.person, size: 35)
-                                  : null,
-                            ),
-                            const SizedBox(width: 10),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    userName,
-                                    style: const TextStyle(
-                                      fontFamily: 'Readex Pro',
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  InkWell(
-                                    child: const Row(
-                                      children: [
-                                        Icon(
-                                          Icons.location_pin,
-                                          color: Colors.white,
-                                          size: 18,
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Color.fromARGB(255, 248, 244, 225),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(5),
+                            child: Row(
+                              children: [
+                                CircleAvatar(
+                                  radius: 35,
+                                  backgroundImage:
+                                      widget.profileImageUrl.isNotEmpty
+                                          ? NetworkImage(widget.profileImageUrl)
+                                          : null,
+                                  child: widget.profileImageUrl.isEmpty
+                                      ? const Icon(Icons.person, size: 35)
+                                      : null,
+                                ),
+                                const SizedBox(width: 10),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        widget.userName,
+                                        style: const TextStyle(
+                                          fontFamily: 'Readex Pro',
+                                          color: Colors.black,
                                         ),
-                                        Text(
-                                          'Pick location...',
-                                          style: TextStyle(
-                                            fontFamily: 'Readex Pro',
-                                            fontSize: 10,
-                                            color: Colors.white,
-                                          ),
+                                      ),
+                                      InkWell(
+                                        child: Row(
+                                          children: [
+                                            const Icon(
+                                              Icons.location_pin,
+                                              color: Colors.black,
+                                              size: 18,
+                                            ),
+                                            Expanded(
+                                              child: Text(
+                                                pickedLocation,
+                                                style: const TextStyle(
+                                                  fontFamily: 'Readex Pro',
+                                                  fontSize: 10,
+                                                  color: Colors.black,
+                                                ),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        onTap: _pickLocation,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    PopupMenuButton<String>(
+                                      icon: const Icon(Icons.more_vert,
+                                          color: Colors.black),
+                                      onSelected: (String value) {
+                                        if (value == 'edit') {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ReviewEditScreen(
+                                                review: document,
+                                              ),
+                                            ),
+                                          );
+                                        } else if (value == 'delete') {
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: const Text(
+                                                    'Confirm Delete'),
+                                                content: Text(
+                                                    'Are you sure want to delete this \'${document.title}\' ?'),
+                                                actions: <Widget>[
+                                                  TextButton(
+                                                    child: const Text('Cancel'),
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                  ),
+                                                  TextButton(
+                                                    child: const Text('Delete'),
+                                                    onPressed: () {
+                                                      ReviewService
+                                                              .deleteReview(
+                                                                  document)
+                                                          .whenComplete(() =>
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop());
+                                                    },
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        }
+                                      },
+                                      itemBuilder: (BuildContext context) =>
+                                          <PopupMenuEntry<String>>[
+                                        const PopupMenuItem<String>(
+                                          value: 'edit',
+                                          child: Text('Edit'),
+                                        ),
+                                        const PopupMenuItem<String>(
+                                          value: 'delete',
+                                          child: Text('Delete'),
                                         ),
                                       ],
                                     ),
-                                    onTap: () async {
-                                      if (document.latitude != null &&
-                                          document.longitude != null) {
-                                        LatLng? selectedLocation =
-                                            await Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                GoogleMapsScreen(
-                                              latitude: document.latitude!,
-                                              longitude: document.longitude!,
-                                            ),
-                                          ),
-                                        );
-
-                                        if (selectedLocation != null) {
-                                          // Handle the selected location (update the review with new coordinates, etc.)
-                                          print(
-                                              'Selected Location: ${selectedLocation.latitude}, ${selectedLocation.longitude}');
-                                        }
-                                      }
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                PopupMenuButton<String>(
-                                  icon: const Icon(Icons.more_vert,
-                                      color: Colors.white),
-                                  onSelected: (String value) {
-                                    if (value == 'edit') {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              ReviewEditScreen(
-                                            review: document,
-                                          ),
-                                        ),
-                                      );
-                                    } else if (value == 'delete') {
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            title: const Text('Confirm Delete'),
-                                            content: Text(
-                                                'Are you sure want to delete this \'${document.title}\' ?'),
-                                            actions: <Widget>[
-                                              TextButton(
-                                                child: const Text('Cancel'),
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                },
-                                              ),
-                                              TextButton(
-                                                child: const Text('Delete'),
-                                                onPressed: () {
-                                                  ReviewService.deleteReview(
-                                                          document)
-                                                      .whenComplete(() =>
-                                                          Navigator.of(context)
-                                                              .pop());
-                                                },
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    }
-                                  },
-                                  itemBuilder: (BuildContext context) =>
-                                      <PopupMenuEntry<String>>[
-                                    const PopupMenuItem<String>(
-                                      value: 'edit',
-                                      child: Text('Edit'),
-                                    ),
-                                    const PopupMenuItem<String>(
-                                      value: 'delete',
-                                      child: Text('Delete'),
+                                    const SizedBox(height: 5),
+                                    RatingBar.builder(
+                                      initialRating: document.rating ?? 0,
+                                      minRating: 1,
+                                      direction: Axis.horizontal,
+                                      allowHalfRating: true,
+                                      itemCount: 5,
+                                      itemSize: 20,
+                                      itemBuilder: (context, _) => const Icon(
+                                        Icons.star,
+                                        color: Color.fromARGB(255, 235, 177, 0),
+                                      ),
+                                      unratedColor:
+                                          Color.fromARGB(255, 193, 193, 193),
+                                      onRatingUpdate: (rating) {
+                                        print(rating);
+                                      },
                                     ),
                                   ],
                                 ),
-                                const SizedBox(height: 5),
-                                RatingBar.builder(
-                                  initialRating: document.rating ?? 0,
-                                  minRating: 1,
-                                  direction: Axis.horizontal,
-                                  allowHalfRating: true,
-                                  itemCount: 5,
-                                  itemSize: 20,
-                                  itemBuilder: (context, _) => const Icon(
-                                    Icons.star,
-                                    color: Color.fromARGB(255, 10, 223, 205),
-                                  ),
-                                  unratedColor:
-                                      const Color.fromARGB(255, 255, 225, 225),
-                                  onRatingUpdate: (rating) {
-                                    print(rating);
-                                  },
-                                ),
                               ],
                             ),
-                          ],
+                          ),
                         ),
                         const Divider(
                           thickness: 1,
