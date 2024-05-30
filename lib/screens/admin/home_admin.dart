@@ -230,7 +230,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(8),
                                         child: Image.asset(
-                                          'images of song',
+                                          'images/logo.png',
                                           width: 150,
                                           height: 100,
                                           fit: BoxFit.contain,
@@ -557,48 +557,6 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
           ),
         ),
       ),
-      // appBar: AppBar(
-      //   title: Text('Admin - Add Product'),
-      // ),
-      // body: Padding(
-      //   padding: const EdgeInsets.all(16.0),
-      //   child: SingleChildScrollView(
-      //     child: Column(
-      //       children: [
-      //         TextField(
-      //           controller: _productNameController,
-      //           decoration: InputDecoration(labelText: 'Product Name'),
-      //         ),
-      //         TextField(
-      //           controller: _brandNameController,
-      //           decoration: InputDecoration(labelText: 'Brand Name'),
-      //         ),
-      //         TextField(
-      //           controller: _descriptionController,
-      //           decoration: InputDecoration(labelText: 'Description'),
-      //         ),
-      //         TextField(
-      //           controller: _priceController,
-      //           decoration: InputDecoration(labelText: 'Price'),
-      //           keyboardType: TextInputType.number,
-      //         ),
-      //         SizedBox(height: 20),
-      //         _image == null
-      //             ? Text('No image selected')
-      //             : Image.file(_image!, height: 150),
-      //         ElevatedButton(
-      //           onPressed: _pickImage,
-      //           child: Text('Pick Image'),
-      //         ),
-      //         SizedBox(height: 20),
-      //         ElevatedButton(
-      //           onPressed: _uploadProduct,
-      //           child: Text('Add Product'),
-      //         ),
-      //       ],
-      //     ),
-      //   ),
-      // ),
     );
   }
 }

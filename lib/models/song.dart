@@ -1,44 +1,48 @@
-import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Song {
-  final String id;
+  String id;
   final String songTitle;
-  final String songArtist;
+  final String creator;
   final String genre;
+  final String lyrics;
   final String description;
-  final String imageSong;
+  String? imageSong;
   final double price;
 
-  Song({
+  Song( {
     required this.id,
     required this.songTitle,
-    required this.songArtist,
+    required this.creator,
     required this.genre,
     required this.description,
-    required this.imageSong,
+    this.imageSong,
     required this.price,
+    required this.lyrics,
   });
 
-  factory Song.fromFirestore(Map<String, dynamic> data, String documentId) {
+  factory Song.fromFirestore(Map<String, dynamic> data, String id) {
     return Song(
-      id: documentId,
-      songTitle: data['songTitle'],
-      songArtist: data['songArtist'],
+      id: id,
+      songTitle: data['song_title'],
+      creator: data['creator'],
       genre: data['genre'],
       description: data['description'],
-      imageSong: data['imageSong'],
+      imageSong: data['image_song'],
+      lyrics: data['lyrics'],
       price: data['price'].toDouble(),
     );
   }
 
   Map<String, dynamic> toFirestore() {
     return {
-      'songTitle': songTitle,
-      'songArtist': songArtist,
+      'song_title': songTitle,
+      'creator': creator,
       'genre': genre,
       'description': description,
-      'imageSong': imageSong,
+      'image_song': imageSong,
       'price': price,
+      'lyrics': lyrics,
     };
   }
 }

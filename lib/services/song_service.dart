@@ -1,11 +1,53 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:gracieusgalerij/models/song.dart';
+import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:gracieusgalerij/models/song.dart';
+import 'package:path/path.dart' as path;
 
 class SongService {
   static final FirebaseFirestore _database = FirebaseFirestore.instance;
+  static final FirebaseStorage _storage = FirebaseStorage.instance;
   static final CollectionReference _songsCollection =
       _database.collection('songs');
+
+  static Future<String> uploadImage(File image) async {
+    try {
+      String fileName = path.basename(image.path);
+      Reference storageRef = _storage.ref().child('song_images/$fileName');
+      UploadTask uploadTask = storageRef.putFile(image);
+      TaskSnapshot taskSnapshot = await uploadTask;
+      return await taskSnapshot.ref.getDownloadURL();
+    } catch (e) {
+      throw Exception('Error uploading image: $e');
+    }
+  }
+
+static Future<void> addSong(Song song, File? image) async {
+  try {
+    // Upload image to Firebase Storage and get URL
+    String imageUrl = '';
+    if (image != null) {
+      imageUrl = await uploadImage(image);
+    }
+    
+    // Update song's image URL before saving to Firestore
+    song.imageSong = imageUrl;
+
+    // Save song to Firestore
+    DocumentReference docRef = await _songsCollection.add(song.toFirestore());
+    // Get the document ID and update the song object
+    song.id = docRef.id;
+    
+    // Update the document with the correct ID
+    await docRef.update({
+      'id': docRef.id,
+    });
+  } catch (e) {
+    throw Exception('Error adding song: $e');
+  }
+}
+
 
   Future<void> addToFavorites(String userId, Song song) async {
     try {
@@ -56,4 +98,6 @@ class SongService {
       throw Exception('Song not found');
     }
   }
+
+  
 }

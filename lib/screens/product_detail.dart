@@ -132,10 +132,10 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                               decoration: BoxDecoration(
                                 color: const Color(0xFF543310),
                                 borderRadius: BorderRadius.circular(10),
-                                image: DecorationImage(
-                                  image: NetworkImage(song.imageSong),
-                                  fit: BoxFit.cover,
-                                ),
+                                // image: DecorationImage(
+                                //   image: NetworkImage(song.imageSong),
+                                //   fit: BoxFit.cover,
+                                // ),
                               ),
                             ),
                           ),
