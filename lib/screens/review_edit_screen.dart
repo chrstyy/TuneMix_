@@ -132,6 +132,8 @@ class _ReviewEditScreenState extends State<ReviewEditScreen> {
                             color: Colors.white,
                           ),
                         ),
+                        const SizedBox(height: 10),
+
                         const Padding(
                           padding: EdgeInsets.only(top: 20),
                           child: Text(
