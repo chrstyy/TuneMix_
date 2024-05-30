@@ -31,7 +31,8 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       debugShowCheckedModeBanner: false,
-      initialRoute: '/review',
+      
+      initialRoute: '/',
       routes: {
         '/': (context) => const LandingScreen(),
         '/landing': (context) => const LandingScreen(),
@@ -43,6 +44,7 @@ class MyApp extends StatelessWidget {
         '/home': (context) => const HomeScreen(),
         '/home_adm': (context) => const HomeScreenAdmin(),
         '/review': (context) => const ReviewListScreen(),
+        '/edit': (context) => const EditProductDetail(),
         //  '/product_detail': (context) =>  ProductDetailScreen(productId: ''),
       },
       // onGenerateRoute: (settings) {

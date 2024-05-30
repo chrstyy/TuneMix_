@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class Song {
   final String id;
   final String songTitle;
@@ -20,22 +22,22 @@ class Song {
   factory Song.fromFirestore(Map<String, dynamic> data, String documentId) {
     return Song(
       id: documentId,
-      songTitle: data['song_title'],
-      songArtist: data['song_artist'],
+      songTitle: data['songTitle'],
+      songArtist: data['songArtist'],
       genre: data['genre'],
       description: data['description'],
-      imageSong: data['image_song'],
+      imageSong: data['imageSong'],
       price: data['price'].toDouble(),
     );
   }
 
   Map<String, dynamic> toFirestore() {
     return {
-      'song_title': songTitle,
-      'song_artist': songArtist,
+      'songTitle': songTitle,
+      'songArtist': songArtist,
       'genre': genre,
       'description': description,
-      'image_product': imageSong,
+      'imageSong': imageSong,
       'price': price,
     };
   }
