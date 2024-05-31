@@ -37,6 +37,7 @@ class ReviewService {
       'title': reviews.title,
       'comment': reviews.comment,
       'image_url': reviews.imageUrl,
+      'rating': reviews.rating,
       'created_at': FieldValue.serverTimestamp(),
       'updated_at': FieldValue.serverTimestamp(),
     };
@@ -48,6 +49,7 @@ class ReviewService {
       'title': reviews.title,
       'comment': reviews.comment,
       'image_url': reviews.imageUrl,
+      'rating': reviews.rating,
       'created_at': reviews.createdAt,
       'updated_at': FieldValue.serverTimestamp(),
     };
@@ -72,6 +74,7 @@ class ReviewService {
           title: data['title'],
           comment: data['comment'],
           imageUrl: data['image_url'],
+          rating: data['rating'] ?? 0.0,
           createdAt: data['created_at'] != null
               ? data['created_at'] as Timestamp
               : null,

@@ -1,14 +1,19 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:gracieusgalerij/models/review.dart';
+import 'package:gracieusgalerij/screens/pick_location.dart';
 import 'package:gracieusgalerij/services/location_services.dart';
 import 'package:gracieusgalerij/services/review_services.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ReviewEditScreen extends StatefulWidget {
+  const ReviewEditScreen({super.key, this.review, this.initialLocation});
   final Review? review;
-  const ReviewEditScreen({super.key, this.review});
+  final String? initialLocation;
 
   @override
   State<ReviewEditScreen> createState() => _ReviewEditScreenState();
@@ -19,6 +24,8 @@ class _ReviewEditScreenState extends State<ReviewEditScreen> {
   final TextEditingController _commentController = TextEditingController();
   File? _imageFile;
   Position? _currentPosition;
+  double? _rating = 0.0;
+  String pickedLocation = '';
 
   @override
   void initState() {
@@ -26,6 +33,10 @@ class _ReviewEditScreenState extends State<ReviewEditScreen> {
     if (widget.review != null) {
       _titleController.text = widget.review!.title;
       _commentController.text = widget.review!.comment;
+      _rating = widget.review!.rating ?? 0;
+      pickedLocation = widget.review!.location ?? '';
+    } else {
+      pickedLocation = widget.initialLocation ?? '';
     }
   }
 
@@ -40,11 +51,17 @@ class _ReviewEditScreenState extends State<ReviewEditScreen> {
   }
 
   Future<void> _pickLocation() async {
-    final currentPosition = await LocationService.getCurrentPosition();
+    final LatLng? selectedLocation = await Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => LocationPicker()),
+    );
 
-    setState(() {
-      _currentPosition = currentPosition;
-    });
+    if (selectedLocation != null) {
+      setState(() {
+        pickedLocation =
+            '(${selectedLocation.latitude}, ${selectedLocation.longitude})';
+      });
+      Navigator.pop(context, pickedLocation);
+    }
   }
 
   @override
@@ -104,9 +121,8 @@ class _ReviewEditScreenState extends State<ReviewEditScreen> {
                   width: double.infinity,
                   decoration: const BoxDecoration(
                     color: Color.fromARGB(255, 84, 51, 16),
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(20),
                     ),
                   ),
                   child: Padding(
@@ -131,8 +147,67 @@ class _ReviewEditScreenState extends State<ReviewEditScreen> {
                             color: Colors.white,
                           ),
                         ),
-                        const SizedBox(height: 10),
-
+                        const Padding(
+                          padding: EdgeInsets.only(top: 20),
+                          child: Text(
+                            'Image : ',
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                              fontFamily: 'Bayon',
+                              fontSize: 20,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            _imageFile != null
+                                ? Container(
+                                    width: 100,
+                                    height: 100,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      image: DecorationImage(
+                                        image: FileImage(_imageFile!),
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  )
+                                : (widget.review?.imageUrl != null &&
+                                        Uri.parse(widget.review!.imageUrl!)
+                                            .isAbsolute
+                                    ? Container(
+                                        width: 100,
+                                        height: 100,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          image: DecorationImage(
+                                            image: NetworkImage(
+                                                widget.review!.imageUrl!),
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      )
+                                    : Container()),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.grey,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: IconButton(
+                                  onPressed: _pickImage,
+                                  icon: const Icon(
+                                    Icons.add_a_photo,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                         const Padding(
                           padding: EdgeInsets.only(top: 20),
                           child: Text(
@@ -153,44 +228,75 @@ class _ReviewEditScreenState extends State<ReviewEditScreen> {
                             color: Colors.white,
                           ),
                         ),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 20),
-                          child: Text(
-                            'Image : ',
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                              fontFamily: 'Bayon',
-                              fontSize: 20,
-                              color: Colors.white,
-                            ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 20),
+                          child: Row(
+                            children: [
+                              const Text(
+                                'Rating : ',
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                  fontFamily: 'Bayon',
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              RatingBar.builder(
+                                initialRating: _rating ?? 0,
+                                minRating: 1,
+                                direction: Axis.horizontal,
+                                allowHalfRating: true,
+                                itemCount: 5,
+                                itemSize: 20,
+                                itemBuilder: (context, _) => const Icon(
+                                  Icons.star,
+                                  color: Color.fromARGB(255, 235, 177, 0),
+                                ),
+                                unratedColor:
+                                    const Color.fromARGB(255, 193, 193, 193),
+                                onRatingUpdate: (rating) {
+                                  setState(() {
+                                    _rating = rating;
+                                  });
+                                },
+                              ),
+                            ],
                           ),
                         ),
-                        _imageFile != null
-                            ? AspectRatio(
-                                aspectRatio: 16 / 9,
-                                child:
-                                    Image.file(_imageFile!, fit: BoxFit.cover),
-                              )
-                            : (widget.review?.imageUrl != null &&
-                                    Uri.parse(widget.review!.imageUrl!)
-                                        .isAbsolute
-                                ? Image.network(widget.review!.imageUrl!,
-                                    fit: BoxFit.cover)
-                                : Container()),
-                        TextButton(
-                          onPressed: _pickImage,
-                          child: const Text(
-                            'Pick Image',
+                        Padding(
+                          padding: const EdgeInsets.only(top: 20),
+                          child: Row(
+                            children: [
+                              const Text(
+                                'Pick Your Location : ',
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                  fontFamily: 'Bayon',
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: _pickLocation,
+                                icon: const Icon(
+                                  Icons.location_pin,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              Expanded(
+                                child: Text(
+                                  pickedLocation,
+                                  style: const TextStyle(
+                                    fontFamily: 'Readex Pro',
+                                    fontSize: 10,
+                                    color: Colors.white,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        TextButton(
-                          onPressed: _pickLocation,
-                          child: const Text('Get Current Location'),
-                        ),
-                        Text('LAT: ${_currentPosition?.latitude ?? ""}'),
-                        Text('LNG: ${_currentPosition?.longitude ?? ""}'),
-                        // Text('ADDRESS: ${_currentAddress ?? ""}'),
-
                         const SizedBox(
                           height: 20,
                         ),
@@ -220,18 +326,17 @@ class _ReviewEditScreenState extends State<ReviewEditScreen> {
                                   title: _titleController.text,
                                   comment: _commentController.text,
                                   imageUrl: imageUrl,
+                                  rating: _rating,
+                                  location: pickedLocation,
                                   latitude: _currentPosition?.latitude,
                                   longitude: _currentPosition?.longitude,
                                   createdAt: widget.review?.createdAt,
                                 );
 
                                 if (widget.review == null) {
-                                  ReviewService.addReview(review).whenComplete(
-                                      () => Navigator.of(context).pop());
+                                  await ReviewService.addReview(review);
                                 } else {
-                                  ReviewService.updateReview(review)
-                                      .whenComplete(
-                                          () => Navigator.of(context).pop());
+                                  await ReviewService.updateReview(review);
                                 }
                               },
                               child: Text(

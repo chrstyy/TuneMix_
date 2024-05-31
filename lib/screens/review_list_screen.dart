@@ -145,28 +145,14 @@ class ReviewList extends StatefulWidget {
   final String profileImageUrl;
 
   const ReviewList(
-      {Key? key, required this.userName, required this.profileImageUrl})
-      : super(key: key);
+      {super.key, required this.userName, required this.profileImageUrl});
 
   @override
   State<ReviewList> createState() => _ReviewListState();
 }
 
 class _ReviewListState extends State<ReviewList> {
-  String pickedLocation = 'Pick location...';
-
-  Future<void> _pickLocation() async {
-    final LatLng? selectedLocation = await Navigator.of(context).push(
-      MaterialPageRoute(builder: (context) => LocationPicker()),
-    );
-
-    if (selectedLocation != null) {
-      setState(() {
-        pickedLocation =
-            '(${selectedLocation.latitude}, ${selectedLocation.longitude})';
-      });
-    }
-  }
+  String pickedLocation = '';
 
   String _formatTimestamp(Timestamp timestamp) {
     DateTime dateTime = timestamp.toDate();
@@ -257,28 +243,25 @@ class _ReviewListState extends State<ReviewList> {
                                           color: Colors.black,
                                         ),
                                       ),
-                                      InkWell(
-                                        child: Row(
-                                          children: [
-                                            const Icon(
-                                              Icons.location_pin,
-                                              color: Colors.black,
-                                              size: 18,
-                                            ),
-                                            Expanded(
-                                              child: Text(
-                                                pickedLocation,
-                                                style: const TextStyle(
-                                                  fontFamily: 'Readex Pro',
-                                                  fontSize: 10,
-                                                  color: Colors.black,
-                                                ),
-                                                overflow: TextOverflow.ellipsis,
+                                      Row(
+                                        children: [
+                                          const Icon(
+                                            Icons.location_pin,
+                                            color: Colors.black,
+                                            size: 18,
+                                          ),
+                                          Expanded(
+                                            child: Text(
+                                              pickedLocation,
+                                              style: const TextStyle(
+                                                fontFamily: 'Readex Pro',
+                                                fontSize: 10,
+                                                color: Colors.black,
                                               ),
+                                              overflow: TextOverflow.ellipsis,
                                             ),
-                                          ],
-                                        ),
-                                        onTap: _pickLocation,
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),
@@ -348,22 +331,16 @@ class _ReviewListState extends State<ReviewList> {
                                       ],
                                     ),
                                     const SizedBox(height: 5),
-                                    RatingBar.builder(
-                                      initialRating: document.rating ?? 0,
-                                      minRating: 1,
-                                      direction: Axis.horizontal,
-                                      allowHalfRating: true,
-                                      itemCount: 5,
-                                      itemSize: 20,
-                                      itemBuilder: (context, _) => const Icon(
+                                    RatingBarIndicator(
+                                      rating: document.rating ?? 0,
+                                      itemBuilder: (context, index) =>
+                                          const Icon(
                                         Icons.star,
-                                        color: Color.fromARGB(255, 235, 177, 0),
+                                        color: Colors.amber,
                                       ),
-                                      unratedColor:
-                                          Color.fromARGB(255, 193, 193, 193),
-                                      onRatingUpdate: (rating) {
-                                        print(rating);
-                                      },
+                                      itemCount: 5,
+                                      itemSize: 20.0,
+                                      direction: Axis.horizontal,
                                     ),
                                   ],
                                 ),
@@ -389,6 +366,7 @@ class _ReviewListState extends State<ReviewList> {
                                 ),
                               )
                             : Container(),
+                        const SizedBox(height: 10),
                         Text(
                           document.comment,
                           style: const TextStyle(
