@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class LocationPicker extends StatefulWidget {
   @override
@@ -18,11 +19,17 @@ class _LocationPickerState extends State<LocationPicker> {
   }
 
   Future<void> _getCurrentLocation() async {
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-    _mapController.animateCamera(CameraUpdate.newLatLng(
-      LatLng(position.latitude, position.longitude),
-    ));
+    var permissionStatus = await Permission.location.request();
+
+    if (permissionStatus.isGranted) {
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      _mapController.animateCamera(CameraUpdate.newLatLng(
+        LatLng(position.latitude, position.longitude),
+      ));
+    } else {
+      print("Izin lokasi tidak diberikan.");
+    }
   }
 
   @override
@@ -35,11 +42,14 @@ class _LocationPickerState extends State<LocationPicker> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Pick Location'),
+        title: const Text(
+          'Pick Location',
+          style: const TextStyle(fontFamily: 'Bayon', fontSize: 25),
+        ),
         actions: [
           if (_pickedLocation != null)
             IconButton(
-              icon: Icon(Icons.check),
+              icon: const Icon(Icons.check),
               onPressed: () {
                 Navigator.of(context).pop(_pickedLocation);
               },
@@ -47,7 +57,7 @@ class _LocationPickerState extends State<LocationPicker> {
         ],
       ),
       body: GoogleMap(
-        initialCameraPosition: CameraPosition(
+        initialCameraPosition: const CameraPosition(
           target: LatLng(0, 0),
           zoom: 15,
         ),
@@ -59,7 +69,7 @@ class _LocationPickerState extends State<LocationPicker> {
             ? {}
             : {
                 Marker(
-                  markerId: MarkerId('m1'),
+                  markerId: const MarkerId('m1'),
                   position: _pickedLocation!,
                 ),
               },

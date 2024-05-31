@@ -41,10 +41,9 @@ class _ReviewEditScreenState extends State<ReviewEditScreen> {
 
   Future<void> _pickLocation() async {
     final currentPosition = await LocationService.getCurrentPosition();
-    // final currentAddress = await LocationService.getAddressFromLatLng(_currentPosition!);
+
     setState(() {
       _currentPosition = currentPosition;
-      // _currentAddress = currentAddress;
     });
   }
 

@@ -5,7 +5,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:gracieusgalerij/screens/pick_location.dart';
 import 'package:gracieusgalerij/screens/review_edit_screen.dart';
-import 'package:intl/intl.dart'; // tambahkan impor ini
+import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../services/review_services.dart';
