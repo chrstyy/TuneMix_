@@ -1,14 +1,14 @@
 {
   "project_info": {
-    "project_number": "711171729873",
-    "firebase_url": "https://projectakhir-43226-default-rtdb.asia-southeast1.firebasedatabase.app",
-    "project_id": "projectakhir-43226",
-    "storage_bucket": "projectakhir-43226.appspot.com"
+    "project_number": "475635387017",
+    "firebase_url": "https://tunemi-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "tunemi",
+    "storage_bucket": "tunemi.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:711171729873:android:5068debd2e43301382d8f0",
+        "mobilesdk_app_id": "1:475635387017:android:ca94490c507f2662dbd458",
         "android_client_info": {
           "package_name": "com.example.flutter_application_1"
         }
@@ -16,7 +16,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAH9MM1MILBwScGK4QL6KNr-OC_Lo-oPbk"
+          "current_key": "AIzaSyBvydwLlCnHYRsLHFmN7SQrP2DP1zHomQY"
         }
       ],
       "services": {

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:gracieusgalerij/models/song.dart';
+import 'package:gracieusgalerij/services/song_service.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
@@ -12,65 +14,7 @@ class HomeScreenAdmin extends StatefulWidget {
 }
 
 class _HomeScreenAdminState extends State<HomeScreenAdmin> {
-  final TextEditingController _productNameController = TextEditingController();
-  final TextEditingController _brandNameController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
-  final TextEditingController _priceController = TextEditingController();
-  File? _image;
-
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
-  Future<void> _pickImage() async {
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      setState(() {
-        _image = File(pickedFile.path);
-      });
-    }
-  }
-
-  Future<void> _uploadProduct() async {
-    if (_productNameController.text.isEmpty ||
-        _brandNameController.text.isEmpty ||
-        _descriptionController.text.isEmpty ||
-        _priceController.text.isEmpty ||
-        _image == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text('Please fill all fields and pick an image')),
-      );
-      return;
-    }
-
-    final imageName = _image!.path.split('/').last;
-    final storageRef =
-        FirebaseStorage.instance.ref().child('products/$imageName');
-    await storageRef.putFile(_image!);
-    final imageUrl = await storageRef.getDownloadURL();
-
-    final product = {
-      'brand_name': _brandNameController.text,
-      'product_name': _productNameController.text,
-      'description': _descriptionController.text,
-      'price': double.parse(_priceController.text),
-      'image_product': imageUrl,
-    };
-
-    await _firestore.collection('products').add(product);
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Product added successfully')),
-    );
-
-    _productNameController.clear();
-    _brandNameController.clear();
-    _descriptionController.clear();
-    _priceController.clear();
-    setState(() {
-      _image = null;
-    });
-  }
+  final SongService _songService = SongService();
 
   @override
   Widget build(BuildContext context) {
@@ -206,53 +150,107 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                     Align(
                       alignment: const AlignmentDirectional(-1, 0),
                       child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(right: 10),
-                              child: Container(
-                                width: 100,
-                                height: 150,
-                                decoration: BoxDecoration(
-                                  color: const Color(0xFF543310),
-                                  borderRadius: BorderRadius.circular(10),
+                          scrollDirection: Axis.horizontal,
+                          // child: Row(
+                          //   mainAxisSize: MainAxisSize.max,
+                          //   mainAxisAlignment: MainAxisAlignment.start,
+                          //   children: [
+                          //     Padding(
+                          //       padding: const EdgeInsets.only(right: 10),
+                          //       child: Container(
+                          //         width: 100,
+                          //         height: 150,
+                          //         decoration: BoxDecoration(
+                          //           color: const Color(0xFF543310),
+                          //           borderRadius: BorderRadius.circular(10),
+                          //         ),
+                          //         child: Column(
+                          //           mainAxisSize: MainAxisSize.max,
+                          //           children: [
+                          //             Padding(
+                          //               padding:
+                          //                   const EdgeInsetsDirectional.fromSTEB(
+                          //                       5, 5, 5, 5),
+                          //               child: ClipRRect(
+                          //                 borderRadius: BorderRadius.circular(8),
+                          //                 child: Image.asset(
+                          //                   'images/logo.png',
+                          //                   width: 150,
+                          //                   height: 100,
+                          //                   fit: BoxFit.contain,
+                          //                 ),
+                          //               ),
+                          //             ),
+                          //             const Text(
+                          //               'Song artist',
+                          //               style: TextStyle(
+                          //                 fontFamily: 'Bayon',
+                          //                 fontSize: 15,
+                          //                 color: Colors.white,
+                          //               ),
+                          //             ),
+                          //           ],
+                          //         ),
+                          //       ),
+                          //     ),
+                          //   ],
+                          // ),
+                          child: StreamBuilder(
+                            stream: FirebaseFirestore.instance
+                                .collection('songs')
+                                .snapshots(),
+                            builder: (BuildContext context,
+                                AsyncSnapshot<QuerySnapshot> snapshot) {
+                              if (!snapshot.hasData) {
+                                return Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+
+                              List<Song> songs = snapshot.data!.docs
+                                  .map((DocumentSnapshot document) {
+                                return Song.fromFirestore(
+                                    document.data() as Map<String, dynamic>,
+                                    document.id);
+                              }).toList();
+
+                              return SizedBox(
+                                height: 300,
+                                child: ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: songs.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    Song song = songs[index];
+                                    return FutureBuilder(
+                                      future: _songService.getSongById(song.id),
+                                      builder: (context,
+                                          AsyncSnapshot<Song> songSnapshot) {
+                                        if (songSnapshot.connectionState ==
+                                            ConnectionState.waiting) {
+                                          return CircularProgressIndicator();
+                                        }
+                                        if (songSnapshot.hasError) {
+                                          return Text(
+                                              'Error: ${songSnapshot.error}');
+                                        }
+                                        if (songSnapshot.hasData) {
+                                          Song fetchedSong = songSnapshot.data!;
+                                          return ListTile(
+                                            title: Text(fetchedSong.songTitle),
+                                            subtitle: Text(fetchedSong.creator),
+                                            // You can add more UI components here to display additional song data
+                                          );
+                                        }
+                                        return Text('No data available');
+                                      },
+                                    );
+                                  },
                                 ),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    Padding(
-                                      padding:
-                                          const EdgeInsetsDirectional.fromSTEB(
-                                              5, 5, 5, 5),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(8),
-                                        child: Image.asset(
-                                          'images/logo.png',
-                                          width: 150,
-                                          height: 100,
-                                          fit: BoxFit.contain,
-                                        ),
-                                      ),
-                                    ),
-                                    const Text(
-                                      'Song artist',
-                                      style: TextStyle(
-                                        fontFamily: 'Bayon',
-                                        fontSize: 15,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                              );
+                            },
+                          )),
+                    )
                   ],
                 ),
                 const Padding(
@@ -293,7 +291,6 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
-                          
                           Padding(
                             padding: const EdgeInsets.only(right: 10),
                             child: ElevatedButton(

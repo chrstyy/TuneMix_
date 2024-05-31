@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       debugShowCheckedModeBanner: false,
-      initialRoute: '/edit',
+      initialRoute: '/home_adm',
       routes: {
         '/': (context) => const LandingScreen(),
         '/landing': (context) => const LandingScreen(),
