@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -99,5 +100,36 @@ static Future<void> addSong(Song song, File? image) async {
     }
   }
 
-  
+   Future<List<Song>> getAllSongs() async {
+    try {
+      QuerySnapshot querySnapshot = await _songsCollection.get();
+      List<Song> songs = querySnapshot.docs.map((doc) => Song.fromFirestore(doc.data() as Map<String, dynamic>, doc.id)).toList();
+      return songs;
+    } catch (e) {
+      throw Exception('Error getting songs: $e');
+    }
+  }
+
+  Future<List<Song>> getSongSpecialOffer({int count = 5}) async {
+    try {
+      QuerySnapshot collectionSnapshot = await _songsCollection.orderBy(FieldPath.documentId).limit(count).get();
+      int totalSongs = collectionSnapshot.docs.length;
+
+      if (totalSongs == 0) return [];
+
+      List<Song> specialOfferSongs = [];
+      for (int i = 0; i < totalSongs; i++) {
+        DocumentSnapshot docSnapshot = collectionSnapshot.docs[i];
+        if (docSnapshot.exists) {
+          Song song = Song.fromFirestore(docSnapshot.data() as Map<String, dynamic>, docSnapshot.id);
+          specialOfferSongs.add(song);
+        }
+      }
+
+      return specialOfferSongs;
+    } catch (e) {
+      throw Exception('Error getting special offer songs: $e');
+    }
+  }
+
 }

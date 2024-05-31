@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/widgets.dart';
 import 'package:gracieusgalerij/models/song.dart';
+import 'package:gracieusgalerij/screens/admin/edit_product_detail_admin.dart';
 import 'package:gracieusgalerij/services/song_service.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+
+import '../widget.dart';
 
 class HomeScreenAdmin extends StatefulWidget {
   const HomeScreenAdmin({Key? key}) : super(key: key);
@@ -112,12 +116,20 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                           ),
                         ),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 20),
-                        child: Icon(
-                          Icons.notifications,
-                          color: Colors.black,
-                          size: 24,
+                      GestureDetector(
+                        onTap: () {
+                           Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => EditProductDetail()),
+                          );
+                        },
+                        child: const Padding(
+                          padding: EdgeInsets.only(left: 20),
+                          child: Icon(
+                            Icons.add_circle_sharp,
+                            color: Colors.black,
+                            size: 24,
+                          ),
                         ),
                       ),
                     ],
@@ -147,110 +159,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                         ],
                       ),
                     ),
-                    Align(
-                      alignment: const AlignmentDirectional(-1, 0),
-                      child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          // child: Row(
-                          //   mainAxisSize: MainAxisSize.max,
-                          //   mainAxisAlignment: MainAxisAlignment.start,
-                          //   children: [
-                          //     Padding(
-                          //       padding: const EdgeInsets.only(right: 10),
-                          //       child: Container(
-                          //         width: 100,
-                          //         height: 150,
-                          //         decoration: BoxDecoration(
-                          //           color: const Color(0xFF543310),
-                          //           borderRadius: BorderRadius.circular(10),
-                          //         ),
-                          //         child: Column(
-                          //           mainAxisSize: MainAxisSize.max,
-                          //           children: [
-                          //             Padding(
-                          //               padding:
-                          //                   const EdgeInsetsDirectional.fromSTEB(
-                          //                       5, 5, 5, 5),
-                          //               child: ClipRRect(
-                          //                 borderRadius: BorderRadius.circular(8),
-                          //                 child: Image.asset(
-                          //                   'images/logo.png',
-                          //                   width: 150,
-                          //                   height: 100,
-                          //                   fit: BoxFit.contain,
-                          //                 ),
-                          //               ),
-                          //             ),
-                          //             const Text(
-                          //               'Song artist',
-                          //               style: TextStyle(
-                          //                 fontFamily: 'Bayon',
-                          //                 fontSize: 15,
-                          //                 color: Colors.white,
-                          //               ),
-                          //             ),
-                          //           ],
-                          //         ),
-                          //       ),
-                          //     ),
-                          //   ],
-                          // ),
-                          child: StreamBuilder(
-                            stream: FirebaseFirestore.instance
-                                .collection('songs')
-                                .snapshots(),
-                            builder: (BuildContext context,
-                                AsyncSnapshot<QuerySnapshot> snapshot) {
-                              if (!snapshot.hasData) {
-                                return Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              }
-
-                              List<Song> songs = snapshot.data!.docs
-                                  .map((DocumentSnapshot document) {
-                                return Song.fromFirestore(
-                                    document.data() as Map<String, dynamic>,
-                                    document.id);
-                              }).toList();
-
-                              return SizedBox(
-                                height: 300,
-                                child: ListView.builder(
-                                  shrinkWrap: true,
-                                  itemCount: songs.length,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    Song song = songs[index];
-                                    return FutureBuilder(
-                                      future: _songService.getSongById(song.id),
-                                      builder: (context,
-                                          AsyncSnapshot<Song> songSnapshot) {
-                                        if (songSnapshot.connectionState ==
-                                            ConnectionState.waiting) {
-                                          return CircularProgressIndicator();
-                                        }
-                                        if (songSnapshot.hasError) {
-                                          return Text(
-                                              'Error: ${songSnapshot.error}');
-                                        }
-                                        if (songSnapshot.hasData) {
-                                          Song fetchedSong = songSnapshot.data!;
-                                          return ListTile(
-                                            title: Text(fetchedSong.songTitle),
-                                            subtitle: Text(fetchedSong.creator),
-                                            // You can add more UI components here to display additional song data
-                                          );
-                                        }
-                                        return Text('No data available');
-                                      },
-                                    );
-                                  },
-                                ),
-                              );
-                            },
-                          )),
-                    )
+                SizedBox(child: WidgetHome()),
                   ],
                 ),
                 const Padding(
@@ -301,6 +210,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 24),
                                 elevation: 3,
+                                backgroundColor: Color(0xFFF1B26F),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(8),
                                 ),
@@ -308,9 +218,10 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                               child: const Text(
                                 'Pop',
                                 style: TextStyle(
-                                  fontFamily: 'Readex Pro',
-                                  color: Colors.white,
+                                  fontFamily: 'Bayon',
+                                  color: Colors.black,
                                   letterSpacing: 0,
+                                  fontSize: 25
                                 ),
                               ),
                             ),
@@ -325,6 +236,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 24),
                                 elevation: 3,
+                                backgroundColor: Color(0xFFF1B26F),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(8),
                                 ),
@@ -332,9 +244,10 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                               child: const Text(
                                 'Jazz',
                                 style: TextStyle(
-                                  fontFamily: 'Readex Pro',
-                                  color: Colors.white,
+                                  fontFamily: 'Bayon',
+                                  color: Colors.black,
                                   letterSpacing: 0,
+                                  fontSize: 25
                                 ),
                               ),
                             ),
@@ -349,6 +262,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 24),
                                 elevation: 3,
+                                backgroundColor: Color(0xFFF1B26F),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(8),
                                 ),
@@ -356,9 +270,10 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                               child: const Text(
                                 'RocknRoll',
                                 style: TextStyle(
-                                  fontFamily: 'Readex Pro',
-                                  color: Colors.white,
+                                  fontFamily: 'Bayon',
+                                  color: Colors.black,
                                   letterSpacing: 0,
+                                  fontSize: 25
                                 ),
                               ),
                             ),
@@ -394,158 +309,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                           ],
                         ),
                       ),
-                      Align(
-                        alignment: const AlignmentDirectional(-1, 0),
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(right: 10),
-                                child: Container(
-                                  width: 100,
-                                  height: 150,
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFF543310),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(5, 5, 5, 5),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          child: Image.asset(
-                                            'images/logo.png',
-                                            width: 150,
-                                            height: 100,
-                                            fit: BoxFit.contain,
-                                          ),
-                                        ),
-                                      ),
-                                      const Text('Special Offer',
-                                          style: TextStyle(
-                                            fontFamily: 'Bayon',
-                                            fontSize: 15,
-                                          )),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 10),
-                                child: Container(
-                                  width: 100,
-                                  height: 150,
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFF543310),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(5, 5, 5, 5),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          child: Image.asset(
-                                            'images/logo.png',
-                                            width: 150,
-                                            height: 100,
-                                            fit: BoxFit.contain,
-                                          ),
-                                        ),
-                                      ),
-                                      const Text('Special Offer',
-                                          style: TextStyle(
-                                            fontFamily: 'Bayon',
-                                            fontSize: 15,
-                                          )),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 10),
-                                child: Container(
-                                  width: 100,
-                                  height: 150,
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFF543310),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(5, 5, 5, 5),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          child: Image.asset(
-                                            'images/logo.png',
-                                            width: 150,
-                                            height: 100,
-                                            fit: BoxFit.contain,
-                                          ),
-                                        ),
-                                      ),
-                                      const Text('Special Offer',
-                                          style: TextStyle(
-                                            fontFamily: 'Bayon',
-                                            fontSize: 15,
-                                          )),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 10),
-                                child: Container(
-                                  width: 100,
-                                  height: 150,
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFF543310),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(5, 5, 5, 5),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          child: Image.asset(
-                                            'images/logo.png',
-                                            width: 150,
-                                            height: 100,
-                                            fit: BoxFit.contain,
-                                          ),
-                                        ),
-                                      ),
-                                      const Text('Special Offer',
-                                          style: TextStyle(
-                                            fontFamily: 'Bayon',
-                                            fontSize: 15,
-                                          )),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                    SizedBox(child: WidgetHome()),
                     ],
                   ),
                 ),

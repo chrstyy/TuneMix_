@@ -314,7 +314,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Container(
                   width: double.infinity,
                   height: 70,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: Color(0xFF543310),
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(10),
