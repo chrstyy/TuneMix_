@@ -5,12 +5,12 @@ class Song {
   final String songTitle;
   final String creator;
   final String genre;
-  final String lyrics;
+  final String arangement;
   final String description;
   String? imageSong;
   final double price;
 
-  Song( {
+  Song({
     required this.id,
     required this.songTitle,
     required this.creator,
@@ -18,7 +18,7 @@ class Song {
     required this.description,
     this.imageSong,
     required this.price,
-    required this.lyrics,
+    required this.arangement,
   });
 
   factory Song.fromFirestore(Map<String, dynamic> data, String id) {
@@ -29,7 +29,7 @@ class Song {
       genre: data['genre'],
       description: data['description'],
       imageSong: data['image_song'],
-      lyrics: data['lyrics'],
+      arangement: data['arangement'],
       price: data['price'].toDouble(),
     );
   }
@@ -42,7 +42,7 @@ class Song {
       'description': description,
       'image_song': imageSong,
       'price': price,
-      'lyrics': lyrics,
+      'arangement': arangement,
     };
   }
 }

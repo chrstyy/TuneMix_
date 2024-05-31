@@ -16,14 +16,14 @@ class EditProductDetail extends StatefulWidget {
 }
 
 class _EditProductDetailState extends State<EditProductDetail> {
-   File? _image;
+  File? _image;
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _genreController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-  final TextEditingController _lyricsController = TextEditingController();
+  final TextEditingController _arangementController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _creatorController = TextEditingController();
-  
+
   get imageUrl => null;
 
   Future<void> _pickImage() async {
@@ -37,7 +37,7 @@ class _EditProductDetailState extends State<EditProductDetail> {
     }
   }
 
-   Future<void> _saveData() async {
+  Future<void> _saveData() async {
     try {
       // Create song object
       Song newSong = Song(
@@ -48,10 +48,17 @@ class _EditProductDetailState extends State<EditProductDetail> {
         description: _descriptionController.text,
         imageSong: imageUrl,
         price: double.parse(_priceController.text),
-        lyrics: _lyricsController.text,
+        arangement: _arangementController.text,
       );
 
       await SongService.addSong(newSong, _image);
+
+      _titleController.clear();
+      _creatorController.clear();
+      _genreController.clear();
+      _descriptionController.clear();
+      _priceController.clear();
+      _arangementController.clear();
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Data berhasil disimpan!')),
@@ -187,7 +194,8 @@ class _EditProductDetailState extends State<EditProductDetail> {
                                 borderRadius: BorderRadius.circular(8.0),
                               ),
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
                                 child: Row(
                                   children: [
                                     const Text(
@@ -205,7 +213,8 @@ class _EditProductDetailState extends State<EditProductDetail> {
                                         decoration: const InputDecoration(
                                           border: InputBorder.none,
                                           hintText: 'Masukkan Genre...',
-                                          hintStyle: TextStyle(color: Colors.white),
+                                          hintStyle:
+                                              TextStyle(color: Colors.white),
                                         ),
                                         style: const TextStyle(
                                           fontFamily: 'Bayon',
@@ -255,10 +264,10 @@ class _EditProductDetailState extends State<EditProductDetail> {
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: TextField(
-                                  controller: _lyricsController,
+                                  controller: _arangementController,
                                   decoration: const InputDecoration(
                                     border: InputBorder.none,
-                                    hintText: 'Masukkan Aransemen atau Lirik...',
+                                    hintText: 'Masukkan Aransemen...',
                                     hintStyle: TextStyle(color: Colors.white),
                                   ),
                                   style: const TextStyle(

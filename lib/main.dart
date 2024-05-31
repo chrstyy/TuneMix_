@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
 
-      initialRoute: '/review_edit',
+      initialRoute: '/edit',
       routes: {
         '/': (context) => const LandingScreen(),
         '/landing': (context) => const LandingScreen(),
@@ -49,17 +49,6 @@ class MyApp extends StatelessWidget {
         '/edit': (context) => const EditProductDetail(),
         //  '/product_detail': (context) =>  ProductDetailScreen(productId: ''),
       },
-      // onGenerateRoute: (settings) {
-      //   if (settings.name == '/product_detail') {
-      //     final args = settings.arguments as String;
-      //     return MaterialPageRoute(
-      //       builder: (context) {
-      //         builder: (context) => ProductDetailScreen(productId: args['productId'] as String),
-      //       },
-      //     );
-      //   }
-      //   return null;
-      // },
     );
   }
 }
