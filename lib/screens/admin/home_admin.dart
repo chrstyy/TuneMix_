@@ -8,7 +8,8 @@ import 'package:gracieusgalerij/services/song_service.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
-import '../widget.dart';
+import 'widget/widget_offer.dart';
+import 'widget/widget_recommend.dart';
 
 class HomeScreenAdmin extends StatefulWidget {
   const HomeScreenAdmin({Key? key}) : super(key: key);
@@ -159,7 +160,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                         ],
                       ),
                     ),
-                SizedBox(child: WidgetHome()),
+                SizedBox(child: WidgetOffer()),
                   ],
                 ),
                 const Padding(
@@ -268,7 +269,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                                 ),
                               ),
                               child: const Text(
-                                'RocknRoll',
+                                'Rock & Roll',
                                 style: TextStyle(
                                   fontFamily: 'Bayon',
                                   color: Colors.black,
@@ -309,7 +310,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                           ],
                         ),
                       ),
-                    SizedBox(child: WidgetHome()),
+                    SizedBox(child: WidgetRecommendation()),
                     ],
                   ),
                 ),

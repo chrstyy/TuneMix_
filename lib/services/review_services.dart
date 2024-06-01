@@ -85,4 +85,32 @@ class ReviewService {
       }).toList();
     });
   }
+
+  static Future<Map<String, double>> getAverageRatings() async {
+    try {
+      QuerySnapshot reviewSnapshot = await _reviewsCollection.get();
+      Map<String, List<double>> songRatings = {};
+
+      for (var doc in reviewSnapshot.docs) {
+        String songId = doc['songId'];  // Pastikan review menyimpan songId
+        double rating = doc['rating'];
+
+        if (songRatings.containsKey(songId)) {
+          songRatings[songId]!.add(rating);
+        } else {
+          songRatings[songId] = [rating];
+        }
+      }
+
+      Map<String, double> averageRatings = {};
+      songRatings.forEach((songId, ratings) {
+        double average = ratings.reduce((a, b) => a + b) / ratings.length;
+        averageRatings[songId] = average;
+      });
+
+      return averageRatings;
+    } catch (e) {
+      throw Exception('Error getting average ratings: $e');
+    }
+  }
 }

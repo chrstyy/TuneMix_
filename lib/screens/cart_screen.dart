@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:qr_flutter/qr_flutter.dart';
+import 'package:gracieusgalerij/models/song.dart';
 
+import '../services/cart_service.dart';
 import 'fav_screen.dart';
-import 'product_detail.dart';
+import 'home_screen.dart';
 import 'user_profile.dart';
 
 class CartScreen extends StatefulWidget {
-  const CartScreen({Key? key}) : super(key: key);
+  const CartScreen({Key? key, required this.purchasedSongs}) : super(key: key);
+
+  final List<Song> purchasedSongs;
 
   @override
   State<CartScreen> createState() => _CartScreenState();
@@ -14,28 +17,22 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
   int _currentIndex = 2;
-
-  final List<CartItem> _cartItems = [
-    CartItem(
-      productName: 'Crop Sweater',
-      price: 99.99,
-      quantity: 1,
-      image: 'images/product_image.png',
-    ),
-    CartItem(
-      productName: 'Denim Jeans',
-      price: 59.99,
-      quantity: 2,
-      image: 'images/product_image_2.png',
-    ),
-  ];
+  List<Song> cartItems = CartService.getCartItems();
 
   double getTotalPayment() {
     double total = 0;
-    _cartItems.forEach((item) {
-      total += item.price * item.quantity;
+    cartItems.forEach((song) {
+      total += song.price;
     });
     return total;
+  }
+
+  void _removeItemFromCart(int index) {
+    setState(() {
+      cartItems.removeAt(index);
+      CartService.removeFromCart(widget.purchasedSongs[index].id);
+      setState(() {});
+    });
   }
 
   void _showPaymentSheet(BuildContext context) {
@@ -292,6 +289,7 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
+  
   void _processQRISPayment(BuildContext context) {
     final qrisUrl =
         'qris://payment?amount=${getTotalPayment()}&merchant=MERCHANT_ID';
@@ -404,270 +402,167 @@ class _CartScreenState extends State<CartScreen> {
                 end: AlignmentDirectional(0, 1),
               ),
             ),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  // Header
-                  Padding(
-                    padding: const EdgeInsets.only(right: 20, top: 40),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0x004B39EF),
-                            elevation: 0,
-                            side: const BorderSide(
-                              color: Colors.transparent,
-                            ),
-                          ),
-                          child: Image.asset('images/arrowback.png',
-                              width: 35, height: 35),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 20, top: 40),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent,
+                          elevation: 0,
+                          side: const BorderSide(color: Colors.transparent),
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Your Cart',
-                              style: TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'Battambang'),
-                            ),
-                            Text(
-                              '${_cartItems.length} Items',
+                        child: Image.asset(
+                          'images/arrowback.png',
+                          width: 35,
+                          height: 35,
+                        ),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Your Cart',
+                            style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Battambang'),
+                          ),
+                           Text(
+                              '${cartItems.length} Items',
                               style: const TextStyle(
                                 fontSize: 14,
                                 color: Colors.black,
                                 fontFamily: 'Battambang',
                               ),
                             ),
-                          ],
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 8, horizontal: 16),
-                        ),
-                      ],
-                    ),
+                        ],
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 16),
+                      ),
+                    ],
                   ),
-                  // Cart Items List
-                  SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        ListView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: _cartItems.length,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 5),
-                              child: Container(
+                ),
+                // Cart Items List
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: cartItems.length,
+                    itemBuilder: (context, index) {
+                      final song = cartItems[index];
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: const Color(0xFF543310),
+                              width: 10
+                            ),
+                          ),
+                          child: Column(
+                            children: [
+                              Container(
                                 decoration: BoxDecoration(
-                                  color: const Color(0xFF543310),
+                                  color: Colors.white,
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: Padding(
                                   padding: const EdgeInsets.all(10),
-                                  child: Column(
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Container(
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(10),
-                                          child: Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                width: 80,
-                                                height: 80,
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  image: DecorationImage(
-                                                    fit: BoxFit.cover,
-                                                    image: AssetImage(
-                                                        _cartItems[index]
-                                                            .image),
-                                                  ),
-                                                ),
-                                              ),
-                                              const SizedBox(width: 10),
-                                              Expanded(
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Expanded(
-                                                          child: Text(
-                                                            _cartItems[index]
-                                                                .productName,
-                                                            style:
-                                                                const TextStyle(
-                                                              fontSize: 18,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontFamily:
-                                                                  'Battambang',
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        PopupMenuButton(
-                                                          onSelected: (value) {
-                                                            if (value ==
-                                                                'edit') {
-                                                              Navigator.push(
-                                                                context,
-                                                                MaterialPageRoute(
-                                                                  builder:
-                                                                      (context) =>
-                                                                          SongDetailScreen(
-                                                                    songId: '',
-                                                                  ),
-                                                                ),
-                                                              );
-                                                            } else if (value ==
-                                                                'delete') {
-                                                              // Delete action
-                                                            }
-                                                          },
-                                                          itemBuilder:
-                                                              (context) => [
-                                                            const PopupMenuItem(
-                                                              value: 'edit',
-                                                              child: Text(
-                                                                'Edit',
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontFamily:
-                                                                      'Battambang',
-                                                                  fontSize: 15,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            const PopupMenuItem(
-                                                              value: 'delete',
-                                                              child: Text(
-                                                                'Delete',
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontFamily:
-                                                                      'Battambang',
-                                                                  fontSize: 15,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    const SizedBox(height: 5),
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Row(
-                                                          children: [
-                                                            Text(
-                                                              '\$${_cartItems[index].price.toStringAsFixed(2)}',
-                                                              style:
-                                                                  const TextStyle(
-                                                                fontSize: 16,
-                                                                color: Colors
-                                                                    .orange,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontFamily:
-                                                                    'Battambang',
-                                                              ),
-                                                            ),
-                                                            Text(
-                                                              '  x ${_cartItems[index].quantity}',
-                                                              style:
-                                                                  const TextStyle(
-                                                                fontSize: 16,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontFamily:
-                                                                    'Battambang',
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        Text(
-                                                          '   \$${(_cartItems[index].price * _cartItems[index].quantity).toStringAsFixed(2)}',
-                                                          style: const TextStyle(
-                                                              fontSize: 16,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontFamily:
-                                                                  'Battambang',
-                                                              color: Colors
-                                                                  .orange),
-                                                          textAlign:
-                                                              TextAlign.right,
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
+                                        width: 80,
+                                        height: 80,
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(10),
+                                          child: Image.network(
+                                            song.imageSong ?? '',
+                                            fit: BoxFit.cover,
                                           ),
                                         ),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            const SizedBox(height: 10),
+                                            Text(
+                                              song.songTitle,
+                                              style: const TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
+                                                fontFamily: 'Battambang',
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.end,
+                                        children: [
+                                          const SizedBox(height: 40),
+                                          Text(
+                                            '\$${(song.price).toStringAsFixed(2)}',
+                                            style: const TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.orange,
+                                              fontWeight: FontWeight.bold,
+                                              fontFamily: 'Battambang',
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      IconButton(
+                                        icon: Icon(
+                                          Icons.delete,
+                                          color: Colors.red,
+                                        ),
+                                        onPressed: () {
+                                          _removeItemFromCart(index);
+                                        },
                                       ),
                                     ],
                                   ),
                                 ),
                               ),
-                            );
-                          },
-                        ),
-                        const SizedBox(height: 20),
-                        ElevatedButton(
-                          onPressed: () {
-                            _showPaymentSheet(context);
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFFF1B26F),
-                            shape: const StadiumBorder(),
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 15, horizontal: 40),
-                          ),
-                          child: const Text(
-                            'Payment',
-                            style: TextStyle(
-                              fontFamily: 'Bayon',
-                              color: Colors.black,
-                              fontSize: 18,
-                            ),
+                            ],
                           ),
                         ),
-                      ],
+                      );
+                    },
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    _showPaymentSheet(context);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFFF1B26F),
+                    shape: const StadiumBorder(),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20),
+                  ),
+                  child: const Text(
+                    'Payment',
+                    style: TextStyle(
+                      fontFamily: 'Bayon',
+                      color: Colors.black,
+                      fontSize: 18,
                     ),
-                  )
-                ],
-              ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],
@@ -703,7 +598,9 @@ class _CartScreenState extends State<CartScreen> {
             ),
             BottomNavigationBarItem(
               icon: Image.asset(
-                _currentIndex == 2 ? 'images/basket.png' : 'images/basket.png',
+                _currentIndex == 2
+                    ? 'images/basket.png'
+                    : 'images/basket.png',
                 width: 24,
                 height: 24,
                 color:
@@ -755,40 +652,19 @@ class _CartScreenState extends State<CartScreen> {
         break;
     }
 
-    // if (index == 2) {
-    //   Navigator.push(
-    //       context,
-    //       PageRouteBuilder(
-    //         pageBuilder: (context, animation, secondaryAnimation) =>
-    //             const StoryListScreen(),
-    //         transitionsBuilder:
-    //             (context, animation, secondaryAnimation, child) {
-    //           const begin = 0.0;
-    //           const end = 1.0;
-    //           var tween = Tween(begin: begin, end: end);
-
-    //           var fadeOutAnimation = animation.drive(tween);
-
-    //           return FadeTransition(
-    //             opacity: fadeOutAnimation,
-    //             child: child,
-    //           );
-    //         },
-    //         transitionDuration: const Duration(milliseconds: 500),
-    //       ));
-    // }
-
     Navigator.pushReplacement(
       context,
       PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) {
           switch (index) {
             case 0:
-            // return const HomeScreen();
+              return const HomeScreen();
             case 1:
-            // return const SearchScreen();
+              // return const SearchScreen();
             case 2:
-              return const CartScreen();
+              return const CartScreen(
+                purchasedSongs: [],
+              );
             case 3:
               return const FavoriteScreen();
             case 4:
@@ -800,18 +676,4 @@ class _CartScreenState extends State<CartScreen> {
       ),
     );
   }
-}
-
-class CartItem {
-  final String productName;
-  final double price;
-  final int quantity;
-  final String image;
-
-  CartItem({
-    required this.productName,
-    required this.price,
-    required this.quantity,
-    required this.image,
-  });
 }

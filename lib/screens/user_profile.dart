@@ -717,7 +717,7 @@ class _UserProfileState extends State<UserProfile> {
             case 1:
             // return const SearchScreen();
             case 2:
-              return const CartScreen();
+              return const CartScreen(purchasedSongs: [],);
             case 3:
               return const FavoriteScreen();
             case 4:

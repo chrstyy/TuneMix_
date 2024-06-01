@@ -9,8 +9,9 @@ class Song {
   final String description;
   String? imageSong;
   final double price;
-  final bool isRecommended; // Add this field
-  final String? specialOffer; // Add this field
+  final bool isRecommended; 
+  final String? specialOffer; 
+ // final double rating; 
 
   Song({
     required this.id,
@@ -21,8 +22,9 @@ class Song {
     this.imageSong,
     required this.price,
     required this.arangement,
-    this.isRecommended = false, // Initialize with a default value
-    this.specialOffer, // Initialize with null by default
+    this.isRecommended = false, 
+    this.specialOffer, 
+  //  required this.rating,
   });
 
   factory Song.fromFirestore(Map<String, dynamic> data, String id) {
@@ -35,8 +37,9 @@ class Song {
       imageSong: data['image_song'],
       arangement: data['arangement'],
       price: data['price'].toDouble(),
-      isRecommended: false, // Explicitly set to false
-      specialOffer: data['special_offer'], // Add this field
+      isRecommended: false, 
+      specialOffer: data['special_offer'], 
+    //  rating: data['rating'] ?? 0.0, 
     );
   }
 
@@ -49,8 +52,9 @@ class Song {
       'image_song': imageSong,
       'price': price,
       'arangement': arangement,
-      'is_recommended': isRecommended, // Add this field
-      'special_offer': specialOffer, // Add this field
+      'is_recommended': isRecommended, 
+      'special_offer': specialOffer, 
+    //  'rating': rating,
     };
   }
 }

@@ -26,21 +26,14 @@ class SongService {
 
 static Future<void> addSong(Song song, File? image) async {
   try {
-    // Upload image to Firebase Storage and get URL
     String imageUrl = '';
     if (image != null) {
       imageUrl = await uploadImage(image);
     }
-    
-    // Update song's image URL before saving to Firestore
     song.imageSong = imageUrl;
-
-    // Save song to Firestore
     DocumentReference docRef = await _songsCollection.add(song.toFirestore());
-    // Get the document ID and update the song object
+
     song.id = docRef.id;
-    
-    // Update the document with the correct ID
     await docRef.update({
       'id': docRef.id,
     });
@@ -48,48 +41,6 @@ static Future<void> addSong(Song song, File? image) async {
     throw Exception('Error adding song: $e');
   }
 }
-
-
-  Future<void> addToFavorites(String userId, Song song) async {
-    try {
-      await _database
-          .collection('favorites')
-          .doc(userId)
-          .collection('songs')
-          .doc(song.id)
-          .set(song.toFirestore());
-    } catch (e) {
-      print(e);
-      rethrow;
-    }
-  }
-
-  Future<void> removeFromFavorites(String userId, String songId) async {
-    try {
-      await _database
-          .collection('favorites')
-          .doc(userId)
-          .collection('songs')
-          .doc(songId)
-          .delete();
-    } catch (e) {
-      print(e);
-      rethrow;
-    }
-  }
-
-  Stream<List<Song>> getFavoriteSongs(String userId) {
-    return _database
-        .collection('favorites')
-        .doc(userId)
-        .collection('songs')
-        .snapshots()
-        .map(
-          (snapshot) => snapshot.docs
-              .map((doc) => Song.fromFirestore(doc.data(), doc.id))
-              .toList(),
-        );
-  }
 
   Future<Song> getSongById(String id) async {
     DocumentSnapshot doc = await _database.collection('songs').doc(id).get();
@@ -125,11 +76,35 @@ static Future<void> addSong(Song song, File? image) async {
           specialOfferSongs.add(song);
         }
       }
-
       return specialOfferSongs;
     } catch (e) {
       throw Exception('Error getting special offer songs: $e');
     }
   }
+
+  Future<List<Song>> getSongRecommend({int count = 5}) async {
+    try {
+      QuerySnapshot collectionSnapshot = await _songsCollection
+          .orderBy('rating', descending: true) 
+          .limit(count)
+          .get();
+      int totalSongs = collectionSnapshot.docs.length;
+
+      if (totalSongs == 0) return [];
+
+      List<Song> recommendedSongs = [];
+      for (int i = 0; i < totalSongs; i++) {
+        DocumentSnapshot docSnapshot = collectionSnapshot.docs[i];
+        if (docSnapshot.exists) {
+          Song song = Song.fromFirestore(docSnapshot.data() as Map<String, dynamic>, docSnapshot.id);
+          recommendedSongs.add(song);
+        }
+      }
+      return recommendedSongs;
+    } catch (e) {
+      throw Exception('Error getting recommended songs: $e');
+    }
+  }
+
 
 }

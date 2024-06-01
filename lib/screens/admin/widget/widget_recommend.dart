@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gracieusgalerij/models/song.dart';
 import 'package:gracieusgalerij/services/song_service.dart';
 
-class WidgetHome extends StatelessWidget {
-  WidgetHome({Key? key}) : super(key: key);
+class WidgetRecommendation extends StatelessWidget {
+  WidgetRecommendation({Key? key}) : super(key: key);
 
   final SongService _songService = SongService();
 
@@ -14,7 +14,7 @@ class WidgetHome extends StatelessWidget {
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: FutureBuilder<List<Song>>(
-          future: _songService.getSongSpecialOffer(count: 5), // Ambil 5 lagu acak
+          future: _songService.getSongRecommend(count: 5), //utk ambil lagu 
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return Center(child: Text('Error: ${snapshot.error}'));
@@ -39,7 +39,7 @@ class WidgetHome extends StatelessWidget {
                       padding: const EdgeInsets.only(right: 10),
                       child: Container(
                         width: 200,
-                        height: 260,
+                        height: 240,
                         decoration: BoxDecoration(
                           color: const Color(0xFF543310),
                           borderRadius: BorderRadius.circular(10),
@@ -69,18 +69,9 @@ class WidgetHome extends StatelessWidget {
                                       ),
                                     ),
                             ),
-                            const SizedBox(height: 5,),
+                            const SizedBox(height: 10,),
                             Text(
                               song.songTitle,
-                              style: const TextStyle(
-                                fontFamily: 'Bayon',
-                                fontSize: 15,
-                                color: Colors.white,
-                              ),
-                            ),
-                            const SizedBox(height: 5),
-                            Text(
-                              '\$${song.price.toString()}',
                               style: const TextStyle(
                                 fontFamily: 'Bayon',
                                 fontSize: 15,

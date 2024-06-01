@@ -10,7 +10,7 @@ import 'package:gracieusgalerij/screens/review_list_screen.dart';
 import 'screens/landing_screen.dart';
 import 'screens/auth/login_screen.dart';
 import 'screens/auth/signup_screen.dart';
-import 'screens/product_detail.dart';
+import 'screens/song_detail.dart';
 import 'screens/user_profile.dart';
 
 void main() async {
@@ -32,21 +32,21 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       debugShowCheckedModeBanner: false,
-      initialRoute: '/review',
+      initialRoute: '/home',
       routes: {
         '/': (context) => const LandingScreen(),
         '/landing': (context) => const LandingScreen(),
         '/view': (context) => const UserProfile(),
         '/signup': (context) => const SignupScreen(),
         '/login': (context) => const LoginScreen(),
-        '/cart': (context) => const CartScreen(),
+        //'/cart': (context) => const CartScreen(song: null,),
         '/favorites': (context) => const FavoriteScreen(),
         '/home': (context) => const HomeScreen(),
-        '/home_adm': (context) => const HomeScreenAdmin(),
         '/review': (context) => const ReviewListScreen(),
+        '/home_adm': (context) => const HomeScreenAdmin(),
         '/review_edit': (context) => const ReviewEditScreen(),
         '/edit': (context) => const EditProductDetail(),
-        //  '/product_detail': (context) =>  ProductDetailScreen(productId: ''),
+       '/product_detail': (context) =>  SongDetailScreen(songId: ''),
       },
     );
   }

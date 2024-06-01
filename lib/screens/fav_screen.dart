@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:gracieusgalerij/screens/cart_screen.dart';
-import 'user_profile.dart';
+import 'package:provider/provider.dart';
+import '../models/favorite.dart';
+import 'provider/fav_prov.dart';
+import 'song_detail.dart';
 
 class FavoriteScreen extends StatefulWidget {
   const FavoriteScreen({Key? key}) : super(key: key);
@@ -11,23 +13,11 @@ class FavoriteScreen extends StatefulWidget {
 
 class _FavoriteScreenState extends State<FavoriteScreen> {
   int _currentIndex = 3;
-  List<Map<String, String>> favoriteItems = List.generate(
-    10,
-    (index) => {
-      'productName': 'Product ${index + 1}',
-      'brandName': 'Brand Name',
-      'imageUrl': 'images/product_${index + 1}.png',
-    },
-  );
-
-  void _removeFromFavorites(int index) {
-    setState(() {
-      favoriteItems.removeAt(index);
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
+    final favoriteProvider = Provider.of<FavoriteProvider>(context);
+
     return Scaffold(
       body: Stack(
         children: [
@@ -35,15 +25,15 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
             height: double.infinity,
             width: double.infinity,
             decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color(0xFFF8F4E1),
-              Color(0xFFAF8F6F),
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
+              gradient: LinearGradient(
+                colors: [
+                  Color(0xFFF8F4E1),
+                  Color(0xFFAF8F6F),
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -81,26 +71,47 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                   ),
                 ),
                 Expanded(
-                  child: SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: List.generate(
-                          favoriteItems.length,
-                          (index) => Padding(
-                            padding: const EdgeInsets.only(bottom: 16.0),
-                            child: FavoriteItem(
-                              index: index,
-                              productName: favoriteItems[index]['productName']!,
-                              brandName: favoriteItems[index]['brandName']!,
-                              imageUrl: favoriteItems[index]['imageUrl']!,
-                              onRemove: _removeFromFavorites,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+                  child: StreamBuilder<List<Favorite>>(
+                    stream: favoriteProvider.favorites,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState ==
+                          ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else if (!snapshot.hasData ||
+                          snapshot.data!.isEmpty) {
+                        return const Center(
+                          child: Text('No favorite songs yet.'),
+                        );
+                      } else if (snapshot.hasError) {
+                        return Center(
+                          child: Text('Error: ${snapshot.error}'),
+                        );
+                      } else {
+                        return ListView.builder(
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (context, index) {
+                            final favorite = snapshot.data![index];
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16.0,
+                                vertical: 8.0,
+                              ),
+                              child: FavoriteItem(
+                                index: index,
+                                song: favorite,
+                                onRemove: () =>
+                                    favoriteProvider.removeFromFavorites(
+                                        favorite.id),
+                                onTap: () => _navigateToSongDetail(
+                                    context, favorite.id),
+                              ),
+                            );
+                          },
+                        );
+                      }
+                    },
                   ),
                 ),
               ],
@@ -124,42 +135,49 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.home,
-                color:
-                    _currentIndex == 0 ? const Color(0xFF0500FF) : Colors.black,
+                color: _currentIndex == 0
+                    ? const Color(0xFF0500FF)
+                    : Colors.black,
               ),
               label: 'Home',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.search,
-                color:
-                    _currentIndex == 1 ? const Color(0xFF0500FF) : Colors.black,
+                color: _currentIndex == 1
+                    ? const Color(0xFF0500FF)
+                    : Colors.black,
               ),
               label: 'Search',
             ),
             BottomNavigationBarItem(
               icon: Image.asset(
-                _currentIndex == 2 ? 'images/basket.png' : 'images/basket.png',
+                _currentIndex == 2
+                    ? 'images/basket.png'
+                    : 'images/basket.png',
                 width: 24,
                 height: 24,
-                color:
-                    _currentIndex == 2 ? const Color(0xFF0500FF) : Colors.black,
+                color: _currentIndex == 2
+                    ? const Color(0xFF0500FF)
+                    : Colors.black,
               ),
               label: 'Story',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.favorite,
-                color:
-                    _currentIndex == 3 ? const Color(0xFF0500FF) : Colors.black,
+                color: _currentIndex == 3
+                    ? const Color(0xFF0500FF)
+                    : Colors.black,
               ),
               label: 'Favorite',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.account_circle_rounded,
-                color:
-                    _currentIndex == 4 ? const Color(0xFF0500FF) : Colors.black,
+                color: _currentIndex == 4
+                    ? const Color(0xFF0500FF)
+                    : Colors.black,
               ),
               label: 'Account',
             ),
@@ -191,25 +209,14 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
         break;
     }
 
-    Navigator.pushReplacement(
+    Navigator.pushReplacementNamed(context, routeBuilder);
+  }
+
+  void _navigateToSongDetail(BuildContext context, String songId) {
+    Navigator.push(
       context,
-      PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) {
-          switch (index) {
-            case 0:
-            // return const HomeScreen();
-            case 1:
-            // return const SearchScreen();
-            case 2:
-              return const CartScreen();
-            case 3:
-              return const FavoriteScreen();
-            case 4:
-              return const UserProfile();
-            default:
-              return Container();
-          }
-        },
+      MaterialPageRoute(
+        builder: (context) => SongDetailScreen(songId: songId),
       ),
     );
   }
@@ -217,26 +224,23 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
 
 class FavoriteItem extends StatelessWidget {
   final int index;
-  final String productName;
-  final String brandName;
-  final String imageUrl;
-  final Function(int) onRemove;
+  final Favorite song;
+  final VoidCallback onRemove;
+  final VoidCallback onTap;
 
   const FavoriteItem({
     Key? key,
     required this.index,
-    required this.productName,
-    required this.brandName,
-    required this.imageUrl,
+    required this.song,
     required this.onRemove,
+    required this.onTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 89,
+    return GestureDetector(
+      onTap: onTap,
       child: Container(
-        width: 417,
         decoration: BoxDecoration(
           color: const Color(0xFF543310),
           borderRadius: BorderRadius.circular(10),
@@ -253,7 +257,7 @@ class FavoriteItem extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                   image: DecorationImage(
                     fit: BoxFit.cover,
-                    image: AssetImage(imageUrl),
+                    image: NetworkImage(song.imageSong),
                   ),
                 ),
               ),
@@ -264,7 +268,7 @@ class FavoriteItem extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      brandName,
+                      song.songTitle,
                       style: const TextStyle(
                         fontSize: 16,
                         color: Colors.white,
@@ -274,7 +278,7 @@ class FavoriteItem extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      productName,
+                      song.creator,
                       style: const TextStyle(
                         fontSize: 14,
                         color: Colors.white,
@@ -285,7 +289,7 @@ class FavoriteItem extends StatelessWidget {
                 ),
               ),
               IconButton(
-                onPressed: () => onRemove(index),
+                onPressed: onRemove,
                 icon: const Icon(Icons.favorite, color: Colors.red),
               ),
             ],

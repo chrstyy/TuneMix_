@@ -1,8 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gracieusgalerij/screens/cart_screen.dart';
 import 'package:gracieusgalerij/screens/fav_screen.dart';
+import 'package:gracieusgalerij/screens/song_detail.dart';
 import 'package:gracieusgalerij/screens/user_profile.dart';
 import 'package:path/path.dart';
+
+import '../models/song.dart';
+import '../services/song_service.dart';
+import 'admin/widget/widget_offer.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -13,6 +19,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
+  final SongService _songService = SongService();
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -120,186 +128,110 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      const Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 20, 0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Special Offer',
-                              style: TextStyle(
-                                fontFamily: 'Bayon',
-                                fontSize: 20,
-                              ),
-                            ),
-                            Icon(
-                              Icons.arrow_drop_down,
-                              color: Colors.black,
-                              size: 24,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Align(
-                        alignment: const AlignmentDirectional(-1, 0),
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(right: 10),
-                                child: Container(
-                                  width: 100,
-                                  height: 150,
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFF543310),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(5, 5, 5, 5),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          child: Image.asset(
-                                            'images/logo.png',
-                                            width: 150,
-                                            height: 100,
-                                            fit: BoxFit.contain,
-                                          ),
-                                        ),
-                                      ),
-                                      const Text('Special Offer',
-                                          style: TextStyle(
-                                            fontFamily: 'Bayon',
-                                            fontSize: 15,
-                                          )),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 10),
-                                child: Container(
-                                  width: 100,
-                                  height: 150,
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFF543310),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(5, 5, 5, 5),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          child: Image.asset(
-                                            'images/logo.png',
-                                            width: 150,
-                                            height: 100,
-                                            fit: BoxFit.contain,
-                                          ),
-                                        ),
-                                      ),
-                                      const Text('Special Offer',
-                                          style: TextStyle(
-                                            fontFamily: 'Bayon',
-                                            fontSize: 15,
-                                          )),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 10),
-                                child: Container(
-                                  width: 100,
-                                  height: 150,
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFF543310),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(5, 5, 5, 5),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          child: Image.asset(
-                                            'images/logo.png',
-                                            width: 150,
-                                            height: 100,
-                                            fit: BoxFit.contain,
-                                          ),
-                                        ),
-                                      ),
-                                      const Text('Special Offer',
-                                          style: TextStyle(
-                                            fontFamily: 'Bayon',
-                                            fontSize: 15,
-                                          )),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 10),
-                                child: Container(
-                                  width: 100,
-                                  height: 150,
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFF543310),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(5, 5, 5, 5),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          child: Image.asset(
-                                            'images/logo.png',
-                                            width: 150,
-                                            height: 100,
-                                            fit: BoxFit.contain,
-                                          ),
-                                        ),
-                                      ),
-                                      const Text('Special Offer',
-                                          style: TextStyle(
-                                            fontFamily: 'Bayon',
-                                            fontSize: 15,
-                                          )),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
+                const Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
+                  child: Text(
+                    'Special Offer',
+                    style: TextStyle(
+                      fontFamily: 'Bayon',
+                      fontSize: 20,
+                    ),
                   ),
+                ),
+                FutureBuilder<List<Song>>(
+                  future: _songService.getSongSpecialOffer(count: 5),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    if (snapshot.hasError) {
+                      return Center(
+                        child: Text('Error: ${snapshot.error}'),
+                      );
+                    }
+                    final List<Song> data = snapshot.data ?? [];
+                    if (data.isEmpty) {
+                      return const Center(
+                        child: Text('No data available.'),
+                      );
+                    }
+                    return SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: data.map((song) {
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 10),
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => SongDetailScreen(songId: song.id),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                width: 200,
+                                height: 260,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFF543310),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    const SizedBox(height: 13),
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(8),
+                                      child: song.imageSong != null &&
+                                              Uri.parse(song.imageSong!).isAbsolute
+                                          ? Image.network(
+                                              song.imageSong!,
+                                              width: 182,
+                                              height: 188,
+                                              fit: BoxFit.cover,
+                                            )
+                                          : Container(
+                                              width: 182,
+                                              height: 188,
+                                              color: Colors.grey[300],
+                                              child: const Icon(
+                                                Icons.image,
+                                                color: Colors.grey,
+                                              ),
+                                            ),
+                                    ),
+                                    const SizedBox(height: 5,),
+                                    Text(
+                                      song.songTitle,
+                                      style: const TextStyle(
+                                        fontFamily: 'Bayon',
+                                        fontSize: 15,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 5),
+                                    Text(
+                                      '\$${song.price.toString()}',
+                                      style: const TextStyle(
+                                        fontFamily: 'Bayon',
+                                        fontSize: 15,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    );
+                  },
                 ),
                 const Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
@@ -346,7 +278,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 'texthdsjs',
                                 style: TextStyle(
                                   fontFamily: 'Readex Pro',
-                                  color: Colors.white,
+                                  color: Colors.black,
                                   letterSpacing: 0,
                                 ),
                               ),
@@ -498,111 +430,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 ),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 10),
-                                child: Container(
-                                  width: 100,
-                                  height: 150,
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFF543310),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(5, 5, 5, 5),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          child: Image.asset(
-                                            'images/logo.png',
-                                            width: 150,
-                                            height: 100,
-                                            fit: BoxFit.contain,
-                                          ),
-                                        ),
-                                      ),
-                                      const Text('Special Offer',
-                                          style: TextStyle(
-                                            fontFamily: 'Bayon',
-                                            fontSize: 15,
-                                          )),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 10),
-                                child: Container(
-                                  width: 100,
-                                  height: 150,
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFF543310),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(5, 5, 5, 5),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          child: Image.asset(
-                                            'images/logo.png',
-                                            width: 150,
-                                            height: 100,
-                                            fit: BoxFit.contain,
-                                          ),
-                                        ),
-                                      ),
-                                      const Text('Special Offer',
-                                          style: TextStyle(
-                                            fontFamily: 'Bayon',
-                                            fontSize: 15,
-                                          )),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 10),
-                                child: Container(
-                                  width: 100,
-                                  height: 150,
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFF543310),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(5, 5, 5, 5),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          child: Image.asset(
-                                            'images/logo.png',
-                                            width: 150,
-                                            height: 100,
-                                            fit: BoxFit.contain,
-                                          ),
-                                        ),
-                                      ),
-                                      const Text('Special Offer',
-                                          style: TextStyle(
-                                            fontFamily: 'Bayon',
-                                            fontSize: 15,
-                                          )),
-                                    ],
-                                  ),
-                                ),
-                              ),
+                              
                             ],
                           ),
                         ),
@@ -631,14 +459,14 @@ class _HomeScreenState extends State<HomeScreen> {
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.home,
-                color: _currentIndex == 0 ? Color(0xFF0500FF) : Colors.black,
+                color: _currentIndex == 0 ? const Color(0xFF0500FF) : Colors.black,
               ),
               label: 'Home',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.search,
-                color: _currentIndex == 1 ? Color(0xFF0500FF) : Colors.black,
+                color: _currentIndex == 1 ? const Color(0xFF0500FF) : Colors.black,
               ),
               label: 'Search',
             ),
@@ -647,21 +475,21 @@ class _HomeScreenState extends State<HomeScreen> {
                 _currentIndex == 2 ? 'images/basket.png' : 'images/basket.png',
                 width: 24,
                 height: 24,
-                color: _currentIndex == 2 ? Color(0xFF0500FF) : Colors.black,
+                color: _currentIndex == 2 ? const Color(0xFF0500FF) : Colors.black,
               ),
               label: 'Story',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.favorite,
-                color: _currentIndex == 3 ? Color(0xFF0500FF) : Colors.black,
+                color: _currentIndex == 3 ? const Color(0xFF0500FF) : Colors.black,
               ),
               label: 'Favorite',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.account_circle_rounded,
-                color: _currentIndex == 4 ? Color(0xFF0500FF) : Colors.black,
+                color: _currentIndex == 4 ? const Color(0xFF0500FF) : Colors.black,
               ),
               label: 'Account',
             ),
@@ -704,7 +532,7 @@ void _navigateToPage(int index) {
           case 1:
           // return const SearchScreen();
           case 2:
-            return const CartScreen();
+            return const CartScreen(purchasedSongs: [],);
           case 3:
             return const FavoriteScreen();
           case 4:
