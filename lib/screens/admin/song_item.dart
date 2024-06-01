@@ -1,6 +1,8 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:gracieusgalerij/models/song.dart';
+import 'package:gracieusgalerij/screens/theme/theme_app.dart';
+import 'package:provider/provider.dart';
 
 class SongItem extends StatelessWidget {
   final Song song;
@@ -9,6 +11,7 @@ class SongItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
     return Container(
       width: 100,
       height: 150,

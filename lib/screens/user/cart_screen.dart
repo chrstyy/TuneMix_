@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gracieusgalerij/models/song.dart';
+import 'package:gracieusgalerij/screens/theme/theme_app.dart';
+import 'package:provider/provider.dart';
 
 import '../../services/cart_service.dart';
 import 'fav_screen.dart';
@@ -289,7 +291,6 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
-  
   void _processQRISPayment(BuildContext context) {
     final qrisUrl =
         'qris://payment?amount=${getTotalPayment()}&merchant=MERCHANT_ID';
@@ -385,18 +386,17 @@ class _CartScreenState extends State<CartScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
+
     return Scaffold(
       body: Stack(
         children: [
           Container(
             height: double.infinity,
             width: double.infinity,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [
-                  Color(0xFFF8F4E1),
-                  Color(0xFFAF8F6F),
-                ],
+                colors: themeProvider.themeMode().gradientColors!,
                 stops: [0.33, 1],
                 begin: AlignmentDirectional(0, -1),
                 end: AlignmentDirectional(0, 1),
@@ -423,6 +423,7 @@ class _CartScreenState extends State<CartScreen> {
                           'images/arrowback.png',
                           width: 35,
                           height: 35,
+                          color: themeProvider.themeMode().switchColor!,
                         ),
                       ),
                       Column(
@@ -435,14 +436,10 @@ class _CartScreenState extends State<CartScreen> {
                                 fontWeight: FontWeight.bold,
                                 fontFamily: 'Battambang'),
                           ),
-                           Text(
-                              '${cartItems.length} Items',
-                              style: const TextStyle(
-                                fontSize: 14,
-                                color: Colors.black,
-                                fontFamily: 'Battambang',
-                              ),
-                            ),
+                          Text(
+                            '${cartItems.length} Items',
+                            style: Theme.of(context).textTheme.headline5!,
+                          ),
                         ],
                       ),
                       Container(
@@ -459,84 +456,81 @@ class _CartScreenState extends State<CartScreen> {
                     itemBuilder: (context, index) {
                       final song = cartItems[index];
                       return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 5),
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(
-                              color: const Color(0xFF543310),
-                              width: 10
-                            ),
+                                color: themeProvider.themeMode().switchBgColor!,
+                                width: 10),
                           ),
-                          child: Column(
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10),
-                                  child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: themeProvider.themeMode().switchColor!,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    width: 80,
+                                    height: 80,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: Image.network(
+                                        song.imageSong ?? '',
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const SizedBox(height: 10),
+                                        Text(
+                                          song.songTitle,
+                                          style: const TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: 'Battambang',
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
-                                      Container(
-                                        width: 80,
-                                        height: 80,
-                                        child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(10),
-                                          child: Image.network(
-                                            song.imageSong ?? '',
-                                            fit: BoxFit.cover,
-                                          ),
+                                      const SizedBox(height: 40),
+                                      Text(
+                                        '\$${(song.price).toStringAsFixed(2)}',
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.orange,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: 'Battambang',
                                         ),
-                                      ),
-                                      const SizedBox(width: 10),
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            const SizedBox(height: 10),
-                                            Text(
-                                              song.songTitle,
-                                              style: const TextStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.bold,
-                                                fontFamily: 'Battambang',
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.end,
-                                        children: [
-                                          const SizedBox(height: 40),
-                                          Text(
-                                            '\$${(song.price).toStringAsFixed(2)}',
-                                            style: const TextStyle(
-                                              fontSize: 16,
-                                              color: Colors.orange,
-                                              fontWeight: FontWeight.bold,
-                                              fontFamily: 'Battambang',
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      IconButton(
-                                        icon: Icon(
-                                          Icons.delete,
-                                          color: Colors.red,
-                                        ),
-                                        onPressed: () {
-                                          _removeItemFromCart(index);
-                                        },
                                       ),
                                     ],
                                   ),
-                                ),
+                                  IconButton(
+                                    icon: Icon(
+                                      Icons.delete,
+                                      color: Colors.red,
+                                    ),
+                                    onPressed: () {
+                                      _removeItemFromCart(index);
+                                    },
+                                  ),
+                                ],
                               ),
-                            ],
+                            ),
                           ),
                         ),
                       );
@@ -550,8 +544,7 @@ class _CartScreenState extends State<CartScreen> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFF1B26F),
                     shape: const StadiumBorder(),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                   ),
                   child: const Text(
                     'Payment',
@@ -598,9 +591,7 @@ class _CartScreenState extends State<CartScreen> {
             ),
             BottomNavigationBarItem(
               icon: Image.asset(
-                _currentIndex == 2
-                    ? 'images/basket.png'
-                    : 'images/basket.png',
+                _currentIndex == 2 ? 'images/basket.png' : 'images/basket.png',
                 width: 24,
                 height: 24,
                 color:
@@ -660,7 +651,7 @@ class _CartScreenState extends State<CartScreen> {
             case 0:
               return const HomeScreen();
             case 1:
-              // return const SearchScreen();
+            // return const SearchScreen();
             case 2:
               return const CartScreen(
                 purchasedSongs: [],

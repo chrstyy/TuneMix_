@@ -3,9 +3,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:gracieusgalerij/screens/theme/theme_app.dart';
 import 'package:gracieusgalerij/screens/user/pick_location.dart';
 import 'package:gracieusgalerij/screens/user/review/review_edit_screen.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../services/review_services.dart';
@@ -50,6 +52,7 @@ class _ReviewListScreenState extends State<ReviewListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -161,6 +164,7 @@ class _ReviewListState extends State<ReviewList> {
 
   @override
   Widget build(BuildContext context) {
+    ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
     return StreamBuilder(
       stream: ReviewService.getReviewList(),
       builder: (context, snapshot) {

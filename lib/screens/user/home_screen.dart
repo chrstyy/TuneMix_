@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:gracieusgalerij/screens/theme/theme_app.dart';
 import 'package:gracieusgalerij/screens/user/cart_screen.dart';
 import 'package:gracieusgalerij/screens/user/fav_screen.dart';
 import 'package:gracieusgalerij/screens/user/song_detail.dart';
 import 'package:gracieusgalerij/screens/user/user_profile.dart';
 import 'package:path/path.dart';
+import 'package:provider/provider.dart';
 
 import '../../models/song.dart';
 import '../../services/song_service.dart';
@@ -20,19 +22,17 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
   final SongService _songService = SongService();
-  
+
   @override
   Widget build(BuildContext context) {
+    ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [
-              Color(0xFFF8F4E1),
-              Color(0xFFAF8F6F),
-            ],
+            colors: themeProvider.themeMode().gradientColors!,
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -117,11 +117,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                       ),
-                      const Padding(
+                      Padding(
                         padding: EdgeInsets.only(left: 20),
                         child: Icon(
                           Icons.notifications,
-                          color: Colors.black,
+                          color: themeProvider.themeMode().switchColor!,
                           size: 24,
                         ),
                       ),
@@ -169,7 +169,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => SongDetailScreen(songId: song.id),
+                                    builder: (context) =>
+                                        SongDetailScreen(songId: song.id),
                                   ),
                                 );
                               },
@@ -177,7 +178,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 width: 200,
                                 height: 260,
                                 decoration: BoxDecoration(
-                                  color: const Color(0xFF543310),
+                                  color:
+                                      themeProvider.themeMode().switchBgColor!,
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: Column(
@@ -188,7 +190,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(8),
                                       child: song.imageSong != null &&
-                                              Uri.parse(song.imageSong!).isAbsolute
+                                              Uri.parse(song.imageSong!)
+                                                  .isAbsolute
                                           ? Image.network(
                                               song.imageSong!,
                                               width: 182,
@@ -205,23 +208,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                               ),
                                             ),
                                     ),
-                                    const SizedBox(height: 5,),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
                                     Text(
                                       song.songTitle,
-                                      style: const TextStyle(
-                                        fontFamily: 'Bayon',
-                                        fontSize: 15,
-                                        color: Colors.white,
-                                      ),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline3!,
                                     ),
                                     const SizedBox(height: 5),
                                     Text(
                                       '\$${song.price.toString()}',
-                                      style: const TextStyle(
-                                        fontFamily: 'Bayon',
-                                        fontSize: 15,
-                                        color: Colors.white,
-                                      ),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline3!,
                                     ),
                                   ],
                                 ),
@@ -246,8 +247,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 Container(
                   width: double.infinity,
                   height: 70,
-                  decoration: const BoxDecoration(
-                    color: Color(0xFF543310),
+                  decoration: BoxDecoration(
+                    color: themeProvider.themeMode().switchBgColor!,
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(10),
                       bottomLeft: Radius.circular(10),
@@ -366,7 +367,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     children: [
-                      const Padding(
+                      Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(0, 0, 20, 0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
@@ -381,7 +382,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             Icon(
                               Icons.arrow_drop_down,
-                              color: Colors.black,
+                              color: themeProvider.themeMode().switchColor!,
                               size: 24,
                             ),
                           ],
@@ -430,7 +431,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 ),
                               ),
-                              
                             ],
                           ),
                         ),
@@ -459,14 +459,16 @@ class _HomeScreenState extends State<HomeScreen> {
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.home,
-                color: _currentIndex == 0 ? const Color(0xFF0500FF) : Colors.black,
+                color:
+                    _currentIndex == 0 ? const Color(0xFF0500FF) : Colors.black,
               ),
               label: 'Home',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.search,
-                color: _currentIndex == 1 ? const Color(0xFF0500FF) : Colors.black,
+                color:
+                    _currentIndex == 1 ? const Color(0xFF0500FF) : Colors.black,
               ),
               label: 'Search',
             ),
@@ -475,21 +477,24 @@ class _HomeScreenState extends State<HomeScreen> {
                 _currentIndex == 2 ? 'images/basket.png' : 'images/basket.png',
                 width: 24,
                 height: 24,
-                color: _currentIndex == 2 ? const Color(0xFF0500FF) : Colors.black,
+                color:
+                    _currentIndex == 2 ? const Color(0xFF0500FF) : Colors.black,
               ),
               label: 'Story',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.favorite,
-                color: _currentIndex == 3 ? const Color(0xFF0500FF) : Colors.black,
+                color:
+                    _currentIndex == 3 ? const Color(0xFF0500FF) : Colors.black,
               ),
               label: 'Favorite',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.account_circle_rounded,
-                color: _currentIndex == 4 ? const Color(0xFF0500FF) : Colors.black,
+                color:
+                    _currentIndex == 4 ? const Color(0xFF0500FF) : Colors.black,
               ),
               label: 'Account',
             ),
@@ -532,7 +537,9 @@ void _navigateToPage(int index) {
           case 1:
           // return const SearchScreen();
           case 2:
-            return const CartScreen(purchasedSongs: [],);
+            return const CartScreen(
+              purchasedSongs: [],
+            );
           case 3:
             return const FavoriteScreen();
           case 4:

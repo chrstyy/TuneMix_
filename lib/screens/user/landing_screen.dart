@@ -1,6 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gracieusgalerij/screens/auth/continue_with_google.dart';
+import 'package:gracieusgalerij/screens/theme/theme_app.dart';
+import 'package:provider/provider.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -35,6 +37,7 @@ class _LogoState extends State<Logo> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
     return AnimatedBuilder(
       animation: _controller,
       builder: (context, child) {
@@ -130,22 +133,20 @@ class _LandingScreenState extends State<LandingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       body: Shimmer(
         child: Container(
           height: double.infinity,
           padding:
               const EdgeInsets.only(top: 100, left: 20, right: 20, bottom: 20),
-          decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color(0xFFF8F4E1),
-              Color(0xFFAF8F6F),
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: themeProvider.themeMode().gradientColors!,
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
           ),
-        ),
           child: Column(
             children: [
               const Expanded(
@@ -267,22 +268,13 @@ class _LandingScreenState extends State<LandingScreen> {
                               MediaQuery.of(context).textScaleFactor,
                           text: TextSpan(
                             children: [
-                              const TextSpan(
+                              TextSpan(
                                 text: 'ALREADY HAVE AN ACCOUNT?',
-                                style: TextStyle(
-                                  fontFamily: 'PragatiNarrow',
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                ),
+                                style: Theme.of(context).textTheme.headline2,
                               ),
                               TextSpan(
-                                text: 'LOGIN',
-                                style: const TextStyle(
-                                  fontFamily: 'OdorMeanChey',
-                                  color: Color(0xFF32012F),
-                                  fontSize: 16,
-                                  decoration: TextDecoration.underline,
-                                ),
+                                text: ' LOGIN',
+                                style: Theme.of(context).textTheme.headline5,
                                 mouseCursor: SystemMouseCursors.click,
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {

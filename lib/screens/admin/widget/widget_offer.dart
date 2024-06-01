@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gracieusgalerij/models/song.dart';
+import 'package:gracieusgalerij/screens/theme/theme_app.dart';
 import 'package:gracieusgalerij/services/song_service.dart';
+import 'package:provider/provider.dart';
 
 class WidgetOffer extends StatelessWidget {
   WidgetOffer({Key? key}) : super(key: key);
@@ -9,7 +11,7 @@ class WidgetOffer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ThemeProvider themeProvider = 
+    ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
     return Align(
       alignment: const AlignmentDirectional(-1, 0),
       child: SingleChildScrollView(
@@ -42,7 +44,7 @@ class WidgetOffer extends StatelessWidget {
                         width: 200,
                         height: 260,
                         decoration: BoxDecoration(
-                          color: const Color(0xFF543310),
+                          color: themeProvider.themeMode().switchBgColor!,
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Column(
@@ -73,20 +75,12 @@ class WidgetOffer extends StatelessWidget {
                             const SizedBox(height: 5,),
                             Text(
                               song.songTitle,
-                              style: const TextStyle(
-                                fontFamily: 'Bayon',
-                                fontSize: 15,
-                                color: Colors.white,
-                              ),
+                              style:  Theme.of(context).textTheme.headline3,
                             ),
                             const SizedBox(height: 5),
                             Text(
                               '\$${song.price.toString()}',
-                              style: const TextStyle(
-                                fontFamily: 'Bayon',
-                                fontSize: 15,
-                                color: Colors.white,
-                              ),
+                              style: Theme.of(context).textTheme.headline3,
                             ),
                           ],
                         ),

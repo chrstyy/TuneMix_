@@ -3,8 +3,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:gracieusgalerij/screens/theme/theme_app.dart';
 import 'package:gracieusgalerij/screens/user/fav_screen.dart';
 import 'package:gracieusgalerij/screens/user/song_detail.dart';
+import 'package:provider/provider.dart';
 import '../../services/auth_service.dart';
 import '../admin/home_admin.dart';
 import 'forgot_password.dart';
@@ -82,7 +84,7 @@ class _LoginScreensState extends State<LoginScreen> {
         } else {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const FavoriteScreen()),
+            MaterialPageRoute(builder: (context) => const HomeScreen()),
           );
         }
       } else {
@@ -168,6 +170,7 @@ class _LoginScreensState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       body: Stack(
         children: [
@@ -186,16 +189,13 @@ class _LoginScreensState extends State<LoginScreen> {
           Container(
             height: double.infinity,
             width: double.infinity,
-           decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color(0xFFF8F4E1),
-              Color(0xFFAF8F6F),
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: themeProvider.themeMode().gradientColors!,
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+            ),
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -216,8 +216,12 @@ class _LoginScreensState extends State<LoginScreen> {
                               color: Colors.transparent,
                             ),
                           ),
-                          child: Image.asset('images/arrowback.png',
-                              width: 35, height: 35),
+                          child: Image.asset(
+                            'images/arrowback.png',
+                            width: 35,
+                            height: 35,
+                            color: themeProvider.themeMode().switchColor!,
+                          ),
                         ),
                       ),
                     ],
@@ -248,7 +252,7 @@ class _LoginScreensState extends State<LoginScreen> {
                             const Text(
                               'Email',
                               style: TextStyle(
-                                  fontFamily: 'Belgrano', fontSize: 25),
+                                  fontFamily: 'Belgrano', fontSize: 20),
                             ),
                             TextFormField(
                               controller: _emailController,
@@ -282,7 +286,7 @@ class _LoginScreensState extends State<LoginScreen> {
                             const Text(
                               'Password',
                               style: TextStyle(
-                                  fontFamily: 'Belgrano', fontSize: 25),
+                                  fontFamily: 'Belgrano', fontSize: 20),
                             ),
                             TextFormField(
                               controller: _passwordController,
@@ -364,13 +368,13 @@ class _LoginScreensState extends State<LoginScreen> {
                                   ),
                                   elevation: 5.0,
                                   padding: const EdgeInsets.symmetric(
-                                      vertical: 15, horizontal: 40),
+                                      vertical: 10, horizontal: 40),
                                 ),
                                 child: const Text(
                                   'Login',
                                   style: TextStyle(
                                       fontFamily: 'Belgrano',
-                                      fontSize: 30,
+                                      fontSize: 25,
                                       color: Colors.black),
                                 ),
                               ),
@@ -381,12 +385,7 @@ class _LoginScreensState extends State<LoginScreen> {
                         RichText(
                           text: TextSpan(
                             text: 'Forgot Password?',
-                            style: const TextStyle(
-                                fontFamily: 'InriaSans',
-                                color: Colors.black,
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                decoration: TextDecoration.underline),
+                            style: Theme.of(context).textTheme.headline5,
                             mouseCursor: SystemMouseCursors.click,
                             recognizer: TapGestureRecognizer()
                               ..onTap = handleForgotPassword,

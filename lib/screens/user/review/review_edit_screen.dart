@@ -5,10 +5,12 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:gracieusgalerij/models/review.dart';
+import 'package:gracieusgalerij/screens/theme/theme_app.dart';
 import 'package:gracieusgalerij/screens/user/pick_location.dart';
 import 'package:gracieusgalerij/services/location_services.dart';
 import 'package:gracieusgalerij/services/review_services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 class ReviewEditScreen extends StatefulWidget {
   const ReviewEditScreen({super.key, this.review, this.initialLocation});
@@ -66,6 +68,7 @@ class _ReviewEditScreenState extends State<ReviewEditScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       body: Container(
         width: double.infinity,

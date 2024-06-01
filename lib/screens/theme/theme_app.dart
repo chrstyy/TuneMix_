@@ -62,9 +62,9 @@ class ThemeProvider with ChangeNotifier {
           color: isLightTheme ? AppColors.white : AppColors.black,
         ),
         headline4: TextStyle(
-          fontFamily: 'Itim',
-          fontSize: 13,
-          color: isLightTheme ? AppColors.black : AppColors.white,
+          fontFamily: 'Bayon',
+          fontSize: 30,
+          color: isLightTheme ? AppColors.white : AppColors.black,
         ),
         headline5: TextStyle(
           fontFamily: 'OdorMeanChey',
@@ -73,9 +73,9 @@ class ThemeProvider with ChangeNotifier {
           color: isLightTheme ? AppColors.black : AppColors.white,
         ),
         headline6: TextStyle(
-            fontFamily: 'Belgrano',
-            fontSize: 14,
-            color: isLightTheme ? AppColors.red : AppColors.white,
+            fontFamily: 'Battambang',
+            fontSize: 15,
+            color: isLightTheme ? AppColors.white : AppColors.black,
             decoration: TextDecoration.underline),
       ),
     );

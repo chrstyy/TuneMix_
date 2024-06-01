@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:gracieusgalerij/screens/theme/theme_app.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:provider/provider.dart';
 
 import '../../models/song.dart';
 import '../../services/song_service.dart';
@@ -72,6 +74,7 @@ class _EditProductDetailState extends State<EditProductDetail> {
 
   @override
   Widget build(BuildContext context) {
+    ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       body: SingleChildScrollView(
         child: ConstrainedBox(
@@ -84,12 +87,9 @@ class _EditProductDetailState extends State<EditProductDetail> {
                 Container(
                   width: double.infinity,
                   height: double.infinity,
-                  decoration: const BoxDecoration(
+                  decoration:  BoxDecoration(
                     gradient: LinearGradient(
-                      colors: [
-                        Color(0xFFF8F4E1),
-                        Color(0xFFAF8F6F),
-                      ],
+                      colors: themeProvider.themeMode().gradientColors!,
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     ),
@@ -106,6 +106,7 @@ class _EditProductDetailState extends State<EditProductDetail> {
                       'images/arrowback.png',
                       width: 32.0,
                       height: 32.0,
+                      color: themeProvider.themeMode().switchColor!,
                     ),
                   ),
                 ),
@@ -120,7 +121,7 @@ class _EditProductDetailState extends State<EditProductDetail> {
                       child: Container(
                         height: 200.0,
                         decoration: BoxDecoration(
-                          color: const Color(0xFF543310),
+                          color: themeProvider.themeMode().switchBgColor!,
                           borderRadius: BorderRadius.circular(8.0),
                         ),
                         child: Center(

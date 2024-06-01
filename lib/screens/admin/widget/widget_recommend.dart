@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gracieusgalerij/models/song.dart';
+import 'package:gracieusgalerij/screens/theme/theme_app.dart';
 import 'package:gracieusgalerij/services/song_service.dart';
+import 'package:provider/provider.dart';
 
 class WidgetRecommendation extends StatelessWidget {
   WidgetRecommendation({Key? key}) : super(key: key);
@@ -9,6 +11,7 @@ class WidgetRecommendation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
     return Align(
       alignment: const AlignmentDirectional(-1, 0),
       child: SingleChildScrollView(
@@ -36,12 +39,12 @@ class WidgetRecommendation extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: data.map((song) {
                     return Padding(
-                      padding: const EdgeInsets.only(right: 10),
+                      padding:  EdgeInsets.only(right: 10),
                       child: Container(
                         width: 200,
                         height: 240,
                         decoration: BoxDecoration(
-                          color: const Color(0xFF543310),
+                          color: themeProvider.themeMode().switchBgColor!,
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Column(
@@ -72,11 +75,8 @@ class WidgetRecommendation extends StatelessWidget {
                             const SizedBox(height: 10,),
                             Text(
                               song.songTitle,
-                              style: const TextStyle(
-                                fontFamily: 'Bayon',
-                                fontSize: 15,
-                                color: Colors.white,
-                              ),
+                              style:Theme.of(context).textTheme.headline3,
+                              
                             ),
                           ],
                         ),

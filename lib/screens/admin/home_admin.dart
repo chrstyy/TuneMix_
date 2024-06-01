@@ -4,8 +4,10 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gracieusgalerij/models/song.dart';
 import 'package:gracieusgalerij/screens/admin/edit_product_detail_admin.dart';
+import 'package:gracieusgalerij/screens/theme/theme_app.dart';
 import 'package:gracieusgalerij/services/song_service.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'dart:io';
 
 import 'widget/widget_offer.dart';
@@ -23,16 +25,14 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
 
   @override
   Widget build(BuildContext context) {
+    ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
+        decoration:  BoxDecoration(
           gradient: LinearGradient(
-            colors: [
-              Color(0xFFF8F4E1),
-              Color(0xFFAF8F6F),
-            ],
+            colors: themeProvider.themeMode().gradientColors!,
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -121,14 +121,14 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                         onTap: () {
                            Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => EditProductDetail()),
+                            MaterialPageRoute(builder: (context) => const EditProductDetail()),
                           );
                         },
-                        child: const Padding(
-                          padding: EdgeInsets.only(left: 20),
+                        child:  Padding(
+                          padding: const EdgeInsets.only(left: 20),
                           child: Icon(
                             Icons.add_circle_sharp,
-                            color: Colors.black,
+                            color: themeProvider.themeMode().switchColor!,
                             size: 24,
                           ),
                         ),
@@ -139,13 +139,13 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                 Column(
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.only(top: 20, right: 20),
+                     Padding(
+                      padding: const EdgeInsets.only(top: 20, right: 20),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
+                          const Text(
                             'Special Offer',
                             style: TextStyle(
                               fontFamily: 'Bayon',
@@ -154,7 +154,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                           ),
                           Icon(
                             Icons.arrow_drop_down,
-                            color: Colors.black,
+                            color:  themeProvider.themeMode().switchColor!,
                             size: 24,
                           ),
                         ],
@@ -163,13 +163,13 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                 SizedBox(child: WidgetOffer()),
                   ],
                 ),
-                const Padding(
-                  padding: EdgeInsets.only(top: 20, right: 20),
+                 Padding(
+                  padding: const EdgeInsets.only(top: 20, right: 20),
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      const Text(
                         'Genre',
                         style: TextStyle(
                           fontFamily: 'Bayon',
@@ -178,7 +178,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                       ),
                       Icon(
                         Icons.edit_note_rounded,
-                        color: Colors.black,
+                        color:  themeProvider.themeMode().switchColor!,
                         size: 24,
                       ),
                     ],
@@ -187,9 +187,9 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                 Container(
                   width: double.infinity,
                   height: 70,
-                  decoration: const BoxDecoration(
-                    color: Color(0xFF543310),
-                    borderRadius: BorderRadius.only(
+                  decoration:  BoxDecoration(
+                    color:  themeProvider.themeMode().switchBgColor!,
+                    borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(10),
                       bottomLeft: Radius.circular(10),
                     ),
@@ -211,7 +211,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 24),
                                 elevation: 3,
-                                backgroundColor: Color(0xFFF1B26F),
+                                backgroundColor: const Color(0xFFF1B26F),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(8),
                                 ),
@@ -237,7 +237,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 24),
                                 elevation: 3,
-                                backgroundColor: Color(0xFFF1B26F),
+                                backgroundColor: const Color(0xFFF1B26F),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(8),
                                 ),
@@ -263,7 +263,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 24),
                                 elevation: 3,
-                                backgroundColor: Color(0xFFF1B26F),
+                                backgroundColor: const Color(0xFFF1B26F),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(8),
                                 ),

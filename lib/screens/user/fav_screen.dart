@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gracieusgalerij/screens/theme/theme_app.dart';
 import 'package:provider/provider.dart';
 import '../../models/favorite.dart';
 import '../provider/fav_prov.dart';
@@ -16,6 +17,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
     final favoriteProvider = Provider.of<FavoriteProvider>(context);
 
     return Scaffold(
@@ -74,13 +76,11 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                   child: StreamBuilder<List<Favorite>>(
                     stream: favoriteProvider.favorites,
                     builder: (context, snapshot) {
-                      if (snapshot.connectionState ==
-                          ConnectionState.waiting) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(
                           child: CircularProgressIndicator(),
                         );
-                      } else if (!snapshot.hasData ||
-                          snapshot.data!.isEmpty) {
+                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                         return const Center(
                           child: Text('No favorite songs yet.'),
                         );
@@ -101,11 +101,10 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                               child: FavoriteItem(
                                 index: index,
                                 song: favorite,
-                                onRemove: () =>
-                                    favoriteProvider.removeFromFavorites(
-                                        favorite.id),
-                                onTap: () => _navigateToSongDetail(
-                                    context, favorite.id),
+                                onRemove: () => favoriteProvider
+                                    .removeFromFavorites(favorite.id),
+                                onTap: () =>
+                                    _navigateToSongDetail(context, favorite.id),
                               ),
                             );
                           },
@@ -135,49 +134,42 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.home,
-                color: _currentIndex == 0
-                    ? const Color(0xFF0500FF)
-                    : Colors.black,
+                color:
+                    _currentIndex == 0 ? const Color(0xFF0500FF) : Colors.black,
               ),
               label: 'Home',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.search,
-                color: _currentIndex == 1
-                    ? const Color(0xFF0500FF)
-                    : Colors.black,
+                color:
+                    _currentIndex == 1 ? const Color(0xFF0500FF) : Colors.black,
               ),
               label: 'Search',
             ),
             BottomNavigationBarItem(
               icon: Image.asset(
-                _currentIndex == 2
-                    ? 'images/basket.png'
-                    : 'images/basket.png',
+                _currentIndex == 2 ? 'images/basket.png' : 'images/basket.png',
                 width: 24,
                 height: 24,
-                color: _currentIndex == 2
-                    ? const Color(0xFF0500FF)
-                    : Colors.black,
+                color:
+                    _currentIndex == 2 ? const Color(0xFF0500FF) : Colors.black,
               ),
               label: 'Story',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.favorite,
-                color: _currentIndex == 3
-                    ? const Color(0xFF0500FF)
-                    : Colors.black,
+                color:
+                    _currentIndex == 3 ? const Color(0xFF0500FF) : Colors.black,
               ),
               label: 'Favorite',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.account_circle_rounded,
-                color: _currentIndex == 4
-                    ? const Color(0xFF0500FF)
-                    : Colors.black,
+                color:
+                    _currentIndex == 4 ? const Color(0xFF0500FF) : Colors.black,
               ),
               label: 'Account',
             ),
@@ -238,6 +230,7 @@ class FavoriteItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
     return GestureDetector(
       onTap: onTap,
       child: Container(

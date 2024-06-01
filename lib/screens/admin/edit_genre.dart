@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gracieusgalerij/screens/theme/theme_app.dart';
+import 'package:provider/provider.dart';
 
 class EditGenre extends StatefulWidget {
   @override
@@ -27,6 +29,7 @@ class _EditGenreState extends State<EditGenre> {
 
   @override
   Widget build(BuildContext context) {
+    ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('Edit Genre'),

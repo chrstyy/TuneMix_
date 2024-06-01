@@ -4,10 +4,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:gracieusgalerij/screens/theme/theme_app.dart';
 import 'package:gracieusgalerij/screens/user/cart_screen.dart';
 import 'package:gracieusgalerij/screens/user/fav_screen.dart';
 import 'package:gracieusgalerij/screens/user/home_screen.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 import '../../services/auth_service.dart';
 
@@ -189,6 +191,7 @@ class _UserProfileState extends State<UserProfile> {
   }
 
   Widget _buildEditOptions(BuildContext context) {
+    ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
     return Container(
       padding: const EdgeInsets.all(16),
       color: Colors.transparent,
@@ -346,31 +349,16 @@ class _UserProfileState extends State<UserProfile> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = isDarkMode ? ThemeData.dark() : ThemeData.light();
+    ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
 
     return Scaffold(
       body: Stack(
         children: [
-          Opacity(
-            opacity: 0.5,
-            child: Align(
-              alignment: const AlignmentDirectional(0.00, 0.00),
-              child: Image.asset(
-                'images/logo.png',
-                width: 300,
-                height: 200,
-                fit: BoxFit.contain,
-              ),
-            ),
-          ),
           Container(
             height: double.infinity,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [
-                  Color(0xFFF8F4E1),
-                  Color(0xFFAF8F6F),
-                ],
+                colors: themeProvider.themeMode().gradientColors!,
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
               ),
@@ -410,17 +398,19 @@ class _UserProfileState extends State<UserProfile> {
                                 right: 0,
                                 left: 83,
                                 child: Container(
-                                  decoration: const BoxDecoration(
+                                  decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: Colors.white,
+                                    color:
+                                        themeProvider.themeMode().switchColor!,
                                   ),
                                   child: IconButton(
                                     onPressed: () {
                                       _showEditOptions(context);
                                     },
-                                    icon: const Icon(
+                                    icon: Icon(
                                       Icons.edit,
-                                      color: Colors.black,
+                                      color:
+                                          themeProvider.themeMode().thumbColor!,
                                     ),
                                   ),
                                 ),
@@ -436,24 +426,16 @@ class _UserProfileState extends State<UserProfile> {
                           children: [
                             Text(
                               userName,
-                              style: const TextStyle(
-                                fontFamily: 'Bayon',
-                                fontWeight: FontWeight.bold,
-                                fontSize: 35,
-                              ),
+                              style: Theme.of(context).textTheme.headline1!,
                             ),
                             const SizedBox(height: 2),
                             GestureDetector(
                               onTap: () {
                                 _showUsernameUpdate(context);
                               },
-                              child: const Text(
+                              child: Text(
                                 'Edit Username',
-                                style: TextStyle(
-                                    fontFamily: 'Belgrano',
-                                    fontSize: 11,
-                                    color: Colors.red,
-                                    decoration: TextDecoration.underline),
+                                style: Theme.of(context).textTheme.headline6,
                               ),
                             ),
                           ],
@@ -496,18 +478,18 @@ class _UserProfileState extends State<UserProfile> {
                           });
                         },
                         child: Container(
-                          width: 44,
-                          height: 43,
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Color(0xFFAF8F6F),
-                          ),
-                          child: Image.asset(
-                            'images/darkmode.png',
-                            width: 50,
-                            height: 50,
-                          ),
-                        ),
+                            width: 44,
+                            height: 43,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Color(0xFFAF8F6F),
+                            ),
+                            child: IconButton(
+                              icon: Icon(Icons.nights_stay_outlined),
+                              onPressed: () {
+                                themeProvider.toggleThemeData();
+                              },
+                            )),
                       ),
                       const SizedBox(width: 65),
                       ElevatedButton(
@@ -717,7 +699,9 @@ class _UserProfileState extends State<UserProfile> {
             case 1:
             // return const SearchScreen();
             case 2:
-              return const CartScreen(purchasedSongs: [],);
+              return const CartScreen(
+                purchasedSongs: [],
+              );
             case 3:
               return const FavoriteScreen();
             case 4:

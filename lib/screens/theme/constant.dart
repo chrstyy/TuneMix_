@@ -15,6 +15,7 @@ class AppColors {
   static const Color lightGrey = Color.fromARGB(255, 239, 239, 239);
   static const Color red = Colors.red;
   static const Color navColor = Color.fromARGB(255, 0, 85, 96);
+  static const Color orange = Color(0xFFFF8A00);
 }
 
 class SPref {

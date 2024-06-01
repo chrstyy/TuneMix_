@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gracieusgalerij/models/song.dart';
+import 'package:gracieusgalerij/screens/theme/theme_app.dart';
 import 'package:gracieusgalerij/services/favorite_service.dart';
 import 'package:gracieusgalerij/services/song_service.dart';
+import 'package:provider/provider.dart';
 import '../../services/cart_service.dart';
 import 'cart_screen.dart';
 import 'fav_screen.dart';
@@ -26,9 +28,9 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
+    ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       body: FutureBuilder<Song>(
         future: db.getSongById(widget.songId),
@@ -47,12 +49,9 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
           return Stack(
             children: [
               Container(
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [
-                      Color(0xFFF8F4E1),
-                      Color(0xFFAF8F6F),
-                    ],
+                    colors: themeProvider.themeMode().gradientColors!,
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                   ),
@@ -76,42 +75,58 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                                 color: Colors.transparent,
                               ),
                             ),
-                            child: Image.asset('images/arrowback.png', width: 35, height: 35),
+                            child: Image.asset(
+                              'images/arrowback.png',
+                              width: 35,
+                              height: 35,
+                              color: themeProvider.themeMode().switchColor!,
+                            ),
                           ),
                         ),
                         Row(
                           children: [
                             Padding(
-                              padding: const EdgeInsets.only(top: 40, right: 20),
+                              padding:
+                                  const EdgeInsets.only(top: 40, right: 20),
                               child: GestureDetector(
                                 onTap: () {
                                   Navigator.pushReplacement(
                                     context,
-                                    MaterialPageRoute(builder: (context) => const CartScreen(purchasedSongs: [],)),
+                                    MaterialPageRoute(
+                                        builder: (context) => const CartScreen(
+                                              purchasedSongs: [],
+                                            )),
                                   );
                                 },
-                                child: Image.asset('images/cart.png', width: 35, height: 35),
+                                child: Image.asset(
+                                  'images/cart.png',
+                                  width: 35,
+                                  height: 35,
+                                  color: themeProvider.themeMode().switchColor!,
+                                ),
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(top: 40, right: 20),
+                              padding:
+                                  const EdgeInsets.only(top: 40, right: 20),
                               child: IconButton(
                                 onPressed: () {
                                   Navigator.pushReplacement(
                                     context,
-                                    MaterialPageRoute(builder: (context) => const FavoriteScreen()),
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const FavoriteScreen()),
                                   );
                                 },
                                 icon: Icon(
-                                  isFavorite 
-                                    ? Icons.favorite  
-                                    : Icons.favorite_border, 
-                                  color: isFavorite ? Colors.red : Colors.green, 
+                                  isFavorite
+                                      ? Icons.favorite
+                                      : Icons.favorite_border,
+                                  color: isFavorite ? Colors.red : Colors.green,
                                   size: 35,
                                 ),
                               ),
                             ),
-
                           ],
                         ),
                       ],
@@ -126,14 +141,14 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                               width: 353,
                               height: 304,
                               decoration: BoxDecoration(
-                                color: const Color(0xFF543310),
+                                color: themeProvider.themeMode().switchBgColor!,
                                 borderRadius: BorderRadius.circular(10),
                                 image: song.imageSong != null
-                                  ? DecorationImage(
-                                      image: NetworkImage(song.imageSong!),
-                                      fit: BoxFit.cover,
-                                    )
-                                  : null, 
+                                    ? DecorationImage(
+                                        image: NetworkImage(song.imageSong!),
+                                        fit: BoxFit.cover,
+                                      )
+                                    : null,
                               ),
                             ),
                           ),
@@ -146,9 +161,10 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                               child: Container(
                                 width: 393,
                                 height: 598,
-                                padding: const EdgeInsets.all(20),
+                                padding: EdgeInsets.all(20),
                                 decoration: BoxDecoration(
-                                  color: Colors.white,
+                                  color:
+                                      themeProvider.themeMode().switchBgColor!,
                                   borderRadius: BorderRadius.circular(20),
                                   boxShadow: [
                                     BoxShadow(
@@ -160,14 +176,14 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                                   ],
                                 ),
                                 child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
                                   children: [
                                     Text(
                                       song.songTitle,
-                                      style: const TextStyle(
-                                        fontSize: 30,
-                                        fontFamily: 'Bayon',
-                                      ),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline4!,
                                     ),
                                     Text(
                                       '\$${song.price}',
@@ -177,7 +193,9 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                                         fontFamily: 'Battambang',
                                       ),
                                     ),
-                                    const SizedBox(height: 5,),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
                                     RichText(
                                       text: TextSpan(
                                         children: [
@@ -186,21 +204,21 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                                             style: TextStyle(
                                               fontSize: 20,
                                               fontFamily: 'Bayon',
-                                              color: Color(0xFFFF8A00), 
+                                              color: Color(0xFFFF8A00),
                                             ),
                                           ),
                                           TextSpan(
                                             text: '${song.creator}',
-                                            style: const TextStyle(
-                                              fontSize: 20,
-                                              fontFamily: 'Bayon',
-                                              color: Colors.black, 
-                                            ),
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline3!,
                                           ),
                                         ],
                                       ),
                                     ),
-                                    const SizedBox(height: 10,),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
                                     RichText(
                                       text: TextSpan(
                                         children: [
@@ -209,16 +227,14 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                                             style: TextStyle(
                                               fontSize: 20,
                                               fontFamily: 'Bayon',
-                                              color: Color(0xFFFF8A00), 
+                                              color: Color(0xFFFF8A00),
                                             ),
                                           ),
                                           TextSpan(
                                             text: '${song.description}',
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                              fontFamily: 'Battambang',
-                                              color: Colors.black, 
-                                            ),
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline6!,
                                           ),
                                         ],
                                       ),
@@ -231,31 +247,32 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                                             style: TextStyle(
                                               fontSize: 20,
                                               fontFamily: 'Bayon',
-                                              color: Color(0xFFFF8A00), 
+                                              color: Color(0xFFFF8A00),
                                             ),
                                           ),
                                           TextSpan(
                                             text: '${song.arangement}',
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                              fontFamily: 'Battambang',
-                                              color: Colors.black, 
-                                            ),
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline6!,
                                           ),
                                         ],
                                       ),
                                     ),
-                                    const SizedBox(height: 2,),
-                                   ElevatedButton(
+                                    const SizedBox(
+                                      height: 2,
+                                    ),
+                                    ElevatedButton(
                                       onPressed: () {
                                         CartService.addToCart(song);
                                         showDialog(
                                           context: context,
                                           builder: (BuildContext context) {
-                                            Future.delayed(Duration(seconds: 3), () {
+                                            Future.delayed(Duration(seconds: 3),
+                                                () {
                                               Navigator.of(context).pop(true);
                                             });
-                                           return const AlertDialog(
+                                            return const AlertDialog(
                                               content: Column(
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
@@ -269,7 +286,8 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                                                     'Added to Cart',
                                                     style: TextStyle(
                                                       fontSize: 20,
-                                                      fontWeight: FontWeight.bold,
+                                                      fontWeight:
+                                                          FontWeight.bold,
                                                     ),
                                                   ),
                                                 ],
@@ -279,12 +297,15 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                                         );
                                       },
                                       style: ElevatedButton.styleFrom(
-                                        backgroundColor: const Color(0XFFF1B26F),
+                                        backgroundColor:
+                                            const Color(0XFFF1B26F),
                                         shape: const ContinuousRectangleBorder(
-                                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(10.0)),
                                         ),
                                         elevation: 5.0,
-                                        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 15, horizontal: 15),
                                       ),
                                       child: const Text(
                                         'ADD TO CART',
