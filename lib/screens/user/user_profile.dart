@@ -435,7 +435,7 @@ class _UserProfileState extends State<UserProfile> {
                               },
                               child: Text(
                                 'Edit Username',
-                                style: Theme.of(context).textTheme.headline6,
+                                style: Theme.of(context).textTheme.headline2!,
                               ),
                             ),
                           ],

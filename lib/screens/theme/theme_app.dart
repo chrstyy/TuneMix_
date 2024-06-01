@@ -90,6 +90,7 @@ class ThemeProvider with ChangeNotifier {
       switchColor: isLightTheme ? AppColors.black : AppColors.white,
       thumbColor: isLightTheme ? AppColors.white : AppColors.black,
       switchBgColor: isLightTheme ? AppColors.choco2 : AppColors.cream,
+      switchBgColor2: isLightTheme ? AppColors.cream : AppColors.choco2,
     );
   }
 }
@@ -99,11 +100,13 @@ class ThemeMode {
   Color? switchColor;
   Color? thumbColor;
   Color? switchBgColor;
+  Color? switchBgColor2;
 
   ThemeMode({
     this.gradientColors,
-    this.switchBgColor,
     this.switchColor,
     this.thumbColor,
+    this.switchBgColor,
+    this.switchBgColor2,
   });
 }

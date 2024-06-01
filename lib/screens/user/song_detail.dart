@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gracieusgalerij/models/song.dart';
 import 'package:gracieusgalerij/screens/theme/theme_app.dart';
+import 'package:gracieusgalerij/screens/user/review/review_edit_screen.dart';
+import 'package:gracieusgalerij/screens/user/review/review_list_screen.dart';
 import 'package:gracieusgalerij/services/favorite_service.dart';
 import 'package:gracieusgalerij/services/song_service.dart';
 import 'package:provider/provider.dart';
@@ -130,7 +132,8 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                                 },
                                 icon: Icon(
                                   Icons.favorite,
-                                  color: _isFavorite ? Colors.red : Colors.green,
+                                  color:
+                                      _isFavorite ? Colors.red : Colors.green,
                                   size: 35,
                                 ),
                               ),
@@ -149,7 +152,6 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                               width: 353,
                               height: 304,
                               decoration: BoxDecoration(
-                                color: themeProvider.themeMode().switchBgColor!,
                                 borderRadius: BorderRadius.circular(10),
                                 image: song.imageSong != null
                                     ? DecorationImage(
@@ -167,13 +169,16 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                             bottom: 0,
                             child: SingleChildScrollView(
                               child: Container(
-                                width: 393,
+                                width: double.infinity,
                                 height: 598,
-                                padding: EdgeInsets.all(20),
+                                padding: const EdgeInsets.all(20),
                                 decoration: BoxDecoration(
                                   color:
                                       themeProvider.themeMode().switchBgColor!,
-                                  borderRadius: BorderRadius.circular(20),
+                                  borderRadius: const BorderRadius.only(
+                                    topLeft: Radius.circular(10),
+                                    topRight: Radius.circular(10),
+                                  ),
                                   boxShadow: [
                                     BoxShadow(
                                       color: Colors.black.withOpacity(0.1),
@@ -202,7 +207,7 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                                       ),
                                     ),
                                     const SizedBox(
-                                      height: 5,
+                                      height: 15,
                                     ),
                                     RichText(
                                       text: TextSpan(
@@ -217,9 +222,13 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                                           ),
                                           TextSpan(
                                             text: '${song.creator}',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headline3!,
+                                            style: TextStyle(
+                                              fontFamily: 'Battambang',
+                                              fontSize: 16,
+                                              color: themeProvider
+                                                  .themeMode()
+                                                  .thumbColor!,
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -247,6 +256,9 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                                         ],
                                       ),
                                     ),
+                                    const SizedBox(
+                                      height: 15,
+                                    ),
                                     RichText(
                                       text: TextSpan(
                                         children: [
@@ -268,7 +280,27 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                                       ),
                                     ),
                                     const SizedBox(
-                                      height: 2,
+                                      height: 10,
+                                    ),
+                                    InkWell(
+                                      child: Text(
+                                        'See review',
+                                        style: TextStyle(
+                                          fontFamily: 'Itim',
+                                          color: Colors.orange,
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                      onTap: () {
+                                        Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => ReviewListScreen(
+                                              songTitle: song.songTitle,
+                                            ),
+                                          ),
+                                        );
+                                      },
                                     ),
                                     ElevatedButton(
                                       onPressed: () {
@@ -276,8 +308,8 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                                         showDialog(
                                           context: context,
                                           builder: (BuildContext context) {
-                                            Future.delayed(Duration(seconds: 3),
-                                                () {
+                                            Future.delayed(
+                                                const Duration(seconds: 3), () {
                                               Navigator.of(context).pop(true);
                                             });
                                             return const AlertDialog(
@@ -312,8 +344,6 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                                               Radius.circular(10.0)),
                                         ),
                                         elevation: 5.0,
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 15, horizontal: 15),
                                       ),
                                       child: const Text(
                                         'ADD TO CART',

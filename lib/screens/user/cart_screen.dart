@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:gracieusgalerij/models/song.dart';
 import 'package:gracieusgalerij/screens/theme/theme_app.dart';
 import 'package:provider/provider.dart';
@@ -183,38 +184,36 @@ class _CartScreenState extends State<CartScreen> {
                     },
                   ),
                   const SizedBox(height: 10),
-                  Container(
-                    child: DropdownButtonFormField<String>(
-                      decoration: const InputDecoration(
-                        labelText: 'Bank Name',
-                        border: OutlineInputBorder(),
-                      ),
-                      value: bankName,
-                      items: <String>[
-                        'BCA',
-                        'BNI',
-                        'BRI',
-                        'Mandiri',
-                        'Danamon',
-                        'Bank Mega',
-                        'Bank Permata',
-                        'Bank Bukopin',
-                        'Bank BTN',
-                        'Bank CIMB Niaga',
-                        'HSBC',
-                        'UOB'
-                      ].map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          bankName = value;
-                        });
-                      },
+                  DropdownButtonFormField<String>(
+                    decoration: const InputDecoration(
+                      labelText: 'Bank Name',
+                      border: OutlineInputBorder(),
                     ),
+                    value: bankName,
+                    items: <String>[
+                      'BCA',
+                      'BNI',
+                      'BRI',
+                      'Mandiri',
+                      'Danamon',
+                      'Bank Mega',
+                      'Bank Permata',
+                      'Bank Bukopin',
+                      'Bank BTN',
+                      'Bank CIMB Niaga',
+                      'HSBC',
+                      'UOB'
+                    ].map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        bankName = value;
+                      });
+                    },
                   ),
                   const SizedBox(height: 10),
                   TextField(
@@ -397,68 +396,68 @@ class _CartScreenState extends State<CartScreen> {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: themeProvider.themeMode().gradientColors!,
-                stops: [0.33, 1],
-                begin: AlignmentDirectional(0, -1),
-                end: AlignmentDirectional(0, 1),
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
               ),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 20, top: 40),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.transparent,
-                          elevation: 0,
-                          side: const BorderSide(color: Colors.transparent),
-                        ),
-                        child: Image.asset(
-                          'images/arrowback.png',
-                          width: 35,
-                          height: 35,
-                          color: themeProvider.themeMode().switchColor!,
-                        ),
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Your Cart',
-                            style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'Battambang'),
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 30),
+                    child: Row(
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.transparent,
+                            elevation: 0,
+                            side: const BorderSide(color: Colors.transparent),
                           ),
-                          Text(
-                            '${cartItems.length} Items',
-                            style: Theme.of(context).textTheme.headlineSmall!,
+                          child: Image.asset(
+                            'images/arrowback.png',
+                            width: 35,
+                            height: 35,
+                            color: themeProvider.themeMode().switchColor!,
                           ),
-                        ],
-                      ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 10, horizontal: 16),
-                      ),
-                    ],
+                        ),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              const Text(
+                                'Your Cart',
+                                style: TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Battambang'),
+                              ),
+                              Text(
+                                '${cartItems.length} Items',
+                                style:
+                                    Theme.of(context).textTheme.headlineSmall!,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 16),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                // Cart Items List
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: cartItems.length,
-                    itemBuilder: (context, index) {
-                      final song = cartItems[index];
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 5),
-                        child: Container(
+                  // Cart Items List
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: cartItems.length,
+                      itemBuilder: (context, index) {
+                        final song = cartItems[index];
+                        return Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(
@@ -467,7 +466,7 @@ class _CartScreenState extends State<CartScreen> {
                           ),
                           child: Container(
                             decoration: BoxDecoration(
-                              color: themeProvider.themeMode().switchColor!,
+                              color: themeProvider.themeMode().thumbColor!,
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Padding(
@@ -475,7 +474,7 @@ class _CartScreenState extends State<CartScreen> {
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Container(
+                                  SizedBox(
                                     width: 80,
                                     height: 80,
                                     child: ClipRRect(
@@ -507,55 +506,58 @@ class _CartScreenState extends State<CartScreen> {
                                   Column(
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
-                                      const SizedBox(height: 40),
-                                      Text(
-                                        '\$${(song.price).toStringAsFixed(2)}',
-                                        style: const TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.orange,
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: 'Battambang',
+                                      IconButton(
+                                        icon: Icon(
+                                          Icons.delete,
+                                          color: Colors.red,
+                                        ),
+                                        onPressed: () {
+                                          _removeItemFromCart(index);
+                                        },
+                                      ),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 15),
+                                        child: Text(
+                                          '\$${(song.price).toStringAsFixed(2)}',
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.orange,
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: 'Battambang',
+                                          ),
                                         ),
                                       ),
                                     ],
-                                  ),
-                                  IconButton(
-                                    icon: Icon(
-                                      Icons.delete,
-                                      color: Colors.red,
-                                    ),
-                                    onPressed: () {
-                                      _removeItemFromCart(index);
-                                    },
                                   ),
                                 ],
                               ),
                             ),
                           ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    _showPaymentSheet(context);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFF1B26F),
-                    shape: const StadiumBorder(),
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                  ),
-                  child: const Text(
-                    'Payment',
-                    style: TextStyle(
-                      fontFamily: 'Bayon',
-                      color: Colors.black,
-                      fontSize: 18,
+                        );
+                      },
                     ),
                   ),
-                ),
-              ],
+                  ElevatedButton(
+                    onPressed: () {
+                      _showPaymentSheet(context);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFFF1B26F),
+                      shape: const StadiumBorder(),
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                    ),
+                    child: const Text(
+                      'Payment',
+                      style: TextStyle(
+                        fontFamily: 'Bayon',
+                        color: Colors.black,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],

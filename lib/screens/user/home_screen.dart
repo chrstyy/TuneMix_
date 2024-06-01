@@ -118,7 +118,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(left: 20),
+                        padding: const EdgeInsets.only(left: 20),
                         child: Icon(
                           Icons.notifications,
                           color: themeProvider.themeMode().switchColor!,
@@ -249,7 +249,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 70,
                   decoration: BoxDecoration(
                     color: themeProvider.themeMode().switchBgColor!,
-                    borderRadius: BorderRadius.only(
+                    borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(10),
                       bottomLeft: Radius.circular(10),
                     ),
@@ -368,12 +368,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 20, 0),
+                        padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 20, 0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
+                            const Text(
                               'Recommendation',
                               style: TextStyle(
                                 fontFamily: 'Bayon',

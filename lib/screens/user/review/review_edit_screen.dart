@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -73,16 +74,15 @@ class _ReviewEditScreenState extends State<ReviewEditScreen> {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFFF8F4E1), Color(0xFFAF8F6F)],
-            stops: [0, 1],
-            begin: AlignmentDirectional(0, -1),
-            end: AlignmentDirectional(0, 1),
+            colors: themeProvider.themeMode().gradientColors!,
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.only(top: 20, right: 20, left: 20),
+          padding: const EdgeInsets.only(top: 30, right: 20, left: 20),
           child: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.max,
@@ -91,9 +91,9 @@ class _ReviewEditScreenState extends State<ReviewEditScreen> {
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     IconButton(
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.arrow_back,
-                        color: Colors.black,
+                        color: themeProvider.themeMode().switchColor!,
                         size: 24,
                       ),
                       onPressed: () {
@@ -102,7 +102,7 @@ class _ReviewEditScreenState extends State<ReviewEditScreen> {
                     ),
                     Expanded(
                       child: Align(
-                        alignment: const AlignmentDirectional(0, 0),
+                        alignment: const AlignmentDirectional(-0.15, 0),
                         child: Text(
                           widget.review == null
                               ? 'Add Reviews'
@@ -116,14 +116,17 @@ class _ReviewEditScreenState extends State<ReviewEditScreen> {
                     ),
                   ],
                 ),
-                const Divider(
+                Divider(
                   thickness: 3,
-                  color: Colors.black,
+                  color: themeProvider.themeMode().switchColor!,
+                ),
+                SizedBox(
+                  height: 10,
                 ),
                 Container(
                   width: double.infinity,
-                  decoration: const BoxDecoration(
-                    color: Color.fromARGB(255, 84, 51, 16),
+                  decoration: BoxDecoration(
+                    color: themeProvider.themeMode().switchBgColor!,
                     borderRadius: BorderRadius.all(
                       Radius.circular(20),
                     ),
@@ -133,24 +136,24 @@ class _ReviewEditScreenState extends State<ReviewEditScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
+                        Text(
                           'Title : ',
                           textAlign: TextAlign.start,
                           style: TextStyle(
                             fontFamily: 'Bayon',
                             fontSize: 20,
-                            color: Colors.white,
+                            color: themeProvider.themeMode().thumbColor!,
                           ),
                         ),
                         TextField(
                           controller: _titleController,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontFamily: 'Basic',
                             fontSize: 16,
-                            color: Colors.white,
+                            color: themeProvider.themeMode().thumbColor!,
                           ),
                         ),
-                        const Padding(
+                        Padding(
                           padding: EdgeInsets.only(top: 20),
                           child: Text(
                             'Image : ',
@@ -158,7 +161,7 @@ class _ReviewEditScreenState extends State<ReviewEditScreen> {
                             style: TextStyle(
                               fontFamily: 'Bayon',
                               fontSize: 20,
-                              color: Colors.white,
+                              color: themeProvider.themeMode().thumbColor!,
                             ),
                           ),
                         ),
@@ -202,16 +205,17 @@ class _ReviewEditScreenState extends State<ReviewEditScreen> {
                                 ),
                                 child: IconButton(
                                   onPressed: _pickImage,
-                                  icon: const Icon(
+                                  icon: Icon(
                                     Icons.add_a_photo,
-                                    color: Colors.white,
+                                    color:
+                                        themeProvider.themeMode().thumbColor!,
                                   ),
                                 ),
                               ),
                             ),
                           ],
                         ),
-                        const Padding(
+                        Padding(
                           padding: EdgeInsets.only(top: 20),
                           child: Text(
                             'Comment : ',
@@ -219,29 +223,29 @@ class _ReviewEditScreenState extends State<ReviewEditScreen> {
                             style: TextStyle(
                               fontFamily: 'Bayon',
                               fontSize: 20,
-                              color: Colors.white,
+                              color: themeProvider.themeMode().thumbColor!,
                             ),
                           ),
                         ),
                         TextField(
                           controller: _commentController,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontFamily: 'Basic',
                             fontSize: 16,
-                            color: Colors.white,
+                            color: themeProvider.themeMode().thumbColor!,
                           ),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 20),
                           child: Row(
                             children: [
-                              const Text(
+                              Text(
                                 'Rating : ',
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
                                   fontFamily: 'Bayon',
                                   fontSize: 20,
-                                  color: Colors.white,
+                                  color: themeProvider.themeMode().thumbColor!,
                                 ),
                               ),
                               RatingBar.builder(
@@ -256,7 +260,7 @@ class _ReviewEditScreenState extends State<ReviewEditScreen> {
                                   color: Color.fromARGB(255, 235, 177, 0),
                                 ),
                                 unratedColor:
-                                    const Color.fromARGB(255, 193, 193, 193),
+                                    themeProvider.themeMode().switchBgColor2!,
                                 onRatingUpdate: (rating) {
                                   setState(() {
                                     _rating = rating;
@@ -270,20 +274,20 @@ class _ReviewEditScreenState extends State<ReviewEditScreen> {
                           padding: const EdgeInsets.only(top: 20),
                           child: Row(
                             children: [
-                              const Text(
+                              Text(
                                 'Pick Your Location : ',
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
                                   fontFamily: 'Bayon',
                                   fontSize: 20,
-                                  color: Colors.white,
+                                  color: themeProvider.themeMode().thumbColor!,
                                 ),
                               ),
                               IconButton(
                                 onPressed: _pickLocation,
-                                icon: const Icon(
+                                icon: Icon(
                                   Icons.location_pin,
-                                  color: Colors.white,
+                                  color: themeProvider.themeMode().thumbColor!,
                                 ),
                               ),
                               Expanded(
@@ -305,15 +309,14 @@ class _ReviewEditScreenState extends State<ReviewEditScreen> {
                         ),
                         Row(
                           children: [
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: const Text('Cancel'),
-                              ),
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text('Cancel'),
+                            ),
+                            SizedBox(
+                              width: 10,
                             ),
                             ElevatedButton(
                               onPressed: () async {

@@ -42,7 +42,7 @@ class AppStart extends StatelessWidget {
           create: (_) => ThemeProvider(isLightTheme: isLightTheme),
         ),
       ],
-      child: MyApp(),
+      child: const MyApp(),
     );
   }
 }
@@ -58,22 +58,26 @@ class MyApp extends StatelessWidget {
       title: 'TuneMix',
       theme: themeProvider.themeData(),
       debugShowCheckedModeBanner: false,
-      initialRoute: '/fav2',
+      initialRoute: '/home',
       routes: {
         '/': (context) => const LandingScreen(),
         '/landing': (context) => const LandingScreen(),
         '/user': (context) => const UserProfile(),
         '/signup': (context) => const SignupScreen(),
         '/login': (context) => const LoginScreen(),
-        '/cart': (context) => const CartScreen(purchasedSongs: [],),
+        '/cart': (context) => const CartScreen(
+              purchasedSongs: [],
+            ),
         '/favorites': (context) => const FavoriteScreen(),
         '/fav2': (context) => const FavoriteScreen2(),
         '/home': (context) => const HomeScreen(),
-        '/review': (context) => const ReviewListScreen(),
+        '/review': (context) => const ReviewListScreen(
+              songTitle: '',
+            ),
         '/home_adm': (context) => const HomeScreenAdmin(),
         '/review_edit': (context) => const ReviewEditScreen(),
         '/edit': (context) => const EditProductDetail(),
-        '/product_detail': (context) => SongDetailScreen(songId: ''),
+        '/song_detail': (context) => const SongDetailScreen(songId: ''),
       },
     );
   }

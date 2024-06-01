@@ -13,7 +13,8 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../services/review_services.dart';
 
 class ReviewListScreen extends StatefulWidget {
-  const ReviewListScreen({super.key});
+  final String songTitle;
+  const ReviewListScreen({super.key, required this.songTitle});
 
   @override
   State<ReviewListScreen> createState() => _ReviewListScreenState();
@@ -57,16 +58,15 @@ class _ReviewListScreenState extends State<ReviewListScreen> {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFFF8F4E1), Color(0xFFAF8F6F)],
-            stops: [0, 1],
-            begin: AlignmentDirectional(0, -1),
-            end: AlignmentDirectional(0, 1),
+            colors: themeProvider.themeMode().gradientColors!,
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.only(top: 20, right: 20, left: 20),
+          padding: const EdgeInsets.only(top: 30, right: 20, left: 20),
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: [
@@ -74,36 +74,39 @@ class _ReviewListScreenState extends State<ReviewListScreen> {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   IconButton(
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.arrow_back,
-                      color: Colors.black,
+                      color: themeProvider.themeMode().switchColor!,
                       size: 24,
                     ),
                     onPressed: () {
-                      Navigator.of(context).pop();
+                      Navigator.pop(context);
                     },
                   ),
-                  const Expanded(
+                  Expanded(
                     child: Align(
-                      alignment: AlignmentDirectional(0, 0),
+                      alignment: AlignmentDirectional(-0.15, 0),
                       child: Text(
-                        'Reviews',
+                        '${widget.songTitle}',
                         style: TextStyle(fontFamily: 'Bayon', fontSize: 25),
                       ),
                     ),
                   ),
                 ],
               ),
-              const Divider(
+              Divider(
                 thickness: 3,
-                color: Colors.black,
+                color: themeProvider.themeMode().switchColor!,
+              ),
+              const SizedBox(
+                height: 10,
               ),
               Expanded(
                 child: Container(
                   width: double.infinity,
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
+                  decoration: BoxDecoration(
+                    color: themeProvider.themeMode().switchBgColor2!,
+                    borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(20),
                       topRight: Radius.circular(20),
                     ),
@@ -181,7 +184,7 @@ class _ReviewListState extends State<ReviewList> {
                 return Container(
                   margin: const EdgeInsets.only(bottom: 10),
                   decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 84, 51, 16),
+                    color: themeProvider.themeMode().switchBgColor2!,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Padding(
@@ -194,10 +197,10 @@ class _ReviewListState extends State<ReviewList> {
                           children: [
                             Text(
                               document.title,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontFamily: 'Bayon',
                                 fontSize: 23,
-                                color: Colors.white,
+                                color: themeProvider.themeMode().switchColor!,
                               ),
                             ),
                             Text(
@@ -206,10 +209,10 @@ class _ReviewListState extends State<ReviewList> {
                                   : document.createdAt != null
                                       ? ' ${_formatTimestamp(document.createdAt!)}'
                                       : 'Date not available',
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontFamily: 'Battambang',
                                 fontSize: 13,
-                                color: Colors.white,
+                                color: themeProvider.themeMode().switchColor!,
                               ),
                             ),
                           ],
@@ -217,7 +220,7 @@ class _ReviewListState extends State<ReviewList> {
                         const SizedBox(height: 10),
                         Container(
                           decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 248, 244, 225),
+                            color: themeProvider.themeMode().switchBgColor!,
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Padding(
@@ -242,16 +245,20 @@ class _ReviewListState extends State<ReviewList> {
                                     children: [
                                       Text(
                                         widget.userName,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           fontFamily: 'Readex Pro',
-                                          color: Colors.black,
+                                          color: themeProvider
+                                              .themeMode()
+                                              .thumbColor!,
                                         ),
                                       ),
                                       Row(
                                         children: [
-                                          const Icon(
+                                          Icon(
                                             Icons.location_pin,
-                                            color: Colors.black,
+                                            color: themeProvider
+                                                .themeMode()
+                                                .thumbColor!,
                                             size: 18,
                                           ),
                                           Expanded(
@@ -274,11 +281,15 @@ class _ReviewListState extends State<ReviewList> {
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
                                     PopupMenuButton<String>(
-                                      icon: const Icon(Icons.more_vert,
-                                          color: Colors.black),
+                                      icon: Icon(
+                                        Icons.more_vert,
+                                        color: themeProvider
+                                            .themeMode()
+                                            .thumbColor!,
+                                      ),
                                       onSelected: (String value) {
                                         if (value == 'edit') {
-                                          Navigator.push(
+                                          Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) =>
@@ -345,6 +356,9 @@ class _ReviewListState extends State<ReviewList> {
                                       itemCount: 5,
                                       itemSize: 20.0,
                                       direction: Axis.horizontal,
+                                      unratedColor: themeProvider
+                                          .themeMode()
+                                          .switchBgColor2!,
                                     ),
                                   ],
                                 ),
@@ -352,9 +366,9 @@ class _ReviewListState extends State<ReviewList> {
                             ),
                           ),
                         ),
-                        const Divider(
+                        Divider(
                           thickness: 1,
-                          color: Colors.white,
+                          color: themeProvider.themeMode().switchColor!,
                         ),
                         document.imageUrl != null &&
                                 Uri.parse(document.imageUrl!).isAbsolute
