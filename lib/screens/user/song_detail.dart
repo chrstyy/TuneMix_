@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gracieusgalerij/models/song.dart';
 import 'package:gracieusgalerij/services/favorite_service.dart';
 import 'package:gracieusgalerij/services/song_service.dart';
-import '../services/cart_service.dart';
+import '../../services/cart_service.dart';
 import 'cart_screen.dart';
 import 'fav_screen.dart';
 

@@ -4,12 +4,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:gracieusgalerij/screens/cart_screen.dart';
-import 'package:gracieusgalerij/screens/fav_screen.dart';
-import 'package:gracieusgalerij/screens/home_screen.dart';
+import 'package:gracieusgalerij/screens/user/cart_screen.dart';
+import 'package:gracieusgalerij/screens/user/fav_screen.dart';
+import 'package:gracieusgalerij/screens/user/home_screen.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../services/auth_service.dart';
+import '../../services/auth_service.dart';
 
 class UserProfile extends StatefulWidget {
   const UserProfile({Key? key}) : super(key: key);

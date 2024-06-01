@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gracieusgalerij/models/song.dart';
 
-import '../services/cart_service.dart';
+import '../../services/cart_service.dart';
 import 'fav_screen.dart';
 import 'home_screen.dart';
 import 'user_profile.dart';

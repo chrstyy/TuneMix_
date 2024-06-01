@@ -5,8 +5,8 @@ import 'package:shimmer_animation/shimmer_animation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-import 'auth/login_screen.dart';
-import 'auth/signup_screen.dart';
+import '../auth/login_screen.dart';
+import '../auth/signup_screen.dart';
 
 class Logo extends StatefulWidget {
   const Logo({Key? key}) : super(key: key);

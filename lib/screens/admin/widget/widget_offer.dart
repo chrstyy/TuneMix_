@@ -9,6 +9,7 @@ class WidgetOffer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ThemeProvider themeProvider = 
     return Align(
       alignment: const AlignmentDirectional(-1, 0),
       child: SingleChildScrollView(

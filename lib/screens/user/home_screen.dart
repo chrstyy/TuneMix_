@@ -1,14 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:gracieusgalerij/screens/cart_screen.dart';
-import 'package:gracieusgalerij/screens/fav_screen.dart';
-import 'package:gracieusgalerij/screens/song_detail.dart';
-import 'package:gracieusgalerij/screens/user_profile.dart';
+import 'package:gracieusgalerij/screens/user/cart_screen.dart';
+import 'package:gracieusgalerij/screens/user/fav_screen.dart';
+import 'package:gracieusgalerij/screens/user/song_detail.dart';
+import 'package:gracieusgalerij/screens/user/user_profile.dart';
 import 'package:path/path.dart';
 
-import '../models/song.dart';
-import '../services/song_service.dart';
-import 'admin/widget/widget_offer.dart';
+import '../../models/song.dart';
+import '../../services/song_service.dart';
+import '../admin/widget/widget_offer.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
