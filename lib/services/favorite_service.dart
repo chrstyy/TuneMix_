@@ -1,47 +1,71 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:gracieusgalerij/models/favorite.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../models/song.dart';
 
 class FavoriteService {
-  static final FirebaseFirestore _db = FirebaseFirestore.instance;
-  static final CollectionReference _favoriteCollection = _db.collection('favorites');
-    static final CollectionReference _songsCollection =
-      _db.collection('songs');
+  static Future<void> addToFavorites(Song song) async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) {
+        throw Exception("User not logged in");
+      }
+      final id = user.uid;
+      final docRef = FirebaseFirestore.instance
+          .collection('favorites')
+          .doc('${id}_${song.id}');
 
-  static Future<void> addFavorite(Favorite favorite) async {
-    await _favoriteCollection.doc(favorite.id).set(favorite.toMap());
-  }
-
-  static Future<void> removeFavorite(String id) async {
-    await _favoriteCollection.doc(id).delete();
-  }
-
-  static Stream<List<Favorite>> getFavorites() {
-    return _favoriteCollection.snapshots().map((snapshot) =>
-        snapshot.docs.map((doc) => Favorite.fromMap(doc.data() as Map<String, dynamic>)).toList());
-  }
-
-  static Future<bool> isFavorite(String songId) async {
-    var snapshot = await _favoriteCollection.doc(songId).get();
-    return snapshot.exists;
-  }
-
- static Future<Song?> getSongDetail(String songId) async {
-    var snapshot = await _songsCollection.doc(songId).get();
-    if (snapshot.exists) {
-      return Song(
-        id: snapshot.id,
-        songTitle: snapshot['songTitle'] ?? '',
-        creator: snapshot['creator'] ?? '',
-        genre: snapshot['genre'] ?? '',
-        arangement: snapshot['arrangement'] ?? '',
-        description: snapshot['description'] ?? '',
-        imageSong: snapshot['imageSong'] ?? '',
-        price: snapshot['price'] ?? '',
-      );
-    } else {
-      return null;
+      await docRef.set({
+        'id': id,
+        'songTitle': song.songTitle,
+        'creator': song.creator,
+        'genre': song.genre,
+        'arangement': song.arangement,
+        'imageSong': song.imageSong,
+        'description': song.description,
+        'price': song.price,
+        'isFavorite': song.isFavorite
+      });
+      print("Added to favorites successfully.");
+    } catch (error) {
+      print("Error adding to favorites: $error");
     }
+  }
+
+  static Future<void> removeFromFavorites(String songId) async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) {
+        throw Exception("User not logged in");
+      }
+      final id = user.uid;
+      final querySnapshot = await FirebaseFirestore.instance
+          .collection('favorites')
+          .where('id', isEqualTo: id)
+          .where(FieldPath.documentId, isEqualTo: '${id}_${songId}')
+          .get();
+
+      for (var doc in querySnapshot.docs) {
+        await doc.reference.delete();
+      }
+
+      print("Removed from favorites successfully.");
+    } catch (error) {
+      print("Error removing from favorites: $error");
+    }
+  }
+
+  static Stream<List<Song>> getFavoritesForUser() {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      throw Exception("User not logged in");
+    }
+    final id = user.uid;
+    return FirebaseFirestore.instance
+        .collection('favorites')
+        .where('id', isEqualTo: id)
+        .snapshots()
+        .map((snapshot) =>
+            snapshot.docs.map((doc) => Song.fromFirestore(doc.data(), doc.id)).toList());
   }
 }

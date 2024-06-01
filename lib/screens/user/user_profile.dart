@@ -656,38 +656,15 @@ class _UserProfileState extends State<UserProfile> {
         routeBuilder = '/search';
         break;
       case 2:
-        routeBuilder = '/basket';
+        routeBuilder = '/cart';
         break;
       case 3:
-        routeBuilder = '/fav';
+        routeBuilder = '/favorites';
         break;
       case 4:
-        routeBuilder = '/account';
+        routeBuilder = '/user';
         break;
     }
-
-    // if (index == 2) {
-    //   Navigator.push(
-    //       context,
-    //       PageRouteBuilder(
-    //         pageBuilder: (context, animation, secondaryAnimation) =>
-    //             const StoryListScreen(),
-    //         transitionsBuilder:
-    //             (context, animation, secondaryAnimation, child) {
-    //           const begin = 0.0;
-    //           const end = 1.0;
-    //           var tween = Tween(begin: begin, end: end);
-
-    //           var fadeOutAnimation = animation.drive(tween);
-
-    //           return FadeTransition(
-    //             opacity: fadeOutAnimation,
-    //             child: child,
-    //           );
-    //         },
-    //         transitionDuration: const Duration(milliseconds: 500),
-    //       ));
-    // }
 
     Navigator.pushReplacement(
       context,

@@ -18,14 +18,27 @@ class SongDetailScreen extends StatefulWidget {
 }
 
 class _SongDetailScreenState extends State<SongDetailScreen> {
-  final db = SongService();
-  final _fav = FavoriteService();
-  late Stream<List<Song>> favoriteSongsStream;
-  bool isFavorite = false;
+  final SongService _songService = SongService();
+  final FavoriteService _favoriteService = FavoriteService();
+  late bool _isFavorite;
+  late Song song;
 
   @override
   void initState() {
     super.initState();
+    _isFavorite = true;
+  }
+
+  void toggleFavorite() {
+    setState(() {
+      _isFavorite = !_isFavorite;
+    });
+
+    if (_isFavorite) {
+      FavoriteService.addToFavorites(song);
+    } else {
+      FavoriteService.removeFromFavorites(song.id);
+    }
   }
 
   @override
@@ -33,7 +46,7 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
     ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       body: FutureBuilder<Song>(
-        future: db.getSongById(widget.songId),
+        future: _songService.getSongById(widget.songId),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -45,7 +58,9 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
             return const Center(child: Text('Song not found'));
           }
 
-          final song = snapshot.data!;
+          song = snapshot.data!;
+          _isFavorite = song.isFavorite;
+
           return Stack(
             children: [
               Container(
@@ -111,18 +126,11 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                                   const EdgeInsets.only(top: 40, right: 20),
                               child: IconButton(
                                 onPressed: () {
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const FavoriteScreen()),
-                                  );
+                                  toggleFavorite();
                                 },
                                 icon: Icon(
-                                  isFavorite
-                                      ? Icons.favorite
-                                      : Icons.favorite_border,
-                                  color: isFavorite ? Colors.red : Colors.green,
+                                  Icons.favorite,
+                                  color: _isFavorite ? Colors.red : Colors.green,
                                   size: 35,
                                 ),
                               ),

@@ -27,6 +27,8 @@ class _EditProductDetailState extends State<EditProductDetail> {
   final TextEditingController _creatorController = TextEditingController();
 
   get imageUrl => null;
+  
+  get isFavorite => null;
 
   Future<void> _pickImage() async {
     final ImagePicker _picker = ImagePicker();
@@ -51,6 +53,7 @@ class _EditProductDetailState extends State<EditProductDetail> {
         imageSong: imageUrl,
         price: double.parse(_priceController.text),
         arangement: _arangementController.text,
+        isFavorite: isFavorite ?? false
       );
 
       await SongService.addSong(newSong, _image);

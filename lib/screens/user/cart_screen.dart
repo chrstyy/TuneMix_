@@ -438,7 +438,7 @@ class _CartScreenState extends State<CartScreen> {
                           ),
                           Text(
                             '${cartItems.length} Items',
-                            style: Theme.of(context).textTheme.headline5!,
+                            style: Theme.of(context).textTheme.headlineSmall!,
                           ),
                         ],
                       ),
@@ -633,13 +633,13 @@ class _CartScreenState extends State<CartScreen> {
         routeBuilder = '/search';
         break;
       case 2:
-        routeBuilder = '/basket';
+        routeBuilder = '/cart';
         break;
       case 3:
-        routeBuilder = '/fav';
+        routeBuilder = '/favorites';
         break;
       case 4:
-        routeBuilder = '/account';
+        routeBuilder = '/user';
         break;
     }
 

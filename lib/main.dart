@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:gracieusgalerij/favorite2.dart';
 import 'package:gracieusgalerij/screens/admin/edit_product_detail_admin.dart';
 import 'package:gracieusgalerij/screens/admin/home_admin.dart';
 import 'package:gracieusgalerij/screens/theme/constant.dart';
@@ -57,15 +58,16 @@ class MyApp extends StatelessWidget {
       title: 'TuneMix',
       theme: themeProvider.themeData(),
       debugShowCheckedModeBanner: false,
-      initialRoute: '/home',
+      initialRoute: '/fav2',
       routes: {
         '/': (context) => const LandingScreen(),
         '/landing': (context) => const LandingScreen(),
         '/user': (context) => const UserProfile(),
         '/signup': (context) => const SignupScreen(),
         '/login': (context) => const LoginScreen(),
-        //'/cart': (context) => const CartScreen(song: null,),
+        '/cart': (context) => const CartScreen(purchasedSongs: [],),
         '/favorites': (context) => const FavoriteScreen(),
+        '/fav2': (context) => const FavoriteScreen2(),
         '/home': (context) => const HomeScreen(),
         '/review': (context) => const ReviewListScreen(),
         '/home_adm': (context) => const HomeScreenAdmin(),

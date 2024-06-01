@@ -505,49 +505,26 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+
+   void _navigateToPage(int index) {
+    var routeBuilder;
+    switch (index) {
+      case 0:
+        routeBuilder = '/home';
+        break;
+      case 1:
+        routeBuilder = '/search';
+        break;
+      case 2:
+        routeBuilder = '/cart';
+        break;
+      case 3:
+        routeBuilder = '/favorites';
+        break;
+      case 4:
+        routeBuilder = '/user';
+        break;
+    }
+    //Navigator.pushReplacementNamed(context, routeBuilder);
 }
-
-void _navigateToPage(int index) {
-  var routeBuilder;
-  switch (index) {
-    case 0:
-      routeBuilder = '/home';
-      break;
-    case 1:
-      routeBuilder = '/search';
-      break;
-    case 2:
-      routeBuilder = '/basket';
-      break;
-    case 3:
-      routeBuilder = '/fav';
-      break;
-    case 4:
-      routeBuilder = '/account';
-      break;
-  }
-
-  Navigator.pushReplacement(
-    context as BuildContext,
-    PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) {
-        switch (index) {
-          case 0:
-            return const HomeScreen();
-          case 1:
-          // return const SearchScreen();
-          case 2:
-            return const CartScreen(
-              purchasedSongs: [],
-            );
-          case 3:
-            return const FavoriteScreen();
-          case 4:
-            return const UserProfile();
-          default:
-            return Container();
-        }
-      },
-    ),
-  );
 }
