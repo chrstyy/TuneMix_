@@ -85,10 +85,10 @@ class _ReviewListScreenState extends State<ReviewListScreen> {
                   ),
                   Expanded(
                     child: Align(
-                      alignment: AlignmentDirectional(-0.15, 0),
+                      alignment: const AlignmentDirectional(-0.15, 0),
                       child: Text(
-                        '${widget.songTitle}',
-                        style: TextStyle(fontFamily: 'Bayon', fontSize: 25),
+                        widget.songTitle,
+                        style: const TextStyle(fontFamily: 'Bayon', fontSize: 25),
                       ),
                     ),
                   ),
