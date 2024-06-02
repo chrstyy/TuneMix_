@@ -47,11 +47,6 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   void _showPaymentSheet(BuildContext context) {
-    String? creditCardNumber;
-    String? bankAccountName;
-    String? bankName;
-    String? password;
-
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
@@ -81,23 +76,13 @@ class _CartScreenState extends State<CartScreen> {
                   ),
                   const SizedBox(height: 20),
                   const Text(
-                    'Select Payment Method:',
+                    'Payment Method:',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   const SizedBox(height: 10),
-                  RadioListTile(
-                    title: const Text('Credit Card'),
-                    value: 'credit_card',
-                    groupValue: selectedPayment,
-                    onChanged: (value) {
-                      setState(() {
-                        selectedPayment = value.toString();
-                      });
-                    },
-                  ),
                   RadioListTile(
                     title: const Text('QRIS'),
                     value: 'qris',
@@ -116,9 +101,7 @@ class _CartScreenState extends State<CartScreen> {
                           onPressed: () {
                             if (selectedPayment == 'qris') {
                               _processQRISPayment(context);
-                            } else {
-                              _showCreditCardDetailsSheet(context);
-                            }
+                            } 
                           },
                           child: const Text(
                             'Proceed to Payment',
@@ -141,150 +124,9 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
-  void _showCreditCardDetailsSheet(BuildContext context) {
-    String? creditCardNumber;
-    String? bankName;
-    String? password;
-
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (BuildContext context, StateSetter setState) {
-            return Container(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Credit Card Details:',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  TextField(
-                    decoration: const InputDecoration(
-                      labelText: 'Credit Card Number',
-                      border: OutlineInputBorder(),
-                    ),
-                    keyboardType: TextInputType.number,
-                    onChanged: (value) {
-                      creditCardNumber = value;
-                    },
-                  ),
-                  const SizedBox(height: 10),
-                  DropdownButtonFormField<String>(
-                    decoration: const InputDecoration(
-                      labelText: 'Bank Name',
-                      border: OutlineInputBorder(),
-                    ),
-                    value: bankName,
-                    items: <String>[
-                      'BCA',
-                      'BNI',
-                      'BRI',
-                      'Mandiri',
-                      'Danamon',
-                      'Bank Mega',
-                      'Bank Permata',
-                      'Bank Bukopin',
-                      'Bank BTN',
-                      'Bank CIMB Niaga',
-                      'HSBC',
-                      'UOB'
-                    ].map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        bankName = value;
-                      });
-                    },
-                  ),
-                  const SizedBox(height: 10),
-                  TextField(
-                    decoration: const InputDecoration(
-                      labelText: 'Password',
-                      border: OutlineInputBorder(),
-                    ),
-                    keyboardType: TextInputType.number,
-                    onChanged: (value) {
-                      password = value;
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: ElevatedButton(
-                          onPressed: () {
-                            // Validate input
-                            if (creditCardNumber != null &&
-                                bankName != null &&
-                                password != null) {
-                              _processCreditCardPayment(
-                                context,
-                                creditCardNumber!,
-                                bankName!,
-                                double.parse(
-                                    getTotalPayment().toStringAsFixed(2)),
-                                int.parse(password!),
-                              );
-                              _showSuccessDialog(context);
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Please fill in all fields.'),
-                                ),
-                              );
-                            }
-                          },
-                          child: const Text(
-                            'Proceed to Payment',
-                            style: TextStyle(
-                              fontSize: 13,
-                              color: Colors.black,
-                              fontFamily: 'BelleFair',
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: const Text(
-                            'Close',
-                            style: TextStyle(
-                              fontSize: 15,
-                              color: Colors.black,
-                              fontFamily: 'BelleFair',
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
 
   void _processQRISPayment(BuildContext context) {
-    final qrisUrl =
-        'qris://payment?amount=${getTotalPayment()}&merchant=MERCHANT_ID';
+    final qrisUrl = 'images/qr.png';
 
     showModalBottomSheet(
       context: context,
@@ -322,24 +164,6 @@ class _CartScreenState extends State<CartScreen> {
         );
       },
     );
-  }
-
-  void _processCreditCardPayment(BuildContext context, String cardNumber,
-      String bankName, double totalAmount, int password) {
-    // Simulate payment process here
-    Future.delayed(const Duration(seconds: 2), () {
-      Navigator.pop(context);
-      bool paymentSuccessful = true;
-
-      if (paymentSuccessful) {
-        _showSuccessDialog(context);
-        // Tambahkan lagu-lagu yang sudah dibayar ke daftar lagu yang sudah dibeli
-        widget.purchasedSongs.addAll(cartItems);
-        setState(() {
-          cartItems.clear();
-        });
-      }
-    });
   }
 
   void _showSuccessDialog(BuildContext context) {
@@ -382,7 +206,7 @@ class _CartScreenState extends State<CartScreen> {
   }
 
 
-  String? selectedPayment = 'credit_card';
+  String? selectedPayment = 'qris';
 
   @override
   Widget build(BuildContext context) {
@@ -525,7 +349,6 @@ class _CartScreenState extends State<CartScreen> {
                                             style: const TextStyle(
                                               fontSize: 16,
                                               color: Colors.orange,
-                                              fontWeight: FontWeight.bold,
                                               fontFamily: 'Battambang',
                                             ),
                                           ),
