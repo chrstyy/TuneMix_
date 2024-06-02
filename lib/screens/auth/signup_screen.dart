@@ -32,7 +32,7 @@ class _SignupScreenState extends State<SignupScreen> {
     final String cfPw = _cfPasswordController.text.trim();
 
     //reset error text
-     setState(() {
+    setState(() {
       _errorText = '';
     });
 
@@ -88,7 +88,7 @@ class _SignupScreenState extends State<SignupScreen> {
         );
       }
     } catch (error) {
-      print(error.toString()); 
+      print(error.toString());
     }
   }
 
@@ -129,22 +129,45 @@ class _SignupScreenState extends State<SignupScreen> {
           Container(
             height: double.infinity,
             width: double.infinity,
-             decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color(0xFFF8F4E1),
-              Color(0xFFAF8F6F),
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: themeProvider.themeMode().gradientColors!,
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+            ),
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 60),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0x004B39EF),
+                            elevation: 0,
+                            side: const BorderSide(
+                              color: Colors.transparent,
+                            ),
+                          ),
+                          child: Image.asset(
+                            'images/arrowback.png',
+                            width: 35,
+                            height: 35,
+                            color: themeProvider.themeMode().switchColor!,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 30, right: 30, top: 65),
+                    padding: const EdgeInsets.only(right: 20, left: 20),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -176,14 +199,16 @@ class _SignupScreenState extends State<SignupScreen> {
                               controller: _fNameController,
                               decoration: const InputDecoration(
                                 border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(15.0)),
                                   borderSide: BorderSide(
                                     color: Color(0xFF8FB2AD),
                                     width: 5.0,
                                   ),
                                 ),
                                 focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(15.0)),
                                   borderSide: BorderSide(
                                     color: Color(0xFF8FB2AD),
                                     width: 5.0,
@@ -204,14 +229,16 @@ class _SignupScreenState extends State<SignupScreen> {
                               controller: _lNameController,
                               decoration: const InputDecoration(
                                 border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(15.0)),
                                   borderSide: BorderSide(
                                     color: Color(0xFF8FB2AD),
                                     width: 5.0,
                                   ),
                                 ),
                                 focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(15.0)),
                                   borderSide: BorderSide(
                                     color: Color(0xFF8FB2AD),
                                     width: 5.0,
@@ -232,14 +259,16 @@ class _SignupScreenState extends State<SignupScreen> {
                               controller: _emailController,
                               decoration: const InputDecoration(
                                 border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(15.0)),
                                   borderSide: BorderSide(
                                     color: Color(0xFF8FB2AD),
                                     width: 5.0,
                                   ),
                                 ),
                                 focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(15.0)),
                                   borderSide: BorderSide(
                                     color: Color(0xFF8FB2AD),
                                     width: 5.0,
@@ -262,14 +291,16 @@ class _SignupScreenState extends State<SignupScreen> {
                                 errorText:
                                     _errorText.isNotEmpty ? _errorText : null,
                                 border: const OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(15.0)),
                                   borderSide: BorderSide(
                                     color: Color(0xFF8FB2AD),
                                     width: 5.0,
                                   ),
                                 ),
                                 focusedBorder: const OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(15.0)),
                                   borderSide: BorderSide(
                                     color: Color(0xFF8FB2AD),
                                     width: 5.0,
@@ -301,14 +332,16 @@ class _SignupScreenState extends State<SignupScreen> {
                                 errorText:
                                     _errorText.isNotEmpty ? _errorText : null,
                                 border: const OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(15.0)),
                                   borderSide: BorderSide(
                                     color: Color(0xFF8FB2AD),
                                     width: 5.0,
                                   ),
                                 ),
                                 focusedBorder: const OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(15.0)),
                                   borderSide: BorderSide(
                                     color: Color(0xFF8FB2AD),
                                     width: 5.0,
@@ -330,7 +363,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           ],
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(top: 50),
+                          padding: const EdgeInsets.only(top: 30),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -340,19 +373,21 @@ class _SignupScreenState extends State<SignupScreen> {
                                   _signUp();
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor:
-                                      const Color(0xFFFFE8C8),
+                                  backgroundColor: const Color(0xFFFFE8C8),
                                   shape: const ContinuousRectangleBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10.0)),
                                   ),
                                   elevation: 5.0,
                                   padding: const EdgeInsets.symmetric(
-                                      vertical: 15, horizontal: 40),
+                                      vertical: 10, horizontal: 40),
                                 ),
                                 child: const Text(
                                   'Sign Up',
                                   style: TextStyle(
-                                      fontFamily: 'Belgrano', fontSize: 30, color: Colors.black),
+                                      fontFamily: 'Belgrano',
+                                      fontSize: 25,
+                                      color: Colors.black),
                                 ),
                               ),
                             ],

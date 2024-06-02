@@ -174,18 +174,6 @@ class _LoginScreensState extends State<LoginScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          Opacity(
-            opacity: 0.5,
-            child: Align(
-              alignment: const AlignmentDirectional(0.00, 0.00),
-              child: Image.asset(
-                'images/logo.png',
-                width: 300,
-                height: 200,
-                fit: BoxFit.contain,
-              ),
-            ),
-          ),
           Container(
             height: double.infinity,
             width: double.infinity,
@@ -227,7 +215,7 @@ class _LoginScreensState extends State<LoginScreen> {
                     ],
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(20),
+                    padding: const EdgeInsets.only(right: 20, left: 20),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gracieusgalerij/models/song.dart';
+import 'package:gracieusgalerij/screens/admin/edit_genre.dart';
 import 'package:gracieusgalerij/screens/admin/edit_product_detail_admin.dart';
 import 'package:gracieusgalerij/screens/theme/theme_app.dart';
 import 'package:gracieusgalerij/services/song_service.dart';
@@ -162,10 +163,16 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                           fontSize: 20,
                         ),
                       ),
-                      Icon(
-                        Icons.edit_note_rounded,
-                        color: themeProvider.themeMode().switchColor!,
-                        size: 24,
+                      InkWell(
+                        child: Icon(
+                          Icons.edit_note_rounded,
+                          color: themeProvider.themeMode().switchColor!,
+                          size: 24,
+                        ),
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => EditGenre()),
+                        ),
                       ),
                     ],
                   ),
