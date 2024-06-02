@@ -26,7 +26,7 @@ class _ReviewEditScreenState extends State<ReviewEditScreen> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _commentController = TextEditingController();
   File? _imageFile;
-  Position? _currentPosition;
+  LatLng? _currentPosition;
   double? _rating = 0.0;
   String pickedLocation = '';
 
@@ -62,8 +62,9 @@ class _ReviewEditScreenState extends State<ReviewEditScreen> {
       setState(() {
         pickedLocation =
             '(${selectedLocation.latitude}, ${selectedLocation.longitude})';
+        _currentPosition =
+            selectedLocation; // Simpan lokasi dalam _currentPosition
       });
-      Navigator.pop(context, pickedLocation);
     }
   }
 
@@ -293,10 +294,11 @@ class _ReviewEditScreenState extends State<ReviewEditScreen> {
                               Expanded(
                                 child: Text(
                                   pickedLocation,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontFamily: 'Readex Pro',
                                     fontSize: 10,
-                                    color: Colors.white,
+                                    color:
+                                        themeProvider.themeMode().thumbColor!,
                                   ),
                                   overflow: TextOverflow.ellipsis,
                                 ),
@@ -340,9 +342,12 @@ class _ReviewEditScreenState extends State<ReviewEditScreen> {
                                 );
 
                                 if (widget.review == null) {
-                                  await ReviewService.addReview(review);
+                                  ReviewService.addReview(review).whenComplete(
+                                      () => Navigator.of(context).pop());
                                 } else {
-                                  await ReviewService.updateReview(review);
+                                  ReviewService.updateReview(review)
+                                      .whenComplete(
+                                          () => Navigator.of(context).pop());
                                 }
                               },
                               child: Text(

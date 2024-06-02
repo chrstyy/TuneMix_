@@ -59,27 +59,28 @@ class MyApp extends StatelessWidget {
       title: 'TuneMix',
       theme: themeProvider.themeData(),
       debugShowCheckedModeBanner: false,
-      initialRoute: '/landing',
+      initialRoute: '/home_adm',
       routes: {
         '/': (context) => const LandingScreen(),
-        '/landing': (context) => const LandingScreen(),
-        '/user': (context) => const UserProfile(),
         '/signup': (context) => const SignupScreen(),
         '/login': (context) => const LoginScreen(),
+        '/home': (context) => const HomeScreen(),
+        '/home_adm': (context) => const HomeScreenAdmin(),
+        '/song_detail': (context) => const SongDetailScreen(songId: ''),
+        '/review': (context) => const ReviewListScreen(
+              songTitle: '',
+            ),
+        '/review_edit': (context) => const ReviewEditScreen(),
         '/songreview': (context) => const SongReviewScreen(songId: ''),
         '/cart': (context) => const CartScreen(
               purchasedSongs: [],
             ),
-        '/favorites': (context) =>  FavoriteScreen(),
-        '/song_detail': (context) => const SongDetailScreen(songId: ''),
+        '/favorite': (context) => const FavoriteScreen(),
         '/fav2': (context) => const FavoriteScreen2(),
-        '/home': (context) => const HomeScreen(),
-        '/review': (context) => const ReviewListScreen(
-              songTitle: '',
-            ),
-        '/home_adm': (context) => const HomeScreenAdmin(),
-        '/review_edit': (context) => const ReviewEditScreen(),
         '/edit': (context) => const EditProductDetail(),
+        '/user': (context) => const UserProfile(
+              purchasedSongs: [],
+            ),
       },
     );
   }

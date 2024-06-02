@@ -488,7 +488,7 @@ class _CartScreenState extends State<CartScreen> {
             case 3:
               return  const FavoriteScreen();
             case 4:
-              return const UserProfile();
+              return const UserProfile(purchasedSongs: [],);
             default:
               return Container();
           }

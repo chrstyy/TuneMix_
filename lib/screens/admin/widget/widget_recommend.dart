@@ -6,7 +6,7 @@ import 'package:gracieusgalerij/services/song_service.dart';
 import 'package:provider/provider.dart';
 
 class WidgetRecommendation extends StatelessWidget {
-  WidgetRecommendation({Key? key}) : super(key: key);
+  WidgetRecommendation({super.key});
 
   final SongService _songService = SongService();
 

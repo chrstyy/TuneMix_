@@ -38,6 +38,9 @@ class ReviewService {
       'comment': reviews.comment,
       'image_url': reviews.imageUrl,
       'rating': reviews.rating,
+      'location': reviews.location,
+      'latitude': reviews.latitude,
+      'longitude': reviews.longitude,
       'created_at': FieldValue.serverTimestamp(),
       'updated_at': FieldValue.serverTimestamp(),
     };
@@ -50,6 +53,9 @@ class ReviewService {
       'comment': reviews.comment,
       'image_url': reviews.imageUrl,
       'rating': reviews.rating,
+      'location': reviews.location,
+      'latitude': reviews.latitude,
+      'longitude': reviews.longitude,
       'created_at': reviews.createdAt,
       'updated_at': FieldValue.serverTimestamp(),
     };
@@ -75,6 +81,11 @@ class ReviewService {
           comment: data['comment'],
           imageUrl: data['image_url'],
           rating: data['rating'] ?? 0.0,
+          location: data['location'],
+          latitude:
+              data['latitude'] != null ? data['latitude'] as double : null,
+          longitude:
+              data['longitude'] != null ? data['longitude'] as double : null,
           createdAt: data['created_at'] != null
               ? data['created_at'] as Timestamp
               : null,
@@ -92,7 +103,7 @@ class ReviewService {
       Map<String, List<double>> songRatings = {};
 
       for (var doc in reviewSnapshot.docs) {
-        String songId = doc['songId'];  // Pastikan review menyimpan songId
+        String songId = doc['songId']; // Pastikan review menyimpan songId
         double rating = doc['rating'];
 
         if (songRatings.containsKey(songId)) {

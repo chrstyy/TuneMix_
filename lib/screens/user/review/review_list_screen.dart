@@ -2,13 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:gracieusgalerij/screens/theme/theme_app.dart';
-import 'package:gracieusgalerij/screens/user/pick_location.dart';
 import 'package:gracieusgalerij/screens/user/review/review_edit_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../../services/review_services.dart';
 
@@ -88,7 +85,8 @@ class _ReviewListScreenState extends State<ReviewListScreen> {
                       alignment: const AlignmentDirectional(-0.15, 0),
                       child: Text(
                         widget.songTitle,
-                        style: const TextStyle(fontFamily: 'Bayon', fontSize: 25),
+                        style:
+                            const TextStyle(fontFamily: 'Bayon', fontSize: 25),
                       ),
                     ),
                   ),
@@ -105,14 +103,17 @@ class _ReviewListScreenState extends State<ReviewListScreen> {
                 child: Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: themeProvider.themeMode().switchBgColor2!,
+                    color: themeProvider.themeMode().switchBgColor!,
                     borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(20),
                       topRight: Radius.circular(20),
                     ),
                   ),
                   child: ReviewList(
-                      userName: userName, profileImageUrl: profileImageUrl),
+                    userName: userName,
+                    profileImageUrl: profileImageUrl,
+                    location: '',
+                  ),
                 ),
               ),
             ],
@@ -149,17 +150,19 @@ class _ReviewListScreenState extends State<ReviewListScreen> {
 class ReviewList extends StatefulWidget {
   final String userName;
   final String profileImageUrl;
+  final String location;
 
   const ReviewList(
-      {super.key, required this.userName, required this.profileImageUrl});
+      {super.key,
+      required this.userName,
+      required this.profileImageUrl,
+      required this.location});
 
   @override
   State<ReviewList> createState() => _ReviewListState();
 }
 
 class _ReviewListState extends State<ReviewList> {
-  String pickedLocation = '';
-
   String _formatTimestamp(Timestamp timestamp) {
     DateTime dateTime = timestamp.toDate();
     return DateFormat('yyyy-MM-dd HH:mm:ss').format(dateTime);
@@ -263,11 +266,13 @@ class _ReviewListState extends State<ReviewList> {
                                           ),
                                           Expanded(
                                             child: Text(
-                                              pickedLocation,
-                                              style: const TextStyle(
+                                              widget.location,
+                                              style: TextStyle(
                                                 fontFamily: 'Readex Pro',
                                                 fontSize: 10,
-                                                color: Colors.black,
+                                                color: themeProvider
+                                                    .themeMode()
+                                                    .thumbColor!,
                                               ),
                                               overflow: TextOverflow.ellipsis,
                                             ),
@@ -387,10 +392,10 @@ class _ReviewListState extends State<ReviewList> {
                         const SizedBox(height: 10),
                         Text(
                           document.comment,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontFamily: 'Basic',
                             fontSize: 16,
-                            color: Colors.white,
+                            color: themeProvider.themeMode().switchColor!,
                           ),
                         ),
                       ],

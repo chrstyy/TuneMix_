@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:gracieusgalerij/models/song.dart';
 import 'package:gracieusgalerij/screens/theme/theme_app.dart';
 import 'package:gracieusgalerij/screens/user/cart_screen.dart';
 import 'package:gracieusgalerij/screens/user/fav_screen.dart';
@@ -14,7 +16,8 @@ import 'package:provider/provider.dart';
 import '../../services/auth_service.dart';
 
 class UserProfile extends StatefulWidget {
-  const UserProfile({Key? key}) : super(key: key);
+  const UserProfile({Key? key, required this.purchasedSongs}) : super(key: key);
+  final List<Song> purchasedSongs;
 
   @override
   State<UserProfile> createState() => _UserProfileState();
@@ -480,12 +483,12 @@ class _UserProfileState extends State<UserProfile> {
                         child: Container(
                             width: 44,
                             height: 43,
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               shape: BoxShape.circle,
                               color: Color(0xFFAF8F6F),
                             ),
                             child: IconButton(
-                              icon: Icon(Icons.nights_stay_outlined),
+                              icon: const Icon(Icons.nights_stay_outlined),
                               onPressed: () {
                                 themeProvider.toggleThemeData();
                               },
@@ -512,76 +515,22 @@ class _UserProfileState extends State<UserProfile> {
                               color: Colors.white),
                         ),
                       ),
+                      SingleChildScrollView(
+                        child: ListView.builder(
+                          itemCount: widget.purchasedSongs.length,
+                          itemBuilder: (context, index) {
+                            final song = widget.purchasedSongs[index];
+                            return ListTile(
+                              leading: Image.network(song.imageSong ?? ''),
+                              title: Text(song.songTitle),
+                              subtitle:
+                                  Text('\$${song.price.toStringAsFixed(2)}'),
+                            );
+                          },
+                        ),
+                      ),
                     ],
                   ),
-                  const SizedBox(height: 10),
-                  // Expanded(
-                  // child: ListView.builder(
-                  //   itemCount: historyList.length,
-                  //   itemBuilder: (context, index) {
-                  //     return Padding(
-                  //       padding: const EdgeInsets.symmetric(
-                  //         horizontal: 20,
-                  //         vertical: 10,
-                  //       ),
-                  //       child: Container(
-                  //         padding: EdgeInsets.all(10),
-                  //         decoration: BoxDecoration(
-                  //           border: Border.all(color: Colors.grey),
-                  //           borderRadius: BorderRadius.circular(10),
-                  //         ),
-                  //         child: Row(
-                  //           crossAxisAlignment: CrossAxisAlignment.start,
-                  //           children: [
-                  //             Container(
-                  //               width: 80,
-                  //               height: 80,
-                  //               decoration: BoxDecoration(
-                  //                 borderRadius: BorderRadius.circular(10),
-                  //                 image: DecorationImage(
-                  //                   image: AssetImage(historyList[index].productImage),
-                  //                   fit: BoxFit.cover,
-                  //                 ),
-                  //               ),
-                  //             ),
-                  //             SizedBox(width: 10),
-                  //             Expanded(
-                  //               child: Column(
-                  //                 crossAxisAlignment: CrossAxisAlignment.start,
-                  //                 children: [
-                  //                   Text(
-                  //                     historyList[index].productName,
-                  //                     style: TextStyle(
-                  //                       fontSize: 18,
-                  //                       fontWeight: FontWeight.bold,
-                  //                     ),
-                  //                   ),
-                  //                   SizedBox(height: 5),
-                  //                   Text(
-                  //                     'Price: \$${historyList[index].price.toStringAsFixed(2)}',
-                  //                     style: TextStyle(fontSize: 16),
-                  //                   ),
-                  //                   SizedBox(height: 5),
-                  //                   Text(
-                  //                     'Quantity: ${historyList[index].quantity}',
-                  //                     style: TextStyle(fontSize: 16),
-                  //                   ),
-                  //                   SizedBox(height: 5),
-                  //                   Text(
-                  //                     'Total: \$${historyList[index].total.toStringAsFixed(2)}',
-                  //                     style: TextStyle(fontSize: 16),
-                  //                   ),
-                  //                 ],
-                  //               ),
-                  //             ),
-                  //           ],
-                  //         ),
-                  //       ),
-
-                  //     );
-                  //   },
-                  // ),
-                  //     )
                 ],
               ),
             ),
@@ -604,14 +553,16 @@ class _UserProfileState extends State<UserProfile> {
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.home,
-                color: _currentIndex == 0 ? Color(0xFF0500FF) : Colors.black,
+                color:
+                    _currentIndex == 0 ? const Color(0xFF0500FF) : Colors.black,
               ),
               label: 'Home',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.search,
-                color: _currentIndex == 1 ? Color(0xFF0500FF) : Colors.black,
+                color:
+                    _currentIndex == 1 ? const Color(0xFF0500FF) : Colors.black,
               ),
               label: 'Search',
             ),
@@ -620,21 +571,24 @@ class _UserProfileState extends State<UserProfile> {
                 _currentIndex == 2 ? 'images/basket.png' : 'images/basket.png',
                 width: 24,
                 height: 24,
-                color: _currentIndex == 2 ? Color(0xFF0500FF) : Colors.black,
+                color:
+                    _currentIndex == 2 ? const Color(0xFF0500FF) : Colors.black,
               ),
               label: 'Story',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.favorite,
-                color: _currentIndex == 3 ? Color(0xFF0500FF) : Colors.black,
+                color:
+                    _currentIndex == 3 ? const Color(0xFF0500FF) : Colors.black,
               ),
               label: 'Favorite',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.account_circle_rounded,
-                color: _currentIndex == 4 ? Color(0xFF0500FF) : Colors.black,
+                color:
+                    _currentIndex == 4 ? const Color(0xFF0500FF) : Colors.black,
               ),
               label: 'Account',
             ),
@@ -680,9 +634,11 @@ class _UserProfileState extends State<UserProfile> {
                 purchasedSongs: [],
               );
             case 3:
-              return  FavoriteScreen();
+              return const FavoriteScreen();
             case 4:
-              return const UserProfile();
+              return const UserProfile(
+                purchasedSongs: [],
+              );
             default:
               return Container();
           }

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:gracieusgalerij/screens/admin/widget/widget_recommend.dart';
 import 'package:gracieusgalerij/screens/theme/theme_app.dart';
 import 'package:gracieusgalerij/screens/user/cart_screen.dart';
 import 'package:gracieusgalerij/screens/user/fav_screen.dart';
@@ -388,53 +389,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ],
                         ),
                       ),
-                      Align(
-                        alignment: const AlignmentDirectional(-1, 0),
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(right: 10),
-                                child: Container(
-                                  width: 100,
-                                  height: 150,
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFF543310),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(5, 5, 5, 5),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          child: Image.asset(
-                                            'images/logo.png',
-                                            width: 150,
-                                            height: 100,
-                                            fit: BoxFit.contain,
-                                          ),
-                                        ),
-                                      ),
-                                      const Text('Special Offer',
-                                          style: TextStyle(
-                                            fontFamily: 'Bayon',
-                                            fontSize: 15,
-                                          )),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                      SizedBox(child: WidgetRecommendation()),
                     ],
                   ),
                 ),

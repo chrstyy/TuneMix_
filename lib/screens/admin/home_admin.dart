@@ -30,7 +30,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration:  BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: themeProvider.themeMode().gradientColors!,
             begin: Alignment.topCenter,
@@ -41,7 +41,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
           padding: const EdgeInsetsDirectional.fromSTEB(20, 20, 0, 0),
           child: SingleChildScrollView(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(8),
@@ -119,12 +119,14 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                       ),
                       GestureDetector(
                         onTap: () {
-                           Navigator.push(
+                          Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => const EditProductDetail()),
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const EditProductDetail()),
                           );
                         },
-                        child:  Padding(
+                        child: Padding(
                           padding: const EdgeInsets.only(left: 20),
                           child: Icon(
                             Icons.add_circle_sharp,
@@ -136,34 +138,18 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                     ],
                   ),
                 ),
-                Column(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                     Padding(
-                      padding: const EdgeInsets.only(top: 20, right: 20),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            'Special Offer',
-                            style: TextStyle(
-                              fontFamily: 'Bayon',
-                              fontSize: 20,
-                            ),
-                          ),
-                          Icon(
-                            Icons.arrow_drop_down,
-                            color:  themeProvider.themeMode().switchColor!,
-                            size: 24,
-                          ),
-                        ],
-                      ),
+                const Padding(
+                  padding: EdgeInsets.only(top: 20, right: 20),
+                  child: Text(
+                    'Special Offer',
+                    style: TextStyle(
+                      fontFamily: 'Bayon',
+                      fontSize: 20,
                     ),
-                SizedBox(child: WidgetOffer()),
-                  ],
+                  ),
                 ),
-                 Padding(
+                SizedBox(child: WidgetOffer()),
+                Padding(
                   padding: const EdgeInsets.only(top: 20, right: 20),
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
@@ -178,7 +164,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                       ),
                       Icon(
                         Icons.edit_note_rounded,
-                        color:  themeProvider.themeMode().switchColor!,
+                        color: themeProvider.themeMode().switchColor!,
                         size: 24,
                       ),
                     ],
@@ -187,8 +173,8 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                 Container(
                   width: double.infinity,
                   height: 70,
-                  decoration:  BoxDecoration(
-                    color:  themeProvider.themeMode().switchBgColor!,
+                  decoration: BoxDecoration(
+                    color: themeProvider.themeMode().switchBgColor!,
                     borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(10),
                       bottomLeft: Radius.circular(10),
@@ -219,11 +205,10 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                               child: const Text(
                                 'Pop',
                                 style: TextStyle(
-                                  fontFamily: 'Bayon',
-                                  color: Colors.black,
-                                  letterSpacing: 0,
-                                  fontSize: 25
-                                ),
+                                    fontFamily: 'Bayon',
+                                    color: Colors.black,
+                                    letterSpacing: 0,
+                                    fontSize: 25),
                               ),
                             ),
                           ),
@@ -245,11 +230,10 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                               child: const Text(
                                 'Jazz',
                                 style: TextStyle(
-                                  fontFamily: 'Bayon',
-                                  color: Colors.black,
-                                  letterSpacing: 0,
-                                  fontSize: 25
-                                ),
+                                    fontFamily: 'Bayon',
+                                    color: Colors.black,
+                                    letterSpacing: 0,
+                                    fontSize: 25),
                               ),
                             ),
                           ),
@@ -271,11 +255,10 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                               child: const Text(
                                 'Rock & Roll',
                                 style: TextStyle(
-                                  fontFamily: 'Bayon',
-                                  color: Colors.black,
-                                  letterSpacing: 0,
-                                  fontSize: 25
-                                ),
+                                    fontFamily: 'Bayon',
+                                    color: Colors.black,
+                                    letterSpacing: 0,
+                                    fontSize: 25),
                               ),
                             ),
                           ),
@@ -284,36 +267,17 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      const Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 20, 0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Recommendation',
-                              style: TextStyle(
-                                fontFamily: 'Bayon',
-                                fontSize: 20,
-                              ),
-                            ),
-                            Icon(
-                              Icons.arrow_drop_down,
-                              color: Colors.black,
-                              size: 24,
-                            ),
-                          ],
-                        ),
-                      ),
-                    SizedBox(child: WidgetRecommendation()),
-                    ],
+                const Padding(
+                  padding: EdgeInsets.only(top: 20),
+                  child: Text(
+                    'Recommendation',
+                    style: TextStyle(
+                      fontFamily: 'Bayon',
+                      fontSize: 20,
+                    ),
                   ),
                 ),
+                SizedBox(child: WidgetRecommendation()),
               ],
             ),
           ),
