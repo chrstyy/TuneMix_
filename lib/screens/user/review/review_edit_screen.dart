@@ -28,7 +28,7 @@ class _ReviewEditScreenState extends State<ReviewEditScreen> {
   File? _imageFile;
   LatLng? _currentPosition;
   double? _rating = 0.0;
-  String pickedLocation = '';
+  String? pickedLocation;
 
   @override
   void initState() {
@@ -37,9 +37,9 @@ class _ReviewEditScreenState extends State<ReviewEditScreen> {
       _titleController.text = widget.review!.title;
       _commentController.text = widget.review!.comment;
       _rating = widget.review!.rating ?? 0;
-      pickedLocation = widget.review!.location ?? '';
+      pickedLocation = widget.review!.location;
     } else {
-      pickedLocation = widget.initialLocation ?? '';
+      pickedLocation = widget.initialLocation;
     }
   }
 
@@ -61,9 +61,8 @@ class _ReviewEditScreenState extends State<ReviewEditScreen> {
     if (selectedLocation != null) {
       setState(() {
         pickedLocation =
-            '(${selectedLocation.latitude}, ${selectedLocation.longitude})';
-        _currentPosition =
-            selectedLocation; // Simpan lokasi dalam _currentPosition
+            '(${selectedLocation.latitude.toStringAsFixed(3)}, ${selectedLocation.longitude.toStringAsFixed(3)})';
+        _currentPosition = selectedLocation;
       });
     }
   }
@@ -293,7 +292,7 @@ class _ReviewEditScreenState extends State<ReviewEditScreen> {
                               ),
                               Expanded(
                                 child: Text(
-                                  pickedLocation,
+                                  pickedLocation ?? 'Location not selected',
                                   style: TextStyle(
                                     fontFamily: 'Readex Pro',
                                     fontSize: 10,

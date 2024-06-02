@@ -266,7 +266,11 @@ class _ReviewListState extends State<ReviewList> {
                                           ),
                                           Expanded(
                                             child: Text(
-                                              widget.location,
+                                              (document.latitude != null &&
+                                                      document.longitude !=
+                                                          null)
+                                                  ? '${document.latitude!.toStringAsFixed(3)}, ${document.longitude!.toStringAsFixed(3)}'
+                                                  : 'Location not selected',
                                               style: TextStyle(
                                                 fontFamily: 'Readex Pro',
                                                 fontSize: 10,
@@ -294,7 +298,7 @@ class _ReviewListState extends State<ReviewList> {
                                       ),
                                       onSelected: (String value) {
                                         if (value == 'edit') {
-                                          Navigator.pushReplacement(
+                                          Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) =>

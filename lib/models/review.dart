@@ -47,8 +47,7 @@ class Review {
     return {
       'title': title,
       'comment': comment,
-      'image_url':
-          imageUrl, // Menggunakan image_urls untuk menyimpan daftar URL gambar
+      'image_url': imageUrl,
       'location': location,
       'latitude': latitude,
       'longitude': longitude,

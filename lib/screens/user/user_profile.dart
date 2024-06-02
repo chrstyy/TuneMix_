@@ -471,28 +471,20 @@ class _UserProfileState extends State<UserProfile> {
                         ),
                       ),
                       const SizedBox(width: 10),
-                      GestureDetector(
-                        onTap: () {
-                          // Tambahkan logika untuk dark mode di sini
-                          setState(() {
-                            // Tambahkan logika untuk mengubah warna lingkaran
-                          });
-                        },
-                        child: Container(
-                            width: 44,
-                            height: 43,
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Color(0xFFAF8F6F),
-                            ),
-                            child: IconButton(
-                              icon: const Icon(Icons.nights_stay_outlined),
-                              onPressed: () {
-                                themeProvider.toggleThemeData();
-                              },
-                            )),
+                      Container(
+                        width: 44,
+                        height: 43,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Color(0xFFAF8F6F),
+                        ),
+                        child: IconButton(
+                          icon: const Icon(Icons.nights_stay_outlined),
+                          onPressed: () {
+                            themeProvider.toggleThemeData();
+                          },
+                        ),
                       ),
-                      const SizedBox(width: 65),
                       ElevatedButton(
                         onPressed: () {
                           _signOut();
@@ -513,20 +505,6 @@ class _UserProfileState extends State<UserProfile> {
                               color: Colors.white),
                         ),
                       ),
-                      // SingleChildScrollView(
-                      //   child: ListView.builder(
-                      //     itemCount: widget.purchasedSongs.length,
-                      //     itemBuilder: (context, index) {
-                      //       final song = widget.purchasedSongs[index];
-                      //       return ListTile(
-                      //         leading: Image.network(song.imageSong ?? ''),
-                      //         title: Text(song.songTitle),
-                      //         subtitle:
-                      //             Text('\$${song.price.toStringAsFixed(2)}'),
-                      //       );
-                      //     },
-                      //   ),
-                      // ),
                     ],
                   ),
                 ],
