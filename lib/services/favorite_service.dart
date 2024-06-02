@@ -24,7 +24,8 @@ class FavoriteService {
         'imageSong': song.imageSong,
         'description': song.description,
         'price': song.price,
-        'isFavorite': song.isFavorite
+        'isFavorite': song.isFavorite,
+        'rating' : song.rating
       });
       print("Added to favorites successfully.");
     } catch (error) {

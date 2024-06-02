@@ -107,4 +107,13 @@ static Future<void> addSong(Song song, File? image) async {
   }
 
 
+  Future<void> updateSongRating(String songId, double rating) async {
+    try {
+      await _database.collection('songs').doc(songId).update({
+        'rating': rating,
+      });
+    } catch (e) {
+      print('Error updating song rating: $e');
+    }
+  }
 }

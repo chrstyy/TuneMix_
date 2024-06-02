@@ -3,6 +3,7 @@ import 'package:gracieusgalerij/models/song.dart';
 import 'package:gracieusgalerij/screens/theme/theme_app.dart';
 import 'package:gracieusgalerij/screens/user/review/review_edit_screen.dart';
 import 'package:gracieusgalerij/screens/user/review/review_list_screen.dart';
+import 'package:gracieusgalerij/screens/user/song%20review.dart';
 import 'package:gracieusgalerij/services/favorite_service.dart';
 import 'package:gracieusgalerij/services/song_service.dart';
 import 'package:provider/provider.dart';
@@ -120,6 +121,24 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                                   width: 35,
                                   height: 35,
                                   color: themeProvider.themeMode().switchColor!,
+                                ),
+                              ),
+                            ),
+                             Padding(
+                              padding: const EdgeInsets.only(top: 40, right: 20),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => SongReviewScreen(songId: widget.songId), // Pass the songId here
+                                    ),
+                                  );
+                                },
+                                child: const Icon(
+                                  Icons.star,
+                                  color: Colors.yellow,
+                                  size: 35,
                                 ),
                               ),
                             ),

@@ -9,7 +9,8 @@ class Song {
   final double price;
   final bool isRecommended;
   final String? specialOffer;
-  bool isFavorite;
+  double rating; // tambahkan properti rating
+   bool isFavorite;
 
   Song({
     required this.id,
@@ -22,21 +23,23 @@ class Song {
     required this.arangement,
     this.isRecommended = false,
     this.specialOffer,
+    required this.rating, // tambahkan rating ke constructor
     required this.isFavorite,
   });
 
   factory Song.fromFirestore(Map<String, dynamic> data, String id) {
     return Song(
       id: id,
-      songTitle: data['song_title'] as String,
-      creator: data['creator'] as String,
-      genre: data['genre'] as String,
-      description: data['description'] as String,
-      imageSong: data['image_song'] as String?,
-      arangement: data['arangement'] as String,
-      price: (data['price'] as num).toDouble(),
-      isRecommended: data['is_recommended'] as bool? ?? true,
-      specialOffer: data['special_offer'] as String?,
+      songTitle: data['song_title'],
+      creator: data['creator'],
+      genre: data['genre'],
+      description: data['description'],
+      imageSong: data['image_song'],
+      arangement: data['arangement'],
+      price: data['price'].toDouble(),
+      isRecommended: data['is_recommended'] ?? false,
+      specialOffer: data['special_offer'],
+      rating: (data['rating'] ?? 0.0).toDouble(), // pastikan untuk mengonversi rating ke double
       isFavorite: data['isFavorite'] as bool? ?? true,
     );
   }
@@ -52,6 +55,7 @@ class Song {
       'arangement': arangement,
       'is_recommended': isRecommended,
       'special_offer': specialOffer,
+      'rating': rating, // tambahkan rating ke dokumen Firestore
       'isFavorite': isFavorite,
     };
   }

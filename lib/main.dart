@@ -10,6 +10,7 @@ import 'package:gracieusgalerij/screens/user/fav_screen.dart';
 import 'package:gracieusgalerij/screens/user/home_screen.dart';
 import 'package:gracieusgalerij/screens/user/review/review_edit_screen.dart';
 import 'package:gracieusgalerij/screens/user/review/review_list_screen.dart';
+import 'package:gracieusgalerij/screens/user/song%20review.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'screens/user/landing_screen.dart';
@@ -58,13 +59,15 @@ class MyApp extends StatelessWidget {
       title: 'TuneMix',
       theme: themeProvider.themeData(),
       debugShowCheckedModeBanner: false,
-      initialRoute: '/home',
+      initialRoute: '/home_adm',
       routes: {
         '/': (context) => const LandingScreen(),
         '/landing': (context) => const LandingScreen(),
         '/user': (context) => const UserProfile(),
         '/signup': (context) => const SignupScreen(),
         '/login': (context) => const LoginScreen(),
+        '/product_detail': (context) => SongDetailScreen(songId: ''),
+        '/songreview': (context) => const SongReviewScreen(songId: ''),
         '/cart': (context) => const CartScreen(
               purchasedSongs: [],
             ),
@@ -77,7 +80,7 @@ class MyApp extends StatelessWidget {
         '/home_adm': (context) => const HomeScreenAdmin(),
         '/review_edit': (context) => const ReviewEditScreen(),
         '/edit': (context) => const EditProductDetail(),
-        '/song_detail': (context) => const SongDetailScreen(songId: ''),
+         '/song_detail': (context) => const SongDetailScreen(songId: ''),
       },
     );
   }

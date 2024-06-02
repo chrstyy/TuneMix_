@@ -53,7 +53,9 @@ class _EditProductDetailState extends State<EditProductDetail> {
         imageSong: imageUrl,
         price: double.parse(_priceController.text),
         arangement: _arangementController.text,
-        isFavorite: isFavorite ?? false
+        isFavorite: isFavorite ?? false,
+        rating: 0.0,
+        
       );
 
       await SongService.addSong(newSong, _image);
