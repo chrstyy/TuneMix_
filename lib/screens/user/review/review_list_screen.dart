@@ -11,29 +11,57 @@ import '../../../services/review_services.dart';
 
 class ReviewListScreen extends StatefulWidget {
   final String songTitle;
-  const ReviewListScreen({super.key, required this.songTitle});
+  const ReviewListScreen({Key? key, required this.songTitle}) : super(key: key);
 
   @override
   State<ReviewListScreen> createState() => _ReviewListScreenState();
 }
 
 class _ReviewListScreenState extends State<ReviewListScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<User?>(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return CircularProgressIndicator();
+        }
+        final user = snapshot.data;
+        return ReviewListContent(songTitle: widget.songTitle, user: user);
+      },
+    );
+  }
+}
+
+class ReviewListContent extends StatefulWidget {
+  final String songTitle;
+  final User? user;
+  const ReviewListContent(
+      {Key? key, required this.songTitle, required this.user})
+      : super(key: key);
+
+  @override
+  State<ReviewListContent> createState() => _ReviewListContentState();
+}
+
+class _ReviewListContentState extends State<ReviewListContent> {
   String userName = '';
   String profileImageUrl = '';
 
   @override
   void initState() {
     super.initState();
-    _loadUserData();
+    if (widget.user != null) {
+      _loadUserData();
+    }
   }
 
   Future<void> _loadUserData() async {
     try {
-      User? currentUser = FirebaseAuth.instance.currentUser;
-      if (currentUser != null) {
+      if (widget.user != null) {
         DocumentSnapshot userData = await FirebaseFirestore.instance
             .collection('users')
-            .doc(currentUser.uid)
+            .doc(widget.user!.uid)
             .get();
 
         if (userData.exists) {

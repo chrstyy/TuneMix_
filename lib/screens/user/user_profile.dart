@@ -23,12 +23,12 @@ class UserProfile extends StatefulWidget {
 
 class _UserProfileState extends State<UserProfile> {
   int _currentIndex = 4;
-  String userName = '';
   String _userName = 'Initial Username';
   bool isSignedIn = false;
   final TextEditingController _editedUserNameController =
       TextEditingController();
-  bool isDarkMode = false;
+  bool _showAboutUs = false;
+  bool _showContact = false;
 
   AuthService _authService = AuthService();
   final FirebaseFirestore _database = FirebaseFirestore.instance;
@@ -38,13 +38,62 @@ class _UserProfileState extends State<UserProfile> {
   String _tempUsername = '';
   String _profileImageUrl = '';
 
-  bool _showHistory = false;
-
   @override
   void initState() {
     super.initState();
     _loadUserData();
     _getUserInfo();
+  }
+
+  void _showAboutUsDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('About Us'),
+          content: Text(
+            'TuneMix adalah aplikasi e-commerce aransemen musik yang memungkinkan pengguna untuk menjelajahi dan membeli aransemen musik dari berbagai genre. Aplikasi ini dirancang untuk memberikan pengalaman pengguna yang intuitif dan menyenangkan, baik untuk pengguna biasa maupun admin.',
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showEmergencyContactDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Emergency Contact'),
+          content: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Text('rayvin_putra_tapasya@gmail.com'),
+              Text('christy_permata_sari@gmail.com'),
+              Text('jocelyn_harpasari@gmail.com'),
+              Text('callista_putri_khadijah@gmail.com'),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void _signOut() async {
@@ -86,7 +135,7 @@ class _UserProfileState extends State<UserProfile> {
         print("User info found: ${userInfo.data()}");
         setState(() {
           _userName = userInfo['username'] ?? 'No Username';
-          userName = _userName;
+          _tempUsername = _userName;
           _tempUsername = _userName;
           _editedUserNameController.text = _userName;
         });
@@ -114,7 +163,6 @@ class _UserProfileState extends State<UserProfile> {
 
         setState(() {
           _userName = newUsername;
-          userName = newUsername;
         });
       }
     } catch (e) {
@@ -136,7 +184,7 @@ class _UserProfileState extends State<UserProfile> {
         if (userData.exists) {
           setState(() {
             String email = userData['username'];
-            userName = email.split('@')[0];
+            _userName = email.split('@')[0];
             isSignedIn = true;
             _tempImageFile = userData['profileImageUrl'];
           });
@@ -214,36 +262,42 @@ class _UserProfileState extends State<UserProfile> {
           ),
           GestureDetector(
             onTap: () => choosePhoto(ImageSource.gallery),
-            child: const Center(
+            child: Center(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text('Choose from Library'),
-                  Divider(color: Colors.black),
+                  Divider(
+                    color: themeProvider.themeMode().switchColor!,
+                  ),
                 ],
               ),
             ),
           ),
           GestureDetector(
             onTap: () => choosePhoto(ImageSource.camera),
-            child: const Center(
+            child: Center(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text('Take Photo'),
-                  Divider(color: Colors.black),
+                  Divider(
+                    color: themeProvider.themeMode().switchColor!,
+                  ),
                 ],
               ),
             ),
           ),
           GestureDetector(
             onTap: () => _authService.removeCurrentPhoto(),
-            child: const Center(
+            child: Center(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text('Remove Current Photo'),
-                  Divider(color: Colors.black),
+                  Divider(
+                    color: themeProvider.themeMode().switchColor!,
+                  ),
                 ],
               ),
             ),
@@ -255,11 +309,11 @@ class _UserProfileState extends State<UserProfile> {
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: const Text(
+                child: Text(
                   'Cancel',
                   style: TextStyle(
                     fontFamily: 'Itim',
-                    color: Colors.black,
+                    color: themeProvider.themeMode().switchColor!,
                   ),
                 ),
               ),
@@ -271,8 +325,9 @@ class _UserProfileState extends State<UserProfile> {
   }
 
   Widget _builUsernameUpdate(BuildContext context) {
+    ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(16),
       color: Colors.transparent,
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -319,11 +374,11 @@ class _UserProfileState extends State<UserProfile> {
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: const Text(
+                child: Text(
                   'Cancel',
                   style: TextStyle(
                     fontFamily: 'Itim',
-                    color: Colors.black,
+                    color: themeProvider.themeMode().switchColor!,
                   ),
                 ),
               ),
@@ -426,7 +481,7 @@ class _UserProfileState extends State<UserProfile> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              userName,
+                              _userName,
                               style: Theme.of(context).textTheme.headline1!,
                             ),
                             const SizedBox(height: 2),
@@ -446,66 +501,178 @@ class _UserProfileState extends State<UserProfile> {
                   ),
                   const SizedBox(height: 40),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          setState(() {
-                            _showHistory = !_showHistory;
-                          });
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFFF1B26F),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                      Row(
+                        children: [
+                          Container(
+                            width: 44,
+                            height: 43,
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Color(0xFFAF8F6F),
+                            ),
+                            child: IconButton(
+                              icon: const Icon(Icons.nights_stay_outlined),
+                              onPressed: () {
+                                themeProvider.toggleThemeData();
+                              },
+                            ),
                           ),
-                          fixedSize: const Size(140, 48),
-                        ),
-                        child: const Text(
-                          'HISTORY',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                            fontFamily: 'BlackOpsOne',
+                          SizedBox(
+                            width: 20,
                           ),
-                        ),
+                          ElevatedButton(
+                            onPressed: () {
+                              _signOut();
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF9D3939),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              fixedSize: const Size(91, 28),
+                            ),
+                            child: const Text(
+                              'LOGOUT',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontFamily: 'Bayon',
+                                  fontSize: 15,
+                                  color: Colors.white),
+                            ),
+                          ),
+                        ],
                       ),
-                      const SizedBox(width: 10),
-                      Container(
-                        width: 44,
-                        height: 43,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Color(0xFFAF8F6F),
-                        ),
-                        child: IconButton(
-                          icon: const Icon(Icons.nights_stay_outlined),
-                          onPressed: () {
-                            themeProvider.toggleThemeData();
-                          },
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          _signOut();
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF9D3939),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                      Row(
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              setState(() {
+                                _showAboutUs = !_showAboutUs;
+                                _showContact = false;
+                              });
+                            },
+                            icon: Icon(Icons.help_outline),
                           ),
-                          fixedSize: const Size(91, 28),
-                        ),
-                        child: const Text(
-                          'LOGOUT',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontFamily: 'Bayon',
-                              fontSize: 15,
-                              color: Colors.white),
-                        ),
+                          IconButton(
+                            onPressed: () {
+                              setState(() {
+                                _showContact = !_showContact;
+                                _showAboutUs = false;
+                              });
+                            },
+                            icon: Icon(Icons.contact_phone_outlined),
+                          ),
+                        ],
                       ),
                     ],
+                  ),
+                  Divider(
+                    thickness: 2,
+                    color: themeProvider.themeMode().switchColor!,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Positioned(
+                    left: 0,
+                    right: 0,
+                    bottom: 100,
+                    child: Visibility(
+                      visible: _showAboutUs || _showContact,
+                      child: Container(
+                        padding: EdgeInsets.all(10),
+                        color: themeProvider.themeMode().switchBgColor!,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            if (_showAboutUs)
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'About Us :',
+                                    style: TextStyle(
+                                      fontFamily: 'Bayon',
+                                      fontSize: 20,
+                                      color:
+                                          themeProvider.themeMode().thumbColor!,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    'TuneMix adalah aplikasi e-commerce aransemen musik yang memungkinkan pengguna untuk menjelajahi dan membeli aransemen musik dari berbagai genre. Aplikasi ini dirancang untuk memberikan pengalaman pengguna yang intuitif dan menyenangkan, baik untuk pengguna biasa maupun admin.',
+                                    style: TextStyle(
+                                      fontFamily: 'Basic',
+                                      fontSize: 18,
+                                      color:
+                                          themeProvider.themeMode().thumbColor!,
+                                    ),
+                                    textAlign: TextAlign.justify,
+                                  ),
+                                ],
+                              ),
+                            if (_showContact)
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Contact Us :',
+                                    style: TextStyle(
+                                      fontFamily: 'Bayon',
+                                      fontSize: 20,
+                                      color:
+                                          themeProvider.themeMode().thumbColor!,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    'rayvin_putra_tapasya@gmail.com',
+                                    style: TextStyle(
+                                      fontFamily: 'Basic',
+                                      fontSize: 18,
+                                      color:
+                                          themeProvider.themeMode().thumbColor!,
+                                    ),
+                                  ),
+                                  Text(
+                                    'christy_permata_sari@gmail.com',
+                                    style: TextStyle(
+                                      fontFamily: 'Basic',
+                                      fontSize: 18,
+                                      color:
+                                          themeProvider.themeMode().thumbColor!,
+                                    ),
+                                  ),
+                                  Text(
+                                    'jocelyn_ratna_harpasari@gmail.com',
+                                    style: TextStyle(
+                                      fontFamily: 'Basic',
+                                      fontSize: 18,
+                                      color:
+                                          themeProvider.themeMode().thumbColor!,
+                                    ),
+                                  ),
+                                  Text(
+                                    'callista_putri_khadijah@gmail.com',
+                                    style: TextStyle(
+                                      fontFamily: 'Basic',
+                                      fontSize: 18,
+                                      color:
+                                          themeProvider.themeMode().thumbColor!,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),
