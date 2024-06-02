@@ -14,6 +14,17 @@ class SongService {
   static final CollectionReference _songsCollection =
       _database.collection('songs');
 
+  static Future<List<Song>> searchSongs({required String query}) async {
+    final querySnapshot = await FirebaseFirestore.instance
+        .collection('songs')
+        .where('song_title', isGreaterThanOrEqualTo: query)
+        .where('song_title', isLessThanOrEqualTo: query + '\uf8ff')
+        .get();
+    return querySnapshot.docs
+        .map((doc) => Song.fromFirestore(doc.data() as Map<String, dynamic>, doc.id))
+        .toList();
+  }
+
   static Future<String> uploadImage(File image) async {
     try {
       String fileName = path.basename(image.path);
@@ -23,6 +34,20 @@ class SongService {
       return await taskSnapshot.ref.getDownloadURL();
     } catch (e) {
       throw Exception('Error uploading image: $e');
+    }
+  }
+
+static Future<bool> isFavorite({required String userId, required String songId}) async {
+    try {
+      DocumentSnapshot docSnapshot = await _database
+          .collection('users')
+          .doc(userId)
+          .collection('favorites')
+          .doc(songId)
+          .get();
+      return docSnapshot.exists;
+    } catch (e) {
+      throw Exception('Error checking favorite status: $e');
     }
   }
 

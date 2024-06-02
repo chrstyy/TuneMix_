@@ -26,12 +26,39 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
   final SongService _songService = SongService();
   final FavoriteService _favoriteService = FavoriteService();
   bool _isFavorite = false;
+  late String _userId;
+  late String songId;
   late Song song;
 
   @override
   void initState() {
     super.initState();
     _fetchSong();
+  }
+
+  Future<void> _loadSongDetail() async {
+    try {
+      song = await SongService().getSongById(widget.songId);
+      _isFavorite = await SongService.isFavorite(userId: _userId, songId: widget.songId);
+      setState(() {});
+    } catch (e) {
+      print('Error loading song detail: $e');
+    }
+  }
+
+  Future<void> _toggleFavorite() async {
+    try {
+      setState(() {
+        _isFavorite = !_isFavorite;
+      });
+      if (_isFavorite) {
+        await FavoriteService.addToFavorites(song);
+      } else {
+        await FavoriteService.removeFromFavorites(songId);
+      }
+    } catch (e) {
+      print('Error toggling favorite: $e');
+    }
   }
 
   Future<void> _fetchSong() async {

@@ -9,6 +9,7 @@ import 'package:gracieusgalerij/screens/theme/theme_app.dart';
 import 'package:gracieusgalerij/screens/user/cart_screen.dart';
 import 'package:gracieusgalerij/screens/user/fav_screen.dart';
 import 'package:gracieusgalerij/screens/user/home_screen.dart';
+import 'package:gracieusgalerij/screens/user/search_screen.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
@@ -771,7 +772,7 @@ class _UserProfileState extends State<UserProfile> {
             case 0:
               return const HomeScreen();
             case 1:
-            // return const SearchScreen();
+              return const SearchScreen();
             case 2:
               return const CartScreen(
                 purchasedSongs: [],

@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gracieusgalerij/models/song.dart';
+import 'package:gracieusgalerij/screens/user/cart_screen.dart';
+import 'package:gracieusgalerij/screens/user/home_screen.dart';
+import 'package:gracieusgalerij/screens/user/search_screen.dart';
+import 'package:gracieusgalerij/screens/user/user_profile.dart';
 import 'package:gracieusgalerij/services/favorite_service.dart';
 
 import 'song_detail.dart';
@@ -282,6 +286,28 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
         routeBuilder = '/user';
         break;
     }
-    Navigator.pushReplacementNamed(context, routeBuilder);
+    Navigator.pushReplacement(
+      context,
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) {
+          switch (index) {
+            case 0:
+              return const HomeScreen();
+            case 1:
+             return const SearchScreen();
+            case 2:
+              return const CartScreen(
+                purchasedSongs: [],
+              );
+            case 3:
+              return const FavoriteScreen();
+            case 4:
+              return const UserProfile();
+            default:
+              return Container();
+          }
+        },
+      ),
+    );
   }
 }

@@ -7,6 +7,7 @@ import 'package:gracieusgalerij/screens/theme/constant.dart';
 import 'package:gracieusgalerij/screens/theme/theme_app.dart';
 import 'package:gracieusgalerij/screens/user/cart_screen.dart';
 import 'package:gracieusgalerij/screens/user/fav_screen.dart';
+import 'package:gracieusgalerij/screens/user/search_screen.dart';
 import 'package:gracieusgalerij/screens/user/home_screen.dart';
 import 'package:gracieusgalerij/screens/user/review/review_edit_screen.dart';
 import 'package:gracieusgalerij/screens/user/review/review_list_screen.dart';
@@ -79,6 +80,7 @@ class MyApp extends StatelessWidget {
         '/fav2': (context) => const FavoriteScreen2(),
         '/edit': (context) => const EditProductDetail(),
         '/user': (context) => const UserProfile(),
+        '/search/': (context) => const SearchScreen(),
       },
     );
   }

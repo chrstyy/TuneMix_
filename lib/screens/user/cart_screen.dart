@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gracieusgalerij/models/song.dart';
 import 'package:gracieusgalerij/screens/theme/theme_app.dart';
+import 'package:gracieusgalerij/screens/user/search_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:provider/provider.dart';
@@ -490,14 +491,14 @@ class _CartScreenState extends State<CartScreen> {
     }
 
     Navigator.pushReplacement(
-      context,
+      context as BuildContext,
       PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) {
           switch (index) {
             case 0:
               return const HomeScreen();
             case 1:
-            // return const SearchScreen();
+              return const SearchScreen();
             case 2:
               return const CartScreen(
                 purchasedSongs: [],

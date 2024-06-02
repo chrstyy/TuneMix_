@@ -1,17 +1,16 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:gracieusgalerij/screens/admin/widget/widget_recommend.dart';
-import 'package:gracieusgalerij/screens/theme/theme_app.dart';
-import 'package:gracieusgalerij/screens/user/cart_screen.dart';
-import 'package:gracieusgalerij/screens/user/fav_screen.dart';
-import 'package:gracieusgalerij/screens/user/song_detail.dart';
-import 'package:gracieusgalerij/screens/user/user_profile.dart';
-import 'package:path/path.dart';
+import 'package:gracieusgalerij/screens/user/search_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/song.dart';
 import '../../services/song_service.dart';
+import '../admin/widget/widget_recommend.dart';
 import '../admin/widget/widget_offer.dart';
+import '../theme/theme_app.dart';
+import 'cart_screen.dart';
+import 'fav_screen.dart';
+import 'song_detail.dart';
+import 'user_profile.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -53,91 +52,22 @@ class _HomeScreenState extends State<HomeScreen> {
                     fit: BoxFit.cover,
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 20, 0),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                const Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                  child:Row(
                     children: [
-                      Expanded(
-                        child: Container(
-                          width: 110,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            gradient: const LinearGradient(
-                              colors: [Color(0xFF747474), Color(0xFFC1C1C1)],
-                              stops: [0, 1],
-                              begin: AlignmentDirectional(0, -1),
-                              end: AlignmentDirectional(0, 1),
-                            ),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                const Icon(
-                                  Icons.search,
-                                  color: Colors.white,
-                                  size: 24,
-                                ),
-                                Expanded(
-                                  child: Padding(
-                                    padding:
-                                        const EdgeInsetsDirectional.fromSTEB(
-                                            8, 0, 8, 0),
-                                    child: TextFormField(
-                                      autofocus: true,
-                                      obscureText: false,
-                                      cursorColor: Colors.white,
-                                      decoration: InputDecoration(
-                                        border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(15.0),
-                                          borderSide: const BorderSide(
-                                            color: Colors.transparent,
-                                          ),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(15.0),
-                                          borderSide: const BorderSide(
-                                            color: Colors.white,
-                                            width: 2,
-                                          ),
-                                        ),
-                                        filled: true,
-                                        fillColor: Colors.transparent,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                      Text(
+                       'Special Offer', style: TextStyle(fontFamily: 'Bayon',fontSize: 20),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 20),
+                        padding: const EdgeInsets.only(left: 220),
                         child: Icon(
                           Icons.notifications,
-                          color: themeProvider.themeMode().switchColor!,
                           size: 24,
+                          ),
                         ),
-                      ),
                     ],
-                  ),
-                ),
-                const Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
-                  child: Text(
-                    'Special Offer',
-                    style: TextStyle(
-                      fontFamily: 'Bayon',
-                      fontSize: 20,
-                    ),
-                  ),
+                  ) 
                 ),
                 FutureBuilder<List<Song>>(
                   future: _songService.getSongSpecialOffer(count: 5),
@@ -575,6 +505,28 @@ class _HomeScreenState extends State<HomeScreen> {
         routeBuilder = '/user';
         break;
     }
-    //Navigator.pushReplacementNamed(context, routeBuilder);
-}
+    Navigator.pushReplacement(
+      context,
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) {
+          switch (index) {
+            case 0:
+              return const HomeScreen();
+            case 1:
+              return const SearchScreen();
+            case 2:
+              return const CartScreen(
+                purchasedSongs: [],
+              );
+            case 3:
+              return const FavoriteScreen();
+            case 4:
+              return const UserProfile();
+            default:
+              return Container();
+          }
+        },
+      ),
+    );
+  }
 }
