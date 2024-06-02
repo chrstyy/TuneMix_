@@ -59,7 +59,7 @@ class MyApp extends StatelessWidget {
       title: 'TuneMix',
       theme: themeProvider.themeData(),
       debugShowCheckedModeBanner: false,
-      initialRoute: '/review',
+      initialRoute: '/login',
       routes: {
         '/': (context) => const LandingScreen(),
         '/signup': (context) => const SignupScreen(),
@@ -79,7 +79,7 @@ class MyApp extends StatelessWidget {
         '/fav2': (context) => const FavoriteScreen2(),
         '/edit': (context) => const EditProductDetail(),
         '/user': (context) => const UserProfile(
-              purchasedSongs: [],
+             
             ),
       },
     );

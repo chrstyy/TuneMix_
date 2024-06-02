@@ -24,11 +24,11 @@ class _CartScreenState extends State<CartScreen> {
   int _currentIndex = 2;
   List<Song> cartItems = CartService.getCartItems();
 
-   @override
-    void initState() {
-      super.initState();
-      cartItems;
-    }
+  @override
+  void initState() {
+    super.initState();
+    cartItems;
+  }
 
   double getTotalPayment() {
     double total = 0;
@@ -101,7 +101,7 @@ class _CartScreenState extends State<CartScreen> {
                           onPressed: () {
                             if (selectedPayment == 'qris') {
                               _processQRISPayment(context);
-                            } 
+                            }
                           },
                           child: const Text(
                             'Proceed to Payment',
@@ -123,7 +123,6 @@ class _CartScreenState extends State<CartScreen> {
       },
     );
   }
-
 
   void _processQRISPayment(BuildContext context) {
     final qrisUrl = 'images/qr.png';
@@ -194,7 +193,7 @@ class _CartScreenState extends State<CartScreen> {
               onPressed: () {
                 Navigator.of(context).pop();
                 setState(() {
-                  cartItems.clear(); 
+                  cartItems.clear();
                 });
               },
               child: const Text('OK'),
@@ -204,7 +203,6 @@ class _CartScreenState extends State<CartScreen> {
       },
     );
   }
-
 
   String? selectedPayment = 'qris';
 
@@ -316,7 +314,8 @@ class _CartScreenState extends State<CartScreen> {
                                     const SizedBox(width: 10),
                                     Expanded(
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           const SizedBox(height: 10),
                                           Text(
@@ -331,7 +330,8 @@ class _CartScreenState extends State<CartScreen> {
                                       ),
                                     ),
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
                                       children: [
                                         IconButton(
                                           icon: const Icon(
@@ -343,7 +343,8 @@ class _CartScreenState extends State<CartScreen> {
                                           },
                                         ),
                                         Padding(
-                                          padding: const EdgeInsets.only(right: 15),
+                                          padding:
+                                              const EdgeInsets.only(right: 15),
                                           child: Text(
                                             '\$${(song.price).toStringAsFixed(2)}',
                                             style: const TextStyle(
@@ -486,9 +487,9 @@ class _CartScreenState extends State<CartScreen> {
                 purchasedSongs: [],
               );
             case 3:
-              return  const FavoriteScreen();
+              return const FavoriteScreen();
             case 4:
-              return const UserProfile(purchasedSongs: [],);
+              return const UserProfile();
             default:
               return Container();
           }

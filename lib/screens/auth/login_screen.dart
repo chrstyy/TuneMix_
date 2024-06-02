@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gracieusgalerij/screens/theme/theme_app.dart';
 import 'package:gracieusgalerij/screens/user/fav_screen.dart';
 import 'package:gracieusgalerij/screens/user/song_detail.dart';
+import 'package:gracieusgalerij/screens/user/user_profile.dart';
 import 'package:provider/provider.dart';
 import '../../services/auth_service.dart';
 import '../admin/home_admin.dart';
@@ -84,7 +85,7 @@ class _LoginScreensState extends State<LoginScreen> {
         } else {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const HomeScreen()),
+            MaterialPageRoute(builder: (context) => const UserProfile()),
           );
         }
       } else {

@@ -2,9 +2,8 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:gracieusgalerij/models/song.dart';
 import 'package:gracieusgalerij/screens/theme/theme_app.dart';
 import 'package:gracieusgalerij/screens/user/cart_screen.dart';
@@ -16,8 +15,7 @@ import 'package:provider/provider.dart';
 import '../../services/auth_service.dart';
 
 class UserProfile extends StatefulWidget {
-  const UserProfile({Key? key, required this.purchasedSongs}) : super(key: key);
-  final List<Song> purchasedSongs;
+  const UserProfile({super.key});
 
   @override
   State<UserProfile> createState() => _UserProfileState();
@@ -515,20 +513,20 @@ class _UserProfileState extends State<UserProfile> {
                               color: Colors.white),
                         ),
                       ),
-                      SingleChildScrollView(
-                        child: ListView.builder(
-                          itemCount: widget.purchasedSongs.length,
-                          itemBuilder: (context, index) {
-                            final song = widget.purchasedSongs[index];
-                            return ListTile(
-                              leading: Image.network(song.imageSong ?? ''),
-                              title: Text(song.songTitle),
-                              subtitle:
-                                  Text('\$${song.price.toStringAsFixed(2)}'),
-                            );
-                          },
-                        ),
-                      ),
+                      // SingleChildScrollView(
+                      //   child: ListView.builder(
+                      //     itemCount: widget.purchasedSongs.length,
+                      //     itemBuilder: (context, index) {
+                      //       final song = widget.purchasedSongs[index];
+                      //       return ListTile(
+                      //         leading: Image.network(song.imageSong ?? ''),
+                      //         title: Text(song.songTitle),
+                      //         subtitle:
+                      //             Text('\$${song.price.toStringAsFixed(2)}'),
+                      //       );
+                      //     },
+                      //   ),
+                      // ),
                     ],
                   ),
                 ],
@@ -636,9 +634,7 @@ class _UserProfileState extends State<UserProfile> {
             case 3:
               return const FavoriteScreen();
             case 4:
-              return const UserProfile(
-                purchasedSongs: [],
-              );
+              return const UserProfile();
             default:
               return Container();
           }
