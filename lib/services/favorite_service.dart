@@ -12,25 +12,24 @@ class FavoriteService {
       }
       final userId = user.uid;
       final docRef = FirebaseFirestore.instance
-          .collection('users') // Ganti ke collection users
+          .collection('users')
           .doc(userId)
           .collection('favorites')
           .doc(song.id);
 
       await docRef.set({
-        'songTitle': song.songTitle,
+        'song_title': song.songTitle,
         'creator': song.creator,
         'genre': song.genre,
         'arangement': song.arangement,
-        'imageSong': song.imageSong,
+        'image_song': song.imageSong ?? '',
         'description': song.description,
         'price': song.price,
         'isRecommended': song.isRecommended,
-        'specialOffer': song.specialOffer,
+        'specialOffer': song.specialOffer ?? '',
         'rating': song.rating,
         'isFavorite': true,
       });
-
       print("Added to favorites successfully.");
     } catch (error) {
       print("Error adding to favorites: $error");

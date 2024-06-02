@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gracieusgalerij/models/song.dart';
 import 'package:gracieusgalerij/screens/theme/theme_app.dart';
@@ -34,15 +35,15 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
   }
 
    Future<void> _fetchSong() async {
-    try {
-      song = await _songService.getSongById(widget.songId);
-      setState(() {
-        _isFavorite = song.isFavorite;
-      });
-    } catch (e) {
-      // Handle errors here
-      print('Error fetching song: $e');
-    }
+    final songDoc = await FirebaseFirestore.instance
+        .collection('songs')
+        .doc(widget.songId)
+        .get();
+
+    setState(() {
+      song = Song.fromFirestore(songDoc.data()!, songDoc.id);
+      _isFavorite = song.isFavorite;
+    });
   }
 
   void toggleFavorite() async {
@@ -156,16 +157,39 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                               ),
                             ),
                             Padding(
-                              padding:
-                                  const EdgeInsets.only(top: 40, right: 20),
+                              padding: const EdgeInsets.only(top: 40, right: 20),
                               child: IconButton(
                                 onPressed: () {
-                                  toggleFavorite();
+                                  setState(() {
+                                    _isFavorite = !_isFavorite!;
+                                    if (_isFavorite!) {
+                                      FavoriteService.addToFavorites(song).catchError((error) {
+                                        setState(() {
+                                          _isFavorite = false;
+                                        });
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(
+                                            content: Text('Failed to add to favorites: $error'),
+                                          ),
+                                        );
+                                      });
+                                    } else {
+                                      FavoriteService.removeFromFavorites(song.id).catchError((error) {
+                                        setState(() {
+                                          _isFavorite = true;
+                                        });
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(
+                                            content: Text('Failed to remove from favorites: $error'),
+                                          ),
+                                        );
+                                      });
+                                    }
+                                  });
                                 },
                                 icon: Icon(
                                   Icons.favorite,
-                                  color:
-                                      _isFavorite! ? Colors.red : Colors.green,
+                                  color: _isFavorite! ? Colors.red : Colors.green,
                                   size: 35,
                                 ),
                               ),
