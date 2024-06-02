@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gracieusgalerij/models/song.dart';
 import 'package:gracieusgalerij/services/favorite_service.dart';
 
@@ -51,8 +53,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                             color: Colors.transparent,
                           ),
                         ),
-                        child: Image.asset('images/arrowback.png',
-                            width: 35, height: 35),
+                        child: Image.asset('images/arrowback.png', width: 35, height: 35),
                       ),
                       Container(
                         width: 152,
@@ -72,8 +73,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                   child: StreamBuilder<List<Song>>(
                     stream: FavoriteService.getFavoritesForUser(),
                     builder: (context, snapshot) {
-                      if (snapshot.connectionState ==
-                          ConnectionState.waiting) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(
                           child: CircularProgressIndicator(),
                         );
@@ -81,10 +81,9 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                         return Center(
                           child: Text('Error: ${snapshot.error}'),
                         );
-                      } else if (!snapshot.hasData ||
-                        snapshot.data!.isEmpty) {
+                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                         return const Center(
-                          child:  Column(
+                          child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -132,8 +131,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                             image: DecorationImage(
                                               fit: BoxFit.cover,
                                               image: NetworkImage(
-                                                song.imageSong 
-                                                ?? 'images/default_song.jpeg',
+                                                song.imageSong ?? 'images/default_song.jpeg',
                                               ),
                                             ),
                                           ),
@@ -166,9 +164,39 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                         ),
                                         IconButton(
                                           onPressed: () {
-                                            FavoriteService.removeFromFavorites(song.id);
+                                            if (song.isFavorite) {
+                                              FavoriteService.removeFromFavorites(song.id)
+                                                  .then((_) {
+                                                    // Refresh the UI after removing from favorites
+                                                    setState(() {
+                                                      song.isFavorite = false; // Update isFavorite locally
+                                                    });
+                                                  })
+                                                  .catchError((error) {
+                                                    ScaffoldMessenger.of(context).showSnackBar(
+                                                      SnackBar(
+                                                        content: Text('Failed to remove from favorites: $error'),
+                                                      ),
+                                                    );
+                                                  });
+                                            } else {
+                                              FavoriteService.addToFavorites(song)
+                                                  .then((_) {
+                                                    // Refresh the UI after adding to favorites
+                                                    setState(() {
+                                                      song.isFavorite = true; // Update isFavorite locally
+                                                    });
+                                                  })
+                                                  .catchError((error) {
+                                                    ScaffoldMessenger.of(context).showSnackBar(
+                                                      SnackBar(
+                                                        content: Text('Failed to add to favorites: $error'),
+                                                      ),
+                                                    );
+                                                  });
+                                            }
                                           },
-                                          icon: const Icon(Icons.favorite, color: Colors.red),
+                                          icon: Icon(Icons.favorite, color: song.isFavorite ? Colors.red : Colors.green),
                                         ),
                                       ],
                                     ),
@@ -179,15 +207,14 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                           },
                         );
                       }
-                    }
-                  )
+                    },
+                  ),
                 ),
               ],
             ),
           ),
         ],
       ),
-
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: (index) {
@@ -213,9 +240,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
           ),
           BottomNavigationBarItem(
             icon: Image.asset(
-              _currentIndex == 2
-                  ? 'images/basket.png'
-                  : 'images/basket.png',
+              _currentIndex == 2 ? 'images/basket.png' : 'images/basket.png',
               width: 24,
               height: 24,
               color: _currentIndex == 2 ? const Color(0xFF0500FF) : Colors.black,

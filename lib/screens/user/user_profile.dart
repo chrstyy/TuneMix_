@@ -680,7 +680,7 @@ class _UserProfileState extends State<UserProfile> {
                 purchasedSongs: [],
               );
             case 3:
-              return const FavoriteScreen();
+              return  FavoriteScreen();
             case 4:
               return const UserProfile();
             default:

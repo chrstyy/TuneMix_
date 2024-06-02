@@ -59,19 +59,19 @@ class MyApp extends StatelessWidget {
       title: 'TuneMix',
       theme: themeProvider.themeData(),
       debugShowCheckedModeBanner: false,
-      initialRoute: '/home_adm',
+      initialRoute: '/landing',
       routes: {
         '/': (context) => const LandingScreen(),
         '/landing': (context) => const LandingScreen(),
         '/user': (context) => const UserProfile(),
         '/signup': (context) => const SignupScreen(),
         '/login': (context) => const LoginScreen(),
-        '/product_detail': (context) => SongDetailScreen(songId: ''),
         '/songreview': (context) => const SongReviewScreen(songId: ''),
         '/cart': (context) => const CartScreen(
               purchasedSongs: [],
             ),
-        '/favorites': (context) => const FavoriteScreen(),
+        '/favorites': (context) =>  FavoriteScreen(),
+        '/song_detail': (context) => const SongDetailScreen(songId: ''),
         '/fav2': (context) => const FavoriteScreen2(),
         '/home': (context) => const HomeScreen(),
         '/review': (context) => const ReviewListScreen(
@@ -80,7 +80,6 @@ class MyApp extends StatelessWidget {
         '/home_adm': (context) => const HomeScreenAdmin(),
         '/review_edit': (context) => const ReviewEditScreen(),
         '/edit': (context) => const EditProductDetail(),
-         '/song_detail': (context) => const SongDetailScreen(songId: ''),
       },
     );
   }

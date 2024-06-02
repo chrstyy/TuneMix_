@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class User{
+class User {
   String? id;
   String email;
   final String password;
@@ -27,8 +27,8 @@ class User{
       password: data['password'],
       imageUrl: data['image_url'],
       role: data['role'] ?? 'user',
-      createdAt: data['created_at'] as Timestamp,
-      updatedAt: data['updated_at'] as Timestamp,
+      createdAt: data['created_at'] as Timestamp?,
+      updatedAt: data['updated_at'] as Timestamp?,
     );
   }
 

@@ -23,24 +23,37 @@ class SongDetailScreen extends StatefulWidget {
 class _SongDetailScreenState extends State<SongDetailScreen> {
   final SongService _songService = SongService();
   final FavoriteService _favoriteService = FavoriteService();
-  late bool _isFavorite;
+  bool? _isFavorite;
   late Song song;
 
   @override
   void initState() {
     super.initState();
     _isFavorite = true;
+    _fetchSong();
   }
 
-  void toggleFavorite() {
+   Future<void> _fetchSong() async {
+    try {
+      song = await _songService.getSongById(widget.songId);
+      setState(() {
+        _isFavorite = song.isFavorite;
+      });
+    } catch (e) {
+      // Handle errors here
+      print('Error fetching song: $e');
+    }
+  }
+
+  void toggleFavorite() async {
     setState(() {
-      _isFavorite = !_isFavorite;
+      _isFavorite = !_isFavorite!;
     });
 
-    if (_isFavorite) {
-      FavoriteService.addToFavorites(song);
+    if (_isFavorite!) {
+      await FavoriteService.addToFavorites(song);
     } else {
-      FavoriteService.removeFromFavorites(song.id);
+      await FavoriteService.removeFromFavorites(song.id);
     }
   }
 
@@ -62,7 +75,7 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
           }
 
           song = snapshot.data!;
-          _isFavorite = song.isFavorite;
+           _isFavorite ??= song.isFavorite;
 
           return Stack(
             children: [
@@ -152,7 +165,7 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                                 icon: Icon(
                                   Icons.favorite,
                                   color:
-                                      _isFavorite ? Colors.red : Colors.green,
+                                      _isFavorite! ? Colors.red : Colors.green,
                                   size: 35,
                                 ),
                               ),
@@ -276,7 +289,7 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                                       ),
                                     ),
                                     const SizedBox(
-                                      height: 15,
+                                      height: 10,
                                     ),
                                     RichText(
                                       text: TextSpan(
@@ -298,11 +311,8 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                                         ],
                                       ),
                                     ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
                                     InkWell(
-                                      child: Text(
+                                      child: const Text(
                                         'See review',
                                         style: TextStyle(
                                           fontFamily: 'Itim',

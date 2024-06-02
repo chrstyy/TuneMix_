@@ -111,7 +111,7 @@ class _SongDetailAdminScreenState extends State<SongDetailAdminScreen> {
                                   Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => const FavoriteScreen(),
+                                      builder: (context) =>  FavoriteScreen(),
                                     ),
                                   );
                                 },

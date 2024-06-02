@@ -3,8 +3,10 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:gracieusgalerij/models/song.dart';
+
 import 'package:path/path.dart' as path;
+
+import '../models/song.dart';
 
 class SongService {
   static final FirebaseFirestore _database = FirebaseFirestore.instance;
