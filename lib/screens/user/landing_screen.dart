@@ -1,6 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:gracieusgalerij/screens/auth/continue_with_google.dart';
+import 'package:gracieusgalerij/screens/user/home_screen.dart';
 import 'package:gracieusgalerij/screens/theme/theme_app.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
@@ -94,7 +94,7 @@ class _LandingScreenState extends State<LandingScreen> {
         context,
         PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) =>
-              const ContinueWithGoogle(),
+              const HomeScreen(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             const begin = 0.0;
             const end = 1.0;
@@ -129,6 +129,7 @@ class _LandingScreenState extends State<LandingScreen> {
         ),
       );
     }
+    return null;
   }
 
   @override
