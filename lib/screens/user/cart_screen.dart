@@ -145,19 +145,35 @@ class _CartScreenState extends State<CartScreen> {
               ),
               const SizedBox(height: 20),
               Container(
-                child: Image.network(
-                  qrisUrl,
+                child: Image.asset(
+                  'images/qr.png',
                   width: 200.0,
                   height: 200.0,
                 ),
               ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text('Close'),
-              ),
+              const SizedBox(height: 20),    
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text('Close'),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        _showSuccessDialog(context);
+                      },
+                      child: const Text('Done'),
+                    ),
+                  ),
+                ],
+              )
             ],
           ),
         );
@@ -466,7 +482,7 @@ class _CartScreenState extends State<CartScreen> {
         routeBuilder = '/cart';
         break;
       case 3:
-        routeBuilder = '/favorites';
+        routeBuilder = '/favorite';
         break;
       case 4:
         routeBuilder = '/user';

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gracieusgalerij/models/song.dart';
 import 'package:gracieusgalerij/screens/admin/song_detail_admin.dart';
 import 'package:gracieusgalerij/screens/theme/theme_app.dart';
-import 'package:gracieusgalerij/screens/user/song_detail.dart'; // Import detail screen
+import 'package:gracieusgalerij/screens/user/song_detail.dart'; 
 import 'package:gracieusgalerij/services/song_service.dart';
 import 'package:provider/provider.dart';
 
@@ -45,7 +45,7 @@ class WidgetOffer extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => SongDetailAdminScreen(songId: song.id), // Pass the selected song ID to detail screen
+                            builder: (context) => SongDetailAdminScreen(songId: song.id),
                           ),
                         );
                       },

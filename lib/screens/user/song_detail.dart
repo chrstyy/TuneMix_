@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gracieusgalerij/models/song.dart';
 import 'package:gracieusgalerij/screens/theme/theme_app.dart';
@@ -24,17 +25,16 @@ class SongDetailScreen extends StatefulWidget {
 class _SongDetailScreenState extends State<SongDetailScreen> {
   final SongService _songService = SongService();
   final FavoriteService _favoriteService = FavoriteService();
-  bool? _isFavorite;
+  bool _isFavorite = false;
   late Song song;
 
   @override
   void initState() {
     super.initState();
-    _isFavorite = true;
     _fetchSong();
   }
 
-   Future<void> _fetchSong() async {
+  Future<void> _fetchSong() async {
     final songDoc = await FirebaseFirestore.instance
         .collection('songs')
         .doc(widget.songId)
@@ -42,16 +42,29 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
 
     setState(() {
       song = Song.fromFirestore(songDoc.data()!, songDoc.id);
-      _isFavorite = song.isFavorite;
     });
-  }
 
+    // Check if the song is already in favorites
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      final favDoc = await FirebaseFirestore.instance
+          .collection('user')
+          .doc(user.uid)
+          .collection('favorites')
+          .doc(song.id)
+          .get();
+
+      setState(() {
+        _isFavorite = favDoc.exists;
+      });
+    }
+  }
   void toggleFavorite() async {
     setState(() {
-      _isFavorite = !_isFavorite!;
+      _isFavorite = !_isFavorite;
     });
 
-    if (_isFavorite!) {
+    if (_isFavorite) {
       await FavoriteService.addToFavorites(song);
     } else {
       await FavoriteService.removeFromFavorites(song.id);
@@ -76,7 +89,6 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
           }
 
           song = snapshot.data!;
-           _isFavorite ??= song.isFavorite;
 
           return Stack(
             children: [
@@ -139,60 +151,29 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                               ),
                             ),
                              Padding(
-                              padding: const EdgeInsets.only(top: 40, right: 20),
+                              padding: const EdgeInsets.only(top: 40, right: 10),
                               child: GestureDetector(
                                 onTap: () {
                                   Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => SongReviewScreen(songId: widget.songId), // Pass the songId here
+                                      builder: (context) => SongReviewScreen(songId: widget.songId), 
                                     ),
                                   );
                                 },
                                 child: const Icon(
                                   Icons.star,
-                                  color: Colors.yellow,
+                                  color: Colors.orange,
                                   size: 35,
                                 ),
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(top: 40, right: 20),
-                              child: IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    _isFavorite = !_isFavorite!;
-                                    if (_isFavorite!) {
-                                      FavoriteService.addToFavorites(song).catchError((error) {
-                                        setState(() {
-                                          _isFavorite = false;
-                                        });
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          SnackBar(
-                                            content: Text('Failed to add to favorites: $error'),
-                                          ),
-                                        );
-                                      });
-                                    } else {
-                                      FavoriteService.removeFromFavorites(song.id).catchError((error) {
-                                        setState(() {
-                                          _isFavorite = true;
-                                        });
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          SnackBar(
-                                            content: Text('Failed to remove from favorites: $error'),
-                                          ),
-                                        );
-                                      });
-                                    }
-                                  });
-                                },
-                                icon: Icon(
-                                  Icons.favorite,
-                                  color: _isFavorite! ? Colors.red : Colors.green,
-                                  size: 35,
-                                ),
-                              ),
+                              padding: const EdgeInsets.only(top: 40, right: 10),
+                              child: LikeButton(
+                                      isLiked: _isFavorite,
+                                      onTap: toggleFavorite,
+                                    ),
                             ),
                           ],
                         ),
@@ -421,6 +402,25 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
             ],
           );
         },
+      ),
+    );
+  }
+}
+
+class LikeButton extends StatelessWidget {
+  final bool isLiked ;
+  final void Function()? onTap;
+
+  LikeButton({super.key, required this.isLiked, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Icon(
+        isLiked ? Icons.favorite : Icons.favorite_border,
+        color: isLiked ? Colors.red : Colors.green,
+        size: 35,
       ),
     );
   }

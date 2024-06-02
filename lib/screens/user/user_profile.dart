@@ -611,7 +611,7 @@ class _UserProfileState extends State<UserProfile> {
         routeBuilder = '/cart';
         break;
       case 3:
-        routeBuilder = '/favorites';
+        routeBuilder = '/favorite';
         break;
       case 4:
         routeBuilder = '/user';

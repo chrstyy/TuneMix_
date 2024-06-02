@@ -69,143 +69,142 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                     ],
                   ),
                 ),
-Expanded(
-  child: StreamBuilder<List<Song>>(
-    stream: FavoriteService.getFavoritesForUser(),
-    builder: (context, snapshot) {
-      if (snapshot.connectionState == ConnectionState.waiting) {
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
-      } else if (snapshot.hasError) {
-        return Center(
-          child: Text('Error: ${snapshot.error}'),
-        );
-      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-        return const Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'No favorite songs yet.',
-                style: TextStyle(
-                  fontFamily: 'Bayon',
-                  color: Colors.yellowAccent,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
-              )
-            ],
-          ),
-        );
-      } else {
-        final data = snapshot.data!;
-        return ListView.builder(
-          itemCount: data.length,
-          itemBuilder: (context, index) {
-            final song = data[index];
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SongDetailScreen(songId: song.id),
-                    ),
-                  );
-                },
-                child: Card(
-                  color: const Color(0xFF543310),
-                  elevation: 3,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 70,
-                          height: 70,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: song.imageSong != null && song.imageSong!.isNotEmpty
-                                  ? NetworkImage(song.imageSong!)
-                                  : const AssetImage('images/default_song.jpeg') as ImageProvider,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
+                Expanded(
+                  child: StreamBuilder<List<Song>>(
+                    stream: FavoriteService.getFavoritesForUser(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else if (snapshot.hasError) {
+                        return Center(
+                          child: Text('Error: ${snapshot.error}'),
+                        );
+                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        return const Center(
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                song.songTitle,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.white,
+                                'No favorite songs yet.',
+                                style: TextStyle(
                                   fontFamily: 'Bayon',
+                                  color: Colors.yellowAccent,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
                                 ),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                song.creator,
-                                style: const TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.white,
-                                  fontFamily: 'Bayon',
-                                ),
-                              ),
+                              )
                             ],
                           ),
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            setState(() {
-                              song.isFavorite = !song.isFavorite;
-                            });
-                            if (song.isFavorite) {
-                              FavoriteService.addToFavorites(song).catchError((error) {
-                                setState(() {
-                                  song.isFavorite = false;
-                                });
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text('Failed to add to favorites: $error'),
+                        );
+                      } else {
+                        final data = snapshot.data!;
+                        return ListView.builder(
+                          itemCount: data.length,
+                          itemBuilder: (context, index) {
+                            final song = data[index];
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => SongDetailScreen(songId: song.id),
+                                    ),
+                                  );
+                                },
+                                child: Card(
+                                  color: const Color(0xFF543310),
+                                  elevation: 3,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          width: 70,
+                                          height: 70,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(10),
+                                            image: DecorationImage(
+                                              fit: BoxFit.cover,
+                                              image: song.imageSong != null && song.imageSong!.isNotEmpty
+                                                  ? NetworkImage(song.imageSong!)
+                                                  : const AssetImage('images/default_song.jpeg') as ImageProvider,
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(width: 10),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                song.songTitle,
+                                                style: const TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.white,
+                                                  fontFamily: 'Bayon',
+                                                ),
+                                              ),
+                                              const SizedBox(height: 4),
+                                              Text(
+                                                song.creator,
+                                                style: const TextStyle(
+                                                  fontSize: 15,
+                                                  color: Colors.white,
+                                                  fontFamily: 'Bayon',
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        IconButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              song.isFavorite = !song.isFavorite;
+                                            });
+                                            if (song.isFavorite) {
+                                              FavoriteService.addToFavorites(song).catchError((error) {
+                                                setState(() {
+                                                  song.isFavorite = false;
+                                                });
+                                                ScaffoldMessenger.of(context).showSnackBar(
+                                                  SnackBar(
+                                                    content: Text('Failed to add to favorites: $error'),
+                                                  ),
+                                                );
+                                              });
+                                            } else {
+                                              FavoriteService.removeFromFavorites(song.id).catchError((error) {
+                                                setState(() {
+                                                  song.isFavorite = true;
+                                                });
+                                                ScaffoldMessenger.of(context).showSnackBar(
+                                                  SnackBar(
+                                                    content: Text('Failed to remove from favorites: $error'),
+                                                  ),
+                                                );
+                                              });
+                                            }
+                                          },
+                                          icon: Icon(Icons.favorite, color: song.isFavorite ? Colors.red : Colors.green),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                );
-                              });
-                            } else {
-                              FavoriteService.removeFromFavorites(song.id).catchError((error) {
-                                setState(() {
-                                  song.isFavorite = true;
-                                });
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text('Failed to remove from favorites: $error'),
-                                  ),
-                                );
-                              });
-                            }
+                                ),
+                              ),
+                            );
                           },
-                          icon: Icon(Icons.favorite, color: song.isFavorite ? Colors.red : Colors.green),
-                        ),
-                      ],
-                    ),
+                        );
+                      }
+                    },
                   ),
                 ),
-              ),
-            );
-          },
-        );
-      }
-    },
-  ),
-),
-
               ],
             ),
           ),
@@ -277,7 +276,7 @@ Expanded(
         routeBuilder = '/cart';
         break;
       case 3:
-        routeBuilder = '/favorites';
+        routeBuilder = '/favorite';
         break;
       case 4:
         routeBuilder = '/user';

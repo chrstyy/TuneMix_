@@ -389,7 +389,102 @@ class _HomeScreenState extends State<HomeScreen> {
                           ],
                         ),
                       ),
-                      SizedBox(child: WidgetRecommendation()),
+                      FutureBuilder<List<Song>>(
+                        future: _songService.getSongRecommend(count: 5),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                          if (snapshot.hasError) {
+                            return Center(
+                              child: Text('Error: ${snapshot.error}'),
+                            );
+                          }
+                          final List<Song> data = snapshot.data ?? [];
+                          if (data.isEmpty) {
+                            return const Center(
+                              child: Text('No data available.'),
+                            );
+                          }
+                          return SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: data.map((song) {
+                                return Padding(
+                                  padding: const EdgeInsets.only(right: 10),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              SongDetailScreen(songId: song.id),
+                                        ),
+                                      );
+                                    },
+                                    child: Container(
+                                      width: 200,
+                                      height: 260,
+                                      decoration: BoxDecoration(
+                                        color:
+                                            themeProvider.themeMode().switchBgColor!,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.max,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          const SizedBox(height: 13),
+                                          ClipRRect(
+                                            borderRadius: BorderRadius.circular(8),
+                                            child: song.imageSong != null &&
+                                                    Uri.parse(song.imageSong!)
+                                                        .isAbsolute
+                                                ? Image.network(
+                                                    song.imageSong!,
+                                                    width: 182,
+                                                    height: 188,
+                                                    fit: BoxFit.cover,
+                                                  )
+                                                : Container(
+                                                    width: 182,
+                                                    height: 188,
+                                                    color: Colors.grey[300],
+                                                    child: const Icon(
+                                                      Icons.image,
+                                                      color: Colors.grey,
+                                                    ),
+                                                  ),
+                                          ),
+                                          const SizedBox(
+                                            height: 5,
+                                          ),
+                                          Text(
+                                            song.songTitle,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline3!,
+                                          ),
+                                          const SizedBox(height: 5),
+                                          Text(
+                                            '\$${song.price.toString()}',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline3!,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                          );
+                        },
+                      ),
                     ],
                   ),
                 ),
