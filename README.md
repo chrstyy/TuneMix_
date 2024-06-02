@@ -1,6 +1,6 @@
-# flutter_application_1
+# TuneMix E-commerce
 
-A new Flutter project.
+TuneMix adalah aplikasi e-commerce aransemen musik yang memungkinkan pengguna untuk menjelajahi dan membeli aransemen musik dari berbagai genre. Aplikasi ini dirancang untuk memberikan pengalaman pengguna yang intuitif dan menyenangkan, baik untuk pengguna biasa maupun admin. Berikut adalah deskripsi dari fitur-fitur yang tersedia di TuneMix.
 
 ## Getting Started
 
