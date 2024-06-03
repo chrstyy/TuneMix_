@@ -1,7 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:gracieusgalerij/screens/user/song_detail.dart';
+import 'package:gracieusgalerij/screens/user/song/song_detail.dart';
 
 import 'models/song.dart';
 import 'services/favorite_service.dart';

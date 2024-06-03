@@ -1,30 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/widgets.dart';
-import 'package:gracieusgalerij/models/song.dart';
-import 'package:gracieusgalerij/screens/admin/edit_genre.dart';
 import 'package:gracieusgalerij/screens/admin/edit_product_detail_admin.dart';
 import 'package:gracieusgalerij/screens/admin/widget/widget_genre.dart';
 import 'package:gracieusgalerij/screens/theme/theme_app.dart';
-import 'package:gracieusgalerij/screens/user/song_list.dart';
-import 'package:gracieusgalerij/services/song_service.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:gracieusgalerij/screens/user/cart_screen.dart';
+import 'package:gracieusgalerij/screens/user/fav_screen.dart';
+import 'package:gracieusgalerij/screens/user/home_screen.dart';
+import 'package:gracieusgalerij/screens/user/search_screen.dart';
+import 'package:gracieusgalerij/screens/user/song/song_list.dart';
+import 'package:gracieusgalerij/screens/user/user_profile.dart';
 import 'package:provider/provider.dart';
-import 'dart:io';
 
 import 'widget/widget_offer.dart';
 import 'widget/widget_recommend.dart';
 
 class HomeScreenAdmin extends StatefulWidget {
-  const HomeScreenAdmin({Key? key}) : super(key: key);
+  const HomeScreenAdmin({super.key});
 
   @override
   State<HomeScreenAdmin> createState() => _HomeScreenAdminState();
 }
 
 class _HomeScreenAdminState extends State<HomeScreenAdmin> {
-  final SongService _songService = SongService();
+  int _currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -55,166 +52,63 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                     fit: BoxFit.cover,
                   ),
                 ),
-                // Padding(
-                //   padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 20, 0),
-                //   child: Row(
-                //     mainAxisSize: MainAxisSize.max,
-                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //     children: [
-                //       Expanded(
-                //         child: Container(
-                //           width: 110,
-                //           height: 40,
-                //           decoration: BoxDecoration(
-                //             gradient: const LinearGradient(
-                //               colors: [Color(0xFF747474), Color(0xFFC1C1C1)],
-                //               stops: [0, 1],
-                //               begin: AlignmentDirectional(0, -1),
-                //               end: AlignmentDirectional(0, 1),
-                //             ),
-                //             borderRadius: BorderRadius.circular(10),
-                //           ),
-                //           child: Padding(
-                //             padding: const EdgeInsets.all(10),
-                //             child: Row(
-                //               mainAxisSize: MainAxisSize.max,
-                //               children: [
-                //                 const Icon(
-                //                   Icons.search,
-                //                   color: Colors.white,
-                //                   size: 24,
-                //                 ),
-                //                 Expanded(
-                //                   child: Padding(
-                //                     padding:
-                //                         const EdgeInsetsDirectional.fromSTEB(
-                //                             8, 0, 8, 0),
-                //                     child: TextFormField(
-                //                       autofocus: true,
-                //                       obscureText: false,
-                //                       cursorColor: Colors.white,
-                //                       decoration: InputDecoration(
-                //                         border: OutlineInputBorder(
-                //                           borderRadius:
-                //                               BorderRadius.circular(15.0),
-                //                           borderSide: const BorderSide(
-                //                             color: Colors.transparent,
-                //                           ),
-                //                         ),
-                //                         focusedBorder: OutlineInputBorder(
-                //                           borderRadius:
-                //                               BorderRadius.circular(15.0),
-                //                           borderSide: const BorderSide(
-                //                             color: Colors.white,
-                //                             width: 2,
-                //                           ),
-                //                         ),
-                //                         filled: true,
-                //                         fillColor: Colors.transparent,
-                //                       ),
-                //                     ),
-                //                   ),
-                //                 ),
-                //               ],
-                //             ),
-                //           ),
-                //         ),
-                //       ),
-                //       Row(
-                //         children: [
-                //           GestureDetector(
-                //             onTap: () {
-                //               Navigator.push(
-                //                 context,
-                //                 MaterialPageRoute(
-                //                     builder: (context) =>
-                //                         const EditProductDetail()),
-                //               );
-                //             },
-                //             child: Padding(
-                //               padding: const EdgeInsets.only(left: 20),
-                //               child: Icon(
-                //                 Icons.add_circle_sharp,
-                //                 color: themeProvider.themeMode().switchColor!,
-                //                 size: 24,
-                //               ),
-                //             ),
-                //           ),
-                //           GestureDetector(
-                //            onTap: () {
-                //               Navigator.push(
-                //                 context,
-                //                 MaterialPageRoute(
-                //                     builder: (context) => SongList()),
-                //               );
-                //             },
-                //             child: Padding(
-                //               padding: const EdgeInsets.only(left: 10),
-                //               child: Icon(
-                //                 Icons.view_list,
-                //                 color: themeProvider.themeMode().switchColor!,
-                //                 size: 24,
-                //               ),
-                //             ),
-                //           ),
-                //         ],
-                //       ),
-                //     ],
-                //   ),
-                // ),
                 Row(
-  mainAxisSize: MainAxisSize.max,
-  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  children: [
-    Expanded(
-      child: Text(
-        'Special Offer',
-        style: TextStyle(
-          fontFamily: 'Bayon',
-          fontSize: 20,
-        ),
-      ),
-    ),
-    Row(
-      children: [
-        GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const EditProductDetail()),
-            );
-          },
-          child: Padding(
-            padding: const EdgeInsets.only(left: 16),
-            child: Icon(
-              Icons.add_circle_sharp,
-              color: themeProvider.themeMode().switchColor!,
-              size: 24,
-            ),
-          ),
-        ),
-        GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => SongList()),
-            );
-          },
-          child: Padding(
-            padding: const EdgeInsets.only(left: 5),
-            child: Icon(
-              Icons.view_list,
-              color: themeProvider.themeMode().switchColor!,
-              size: 24,
-            ),
-          ),
-        ),
-      ],
-    ),
-  ],
-),
-
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Expanded(
+                      child: Text(
+                        'Special Offer',
+                        style: TextStyle(
+                          fontFamily: 'Bayon',
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 15),
+                      child: Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const EditProductDetail()),
+                              );
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 16),
+                              child: Icon(
+                                Icons.add_circle_sharp,
+                                color: themeProvider.themeMode().switchColor!,
+                                size: 24,
+                              ),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const SongList()),
+                              );
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 5),
+                              child: Icon(
+                                Icons.view_list,
+                                color: themeProvider.themeMode().switchColor!,
+                                size: 24,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
                 SizedBox(child: WidgetOffer()),
                 const Padding(
                   padding: EdgeInsets.only(top: 20, right: 20),
@@ -258,11 +152,115 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                   ),
                 ),
                 SizedBox(child: WidgetRecommendation()),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
               ],
             ),
           ),
         ),
+      ),
+      bottomNavigationBar: Theme(
+        data: Theme.of(context).copyWith(
+          canvasColor: const Color(0xFFE2DFD0),
+        ),
+        child: BottomNavigationBar(
+          currentIndex: _currentIndex,
+          onTap: (index) {
+            setState(() {
+              _currentIndex = index;
+              _navigateToPage(index);
+            });
+          },
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.home,
+                color:
+                    _currentIndex == 0 ? const Color(0xFF0500FF) : Colors.black,
+              ),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.search,
+                color:
+                    _currentIndex == 1 ? const Color(0xFF0500FF) : Colors.black,
+              ),
+              label: 'Search',
+            ),
+            BottomNavigationBarItem(
+              icon: Image.asset(
+                _currentIndex == 2 ? 'images/basket.png' : 'images/basket.png',
+                width: 24,
+                height: 24,
+                color:
+                    _currentIndex == 2 ? const Color(0xFF0500FF) : Colors.black,
+              ),
+              label: 'Story',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.favorite,
+                color:
+                    _currentIndex == 3 ? const Color(0xFF0500FF) : Colors.black,
+              ),
+              label: 'Favorite',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.account_circle_rounded,
+                color:
+                    _currentIndex == 4 ? const Color(0xFF0500FF) : Colors.black,
+              ),
+              label: 'Account',
+            ),
+          ],
+          showUnselectedLabels: false,
+          showSelectedLabels: false,
+        ),
+      ),
+    );
+  }
+
+  void _navigateToPage(int index) {
+    var routeBuilder;
+    switch (index) {
+      case 0:
+        routeBuilder = '/home';
+        break;
+      case 1:
+        routeBuilder = '/search';
+        break;
+      case 2:
+        routeBuilder = '/cart';
+        break;
+      case 3:
+        routeBuilder = '/favorites';
+        break;
+      case 4:
+        routeBuilder = '/user';
+        break;
+    }
+    Navigator.pushReplacement(
+      context,
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) {
+          switch (index) {
+            case 0:
+              return const HomeScreenAdmin();
+            case 1:
+              return const SearchScreen();
+            case 2:
+              return const CartScreen(
+                purchasedSongs: [],
+              );
+            case 3:
+              return const FavoriteScreen();
+            case 4:
+              return const UserProfile();
+            default:
+              return Container();
+          }
+        },
       ),
     );
   }

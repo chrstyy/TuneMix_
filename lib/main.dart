@@ -11,13 +11,13 @@ import 'package:gracieusgalerij/screens/user/search_screen.dart';
 import 'package:gracieusgalerij/screens/user/home_screen.dart';
 import 'package:gracieusgalerij/screens/user/review/review_edit_screen.dart';
 import 'package:gracieusgalerij/screens/user/review/review_list_screen.dart';
-import 'package:gracieusgalerij/screens/user/song%20review.dart';
+import 'package:gracieusgalerij/screens/user/song/song%20review.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'screens/user/landing_screen.dart';
 import 'screens/auth/login_screen.dart';
 import 'screens/auth/signup_screen.dart';
-import 'screens/user/song_detail.dart';
+import 'screens/user/song/song_detail.dart';
 import 'screens/user/user_profile.dart';
 
 void main() async {
@@ -60,7 +60,7 @@ class MyApp extends StatelessWidget {
       title: 'TuneMix',
       theme: themeProvider.themeData(),
       debugShowCheckedModeBanner: false,
-      initialRoute: '/home',
+      initialRoute: '/home_adm',
       routes: {
         '/landing': (context) => const LandingScreen(),
         '/signup': (context) => const SignupScreen(),

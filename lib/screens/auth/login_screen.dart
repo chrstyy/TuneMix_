@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gracieusgalerij/screens/theme/theme_app.dart';
 import 'package:gracieusgalerij/screens/user/fav_screen.dart';
-import 'package:gracieusgalerij/screens/user/song_detail.dart';
+import 'package:gracieusgalerij/screens/user/song/song_detail.dart';
 import 'package:gracieusgalerij/screens/user/user_profile.dart';
 import 'package:provider/provider.dart';
 import '../../services/auth_service.dart';

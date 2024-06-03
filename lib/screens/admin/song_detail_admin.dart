@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:gracieusgalerij/models/song.dart';
 import 'package:gracieusgalerij/screens/theme/theme_app.dart';
-import 'package:gracieusgalerij/screens/user/fav_screen.dart';
-import 'package:gracieusgalerij/screens/user/song%20review.dart';
 import 'package:gracieusgalerij/services/favorite_service.dart';
 import 'package:gracieusgalerij/services/song_service.dart';
 import 'package:provider/provider.dart';
-import '../../services/cart_service.dart';
 
 
 class SongDetailAdminScreen extends StatefulWidget {
-  const SongDetailAdminScreen({Key? key, required this.songId}) : super(key: key);
+  const SongDetailAdminScreen({super.key, required this.songId});
 
   final String songId;
 

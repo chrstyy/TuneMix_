@@ -10,7 +10,7 @@ import 'package:gracieusgalerij/screens/user/user_profile.dart';
 import 'package:gracieusgalerij/services/favorite_service.dart';
 import 'package:provider/provider.dart';
 
-import 'song_detail.dart';
+import 'song/song_detail.dart';
 
 class FavoriteScreen extends StatefulWidget {
   const FavoriteScreen({Key? key}) : super(key: key);

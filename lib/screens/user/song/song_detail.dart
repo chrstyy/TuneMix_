@@ -5,13 +5,13 @@ import 'package:gracieusgalerij/models/song.dart';
 import 'package:gracieusgalerij/screens/theme/theme_app.dart';
 import 'package:gracieusgalerij/screens/user/review/review_edit_screen.dart';
 import 'package:gracieusgalerij/screens/user/review/review_list_screen.dart';
-import 'package:gracieusgalerij/screens/user/song%20review.dart';
+import 'package:gracieusgalerij/screens/user/song/song%20review.dart';
 import 'package:gracieusgalerij/services/favorite_service.dart';
 import 'package:gracieusgalerij/services/song_service.dart';
 import 'package:provider/provider.dart';
-import '../../services/cart_service.dart';
-import 'cart_screen.dart';
-import 'fav_screen.dart';
+import '../../../services/cart_service.dart';
+import '../cart_screen.dart';
+import '../fav_screen.dart';
 
 class SongDetailScreen extends StatefulWidget {
   const SongDetailScreen({Key? key, required this.songId}) : super(key: key);

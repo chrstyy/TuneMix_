@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:gracieusgalerij/screens/admin/widget/widget_genre.dart';
 import 'package:gracieusgalerij/screens/user/search_screen.dart';
-import 'package:gracieusgalerij/screens/user/song_list.dart';
+import 'package:gracieusgalerij/screens/user/song/song_list.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/song.dart';
 import '../../services/song_service.dart';
-import '../admin/widget/widget_recommend.dart';
-import '../admin/widget/widget_offer.dart';
 import '../theme/theme_app.dart';
 import 'cart_screen.dart';
 import 'fav_screen.dart';
-import 'song_detail.dart';
+import 'song/song_detail.dart';
 import 'user_profile.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -56,38 +53,41 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 Padding(
-  padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
-  child: Row(
-    children: [
-      Text(
-        'Special Offer',
-        style: TextStyle(fontFamily: 'Bayon', fontSize: 20),
-      ),
-      SizedBox(width: 150,),
-      Padding(
-        padding: EdgeInsets.only(left: 20),
-        child: GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => SongList(),
-              ),
-            );
-          },
-          child: Text(
-            'view all',
-            style: TextStyle(
-              color: themeProvider.themeMode().switchColor!,
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-      ),
-    ],
-  ),
-), 
+                  padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                  child: Row(
+                    children: [
+                      const Text(
+                        'Special Offer',
+                        style:
+                            const TextStyle(fontFamily: 'Bayon', fontSize: 20),
+                      ),
+                      const SizedBox(
+                        width: 150,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const SongList(),
+                              ),
+                            );
+                          },
+                          child: Text(
+                            'view all',
+                            style: TextStyle(
+                              color: themeProvider.themeMode().switchColor!,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 FutureBuilder<List<Song>>(
                   future: _songService.getSongSpecialOffer(count: 5),
                   builder: (context, snapshot) {
@@ -212,17 +212,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   child: Padding(
                     padding: const EdgeInsetsDirectional.fromSTEB(10, 5, 0, 5),
-                    child: WidgetGenre(), 
+                    child: WidgetGenre(),
                   ),
                 ),
-
                 Padding(
                   padding: const EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 20, 0),
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(0, 0, 20, 0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -245,7 +245,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       FutureBuilder<List<Song>>(
                         future: _songService.getSongRecommend(count: 5),
                         builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.waiting) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
                             return const Center(
                               child: CircularProgressIndicator(),
                             );
@@ -282,17 +283,20 @@ class _HomeScreenState extends State<HomeScreen> {
                                       width: 200,
                                       height: 260,
                                       decoration: BoxDecoration(
-                                        color:
-                                            themeProvider.themeMode().switchBgColor!,
+                                        color: themeProvider
+                                            .themeMode()
+                                            .switchBgColor!,
                                         borderRadius: BorderRadius.circular(10),
                                       ),
                                       child: Column(
                                         mainAxisSize: MainAxisSize.max,
-                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
                                         children: [
                                           const SizedBox(height: 13),
                                           ClipRRect(
-                                            borderRadius: BorderRadius.circular(8),
+                                            borderRadius:
+                                                BorderRadius.circular(8),
                                             child: song.imageSong != null &&
                                                     Uri.parse(song.imageSong!)
                                                         .isAbsolute
@@ -409,7 +413,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-   void _navigateToPage(int index) {
+  void _navigateToPage(int index) {
     var routeBuilder;
     switch (index) {
       case 0:

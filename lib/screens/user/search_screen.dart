@@ -4,7 +4,7 @@ import 'package:gracieusgalerij/screens/theme/theme_app.dart';
 import 'package:gracieusgalerij/screens/user/cart_screen.dart';
 import 'package:gracieusgalerij/screens/user/fav_screen.dart';
 import 'package:gracieusgalerij/screens/user/home_screen.dart';
-import 'package:gracieusgalerij/screens/user/song_detail.dart';
+import 'package:gracieusgalerij/screens/user/song/song_detail.dart';
 import 'package:gracieusgalerij/screens/user/user_profile.dart';
 import 'package:gracieusgalerij/services/song_service.dart';
 import 'package:provider/provider.dart';
