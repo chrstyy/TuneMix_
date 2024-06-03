@@ -1,6 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:gracieusgalerij/favorite2.dart';
 import 'package:gracieusgalerij/screens/admin/edit_product_detail_admin.dart';
 import 'package:gracieusgalerij/screens/admin/home_admin.dart';
 import 'package:gracieusgalerij/screens/admin/song_list_admin.dart';
@@ -61,7 +60,7 @@ class MyApp extends StatelessWidget {
       title: 'TuneMix',
       theme: themeProvider.themeData(),
       debugShowCheckedModeBanner: false,
-      initialRoute: '/song_list_adm',
+      initialRoute: '/login',
       routes: {
         '/landing': (context) => const LandingScreen(),
         '/signup': (context) => const SignupScreen(),
@@ -79,10 +78,9 @@ class MyApp extends StatelessWidget {
               purchasedSongs: [],
             ),
         '/favorite': (context) => const FavoriteScreen(),
-        '/fav2': (context) => const FavoriteScreen2(),
         '/edit': (context) => const EditProductDetail(),
         '/user': (context) => const UserProfile(),
-        '/search/': (context) => const SearchScreen(),
+        '/search': (context) => const SearchScreen(),
       },
     );
   }

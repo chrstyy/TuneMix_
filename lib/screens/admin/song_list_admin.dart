@@ -151,7 +151,7 @@ class _SongListAdminState extends State<SongListAdmin> {
               borderRadius: BorderRadius.circular(10),
             ),
             child: Column(
-              mainAxisSize: MainAxisSize.max,
+              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(height: 13),
@@ -161,13 +161,12 @@ class _SongListAdminState extends State<SongListAdmin> {
                           Uri.parse(song.imageSong!).isAbsolute
                       ? Image.network(
                           song.imageSong!,
-                          width: 152,
+                          width: 170,
                           height: 158,
-                          fit: BoxFit.cover,
                         )
                       : Container(
-                          width: 182,
-                          height: 188,
+                          width: 152,
+                          height: 158,
                           color: Colors.grey[300],
                           child: const Icon(
                             Icons.image,

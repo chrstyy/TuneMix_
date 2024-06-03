@@ -317,23 +317,6 @@ class _LoginScreensState extends State<LoginScreen> {
                             ),
                           ],
                         ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Checkbox(
-                              value: rememberMe,
-                              onChanged: (value) {
-                                setState(() {
-                                  rememberMe = value!;
-                                });
-                              },
-                              checkColor: Colors.orange,
-                              activeColor: Colors.green,
-                              hoverColor: Colors.yellow,
-                            ),
-                            const Text('Remember me'),
-                          ],
-                        ),
                         const SizedBox(height: 25),
                         Text(
                           _loginError,
@@ -371,15 +354,7 @@ class _LoginScreensState extends State<LoginScreen> {
                           ),
                         ),
                         const SizedBox(height: 5),
-                        RichText(
-                          text: TextSpan(
-                            text: 'Forgot Password?',
-                            style: Theme.of(context).textTheme.headline5,
-                            mouseCursor: SystemMouseCursors.click,
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = handleForgotPassword,
-                          ),
-                        ),
+                        
                       ],
                     ),
                   ),

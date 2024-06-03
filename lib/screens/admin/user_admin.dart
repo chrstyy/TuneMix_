@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
 import 'package:gracieusgalerij/models/song.dart';
+import 'package:gracieusgalerij/screens/admin/home_admin.dart';
 import 'package:gracieusgalerij/screens/theme/theme_app.dart';
 import 'package:gracieusgalerij/screens/user/cart_screen.dart';
 import 'package:gracieusgalerij/screens/user/fav_screen.dart';
@@ -15,15 +16,15 @@ import 'package:provider/provider.dart';
 
 import '../../services/auth_service.dart';
 
-class UserProfile extends StatefulWidget {
-  const UserProfile({super.key});
+class UserAdminProfile extends StatefulWidget {
+  const UserAdminProfile({super.key});
 
   @override
-  State<UserProfile> createState() => _UserProfileState();
+  State<UserAdminProfile> createState() => _UserAdminProfileState();
 }
 
-class _UserProfileState extends State<UserProfile> {
-  int _currentIndex = 4;
+class _UserAdminProfileState extends State<UserAdminProfile> {
+  int _currentIndex = 1;
   String _userName = 'Initial Username';
   bool isSignedIn = false;
   final TextEditingController _editedUserNameController =
@@ -118,14 +119,6 @@ class _UserProfileState extends State<UserProfile> {
     _loadUserData();
   }
 
-  Future<void> choosePhoto(ImageSource source) async {
-    await _authService.editPhoto(source);
-    setState(() {
-      _tempImageFile = _authService.imageFile;
-    });
-    Navigator.pop(context);
-  }
-
   Future<void> _getUserInfo() async {
     User? user = _auth.currentUser;
     if (user != null) {
@@ -144,34 +137,6 @@ class _UserProfileState extends State<UserProfile> {
     }
   }
 
-  Future<void> _updateUsername() async {
-    String newUsername = _editedUserNameController.text.trim();
-    print('Attempting to update username to: $newUsername');
-    if (newUsername.isEmpty) {
-      print('Username cannot be empty');
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Username cannot be empty')),
-      );
-      return;
-    }
-
-    try {
-      User? user = _auth.currentUser;
-      if (user != null) {
-        await _database.collection('users').doc(user.uid).update({
-          'username': newUsername,
-        });
-
-        setState(() {
-          _userName = newUsername;
-        });
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Failed to update username')),
-      );
-    }
-  }
 
   Future<void> _loadUserData() async {
     try {
@@ -204,190 +169,6 @@ class _UserProfileState extends State<UserProfile> {
     } catch (e) {
       print('Error saving photo: $e');
     }
-  }
-
-  void _showEditOptions(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          contentPadding: EdgeInsets.zero,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15.0),
-          ),
-          content: SingleChildScrollView(
-            child: _buildEditOptions(context),
-          ),
-        );
-      },
-    );
-  }
-
-  void _showUsernameUpdate(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          contentPadding: EdgeInsets.zero,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15.0),
-          ),
-          content: SingleChildScrollView(
-            child: _builUsernameUpdate(context),
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildEditOptions(BuildContext context) {
-    ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
-    return Container(
-      padding: const EdgeInsets.all(16),
-      color: Colors.transparent,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const Padding(
-            padding: EdgeInsets.only(bottom: 16.0),
-            child: Text(
-              'CHANGE PROFILE PHOTO',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'Concert One',
-              ),
-            ),
-          ),
-          GestureDetector(
-            onTap: () => choosePhoto(ImageSource.gallery),
-            child: Center(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text('Choose from Library'),
-                  Divider(
-                    color: themeProvider.themeMode().switchColor!,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          GestureDetector(
-            onTap: () => choosePhoto(ImageSource.camera),
-            child: Center(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text('Take Photo'),
-                  Divider(
-                    color: themeProvider.themeMode().switchColor!,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text(
-                  'Cancel',
-                  style: TextStyle(
-                    fontFamily: 'Itim',
-                    color: themeProvider.themeMode().switchColor!,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _builUsernameUpdate(BuildContext context) {
-    ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
-    return Container(
-      padding: EdgeInsets.all(16),
-      color: Colors.transparent,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const Padding(
-            padding: EdgeInsets.only(bottom: 16.0),
-            child: Text(
-              'CHANGE USERNAME',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'Concert One',
-              ),
-            ),
-          ),
-          TextFormField(
-            controller: _editedUserNameController,
-            onChanged: (value) {
-              setState(() {
-                _tempUsername = value;
-              });
-            },
-            decoration: const InputDecoration(
-              hintText: 'Enter new username',
-              hintStyle: TextStyle(
-                fontFamily: 'Itim',
-                fontSize: 13,
-                color: Colors.black,
-              ),
-              enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.white),
-              ),
-              focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.white),
-              ),
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text(
-                  'Cancel',
-                  style: TextStyle(
-                    fontFamily: 'Itim',
-                    color: themeProvider.themeMode().switchColor!,
-                  ),
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  _updateUsername();
-                  Navigator.pop(context);
-                },
-                child: const Text(
-                  'Save',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontFamily: 'Itim',
-                    fontSize: 15,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
   }
 
   @override
@@ -436,28 +217,6 @@ class _UserProfileState extends State<UserProfile> {
                                     : Image.file(_tempImageFile!,
                                         fit: BoxFit.cover),
                               ),
-                              Positioned(
-                                bottom: 0,
-                                right: 0,
-                                left: 83,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color:
-                                        themeProvider.themeMode().switchColor!,
-                                  ),
-                                  child: IconButton(
-                                    onPressed: () {
-                                      _showEditOptions(context);
-                                    },
-                                    icon: Icon(
-                                      Icons.edit,
-                                      color:
-                                          themeProvider.themeMode().thumbColor!,
-                                    ),
-                                  ),
-                                ),
-                              ),
                             ],
                           ),
                         ],
@@ -470,16 +229,6 @@ class _UserProfileState extends State<UserProfile> {
                             Text(
                               _userName,
                               style: Theme.of(context).textTheme.headline1!,
-                            ),
-                            const SizedBox(height: 2),
-                            GestureDetector(
-                              onTap: () {
-                                _showUsernameUpdate(context);
-                              },
-                              child: Text(
-                                'Edit Username',
-                                style: Theme.of(context).textTheme.headline2!,
-                              ),
                             ),
                           ],
                         ),
@@ -691,37 +440,8 @@ class _UserProfileState extends State<UserProfile> {
             ),
             BottomNavigationBarItem(
               icon: Icon(
-                Icons.search,
-                color: _currentIndex == 1
-                    ? themeProvider.themeMode().navbarIconAct!
-                    : themeProvider.themeMode().navbarIcon!,
-              ),
-              label: 'Search',
-            ),
-            BottomNavigationBarItem(
-              icon: Image.asset(
-                _currentIndex == 2 ? 'images/basket.png' : 'images/basket.png',
-                width: 24,
-                height: 24,
-                color: _currentIndex == 2
-                    ? themeProvider.themeMode().navbarIconAct!
-                    : themeProvider.themeMode().navbarIcon!,
-              ),
-              label: 'Story',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.favorite,
-                color: _currentIndex == 3
-                    ? themeProvider.themeMode().navbarIconAct!
-                    : themeProvider.themeMode().navbarIcon!,
-              ),
-              label: 'Favorite',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
                 Icons.account_circle_rounded,
-                color: _currentIndex == 4
+                color: _currentIndex == 1
                     ? themeProvider.themeMode().navbarIconAct!
                     : themeProvider.themeMode().navbarIcon!,
               ),
@@ -741,31 +461,16 @@ class _UserProfileState extends State<UserProfile> {
         break;
       case 1:
         break;
-      case 2:
-        break;
-      case 3:
-        break;
-      case 4:
-        break;
     }
-
-    Navigator.pushReplacement(
+     Navigator.pushReplacement(
       context,
       PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) {
           switch (index) {
             case 0:
-              return const HomeScreen();
+              return const HomeScreenAdmin();
             case 1:
-              return const SearchScreen();
-            case 2:
-              return const CartScreen(
-                purchasedSongs: [],
-              );
-            case 3:
-              return const FavoriteScreen();
-            case 4:
-              return const UserProfile();
+              return const UserAdminProfile();
             default:
               return Container();
           }

@@ -52,39 +52,37 @@ class _HomeScreenState extends State<HomeScreen> {
                     fit: BoxFit.cover,
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'Special Offer',
-                      style: TextStyle(fontFamily: 'Bayon', fontSize: 20),
-                    ),
-                    const SizedBox(
-                      width: 150,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const SongList(),
-                          ),
-                        );
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 15),
-                        child: Text(
-                          'view all',
-                          style: TextStyle(
-                            color: themeProvider.themeMode().switchColor!,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
+                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Special Offer',
+                        style: TextStyle(fontFamily: 'Bayon', fontSize: 20),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const SongList(),
+                            ),
+                          );
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.only(bottom: 30, right: 30),
+                          child: Text(
+                            'View All',
+                            style: TextStyle(
+                              color: themeProvider.themeMode().switchColor!,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              decoration: TextDecoration.underline,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
                 FutureBuilder<List<Song>>(
                   future: _songService.getSongSpecialOffer(count: 5),
                   builder: (context, snapshot) {

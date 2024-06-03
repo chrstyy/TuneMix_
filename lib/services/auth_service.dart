@@ -78,21 +78,6 @@ class AuthService {
     }
   }
 
-  Future<void> removeCurrentPhoto() async {
-    try {
-      final currentUser = _auth.currentUser;
-      if (currentUser != null) {
-        final ref = _storage.ref('profile_images/${currentUser.uid}');
-        await ref.delete();
-        await _database.collection('users').doc(currentUser.uid).update({
-          'profileImageUrl': FieldValue.delete(),
-        });
-      }
-    } catch (error) {
-      print('Error removing photo: $error');
-    }
-  }
-
   Future<Map<String, dynamic>?> getUserData() async {
     User? user = _auth.currentUser;
     if (user != null) {

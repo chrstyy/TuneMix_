@@ -94,7 +94,7 @@ class _SongListState extends State<SongList> {
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
-                        childAspectRatio: 0.7,
+                        childAspectRatio: 0.8,
                         crossAxisSpacing: 10,
                         mainAxisSpacing: 10,
                       ),
@@ -130,14 +130,13 @@ class _SongListState extends State<SongList> {
           borderRadius: BorderRadius.circular(10),
         ),
         child: Column(
-          mainAxisSize: MainAxisSize.max,
+          mainAxisSize: MainAxisSize.min, 
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const SizedBox(height: 13),
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
-              child: song.imageSong != null &&
-                      Uri.parse(song.imageSong!).isAbsolute
+              child: song.imageSong != null && Uri.parse(song.imageSong!).isAbsolute
                   ? Image.network(
                       song.imageSong!,
                       width: 152,
@@ -145,8 +144,8 @@ class _SongListState extends State<SongList> {
                       fit: BoxFit.cover,
                     )
                   : Container(
-                      width: 182,
-                      height: 188,
+                      width: 152,
+                      height: 158,
                       color: Colors.grey[300],
                       child: const Icon(
                         Icons.image,
@@ -155,14 +154,22 @@ class _SongListState extends State<SongList> {
                     ),
             ),
             const SizedBox(height: 5),
-            Text(
-              song.songTitle,
-              style: Theme.of(context).textTheme.headline3,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0), 
+              child: Text(
+                song.songTitle,
+                style: Theme.of(context).textTheme.headline3,
+                textAlign: TextAlign.center, 
+              ),
             ),
             const SizedBox(height: 5),
-            Text(
-              '\$${song.price.toString()}',
-              style: Theme.of(context).textTheme.headline3,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Text(
+                '\$${song.price.toString()}',
+                style: Theme.of(context).textTheme.headline3,
+                textAlign: TextAlign.center,
+              ),
             ),
           ],
         ),

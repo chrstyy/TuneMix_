@@ -276,7 +276,6 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                     ),
                   );
                 } else {
-                  // Jika tidak ada data favorit, jangan tampilkan tombol
                   return SizedBox();
                 }
               },

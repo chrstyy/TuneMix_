@@ -11,6 +11,7 @@ import 'package:gracieusgalerij/screens/user/song/song_list.dart';
 import 'package:gracieusgalerij/screens/user/user_profile.dart';
 import 'package:provider/provider.dart';
 
+import 'user_admin.dart';
 import 'widget/widget_offer.dart';
 import 'widget/widget_recommend.dart';
 
@@ -183,37 +184,8 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
             ),
             BottomNavigationBarItem(
               icon: Icon(
-                Icons.search,
-                color: _currentIndex == 1
-                    ? themeProvider.themeMode().navbarIconAct!
-                    : themeProvider.themeMode().navbarIcon!,
-              ),
-              label: 'Search',
-            ),
-            BottomNavigationBarItem(
-              icon: Image.asset(
-                _currentIndex == 2 ? 'images/basket.png' : 'images/basket.png',
-                width: 24,
-                height: 24,
-                color: _currentIndex == 2
-                    ? themeProvider.themeMode().navbarIconAct!
-                    : themeProvider.themeMode().navbarIcon!,
-              ),
-              label: 'Story',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.favorite,
-                color: _currentIndex == 3
-                    ? themeProvider.themeMode().navbarIconAct!
-                    : themeProvider.themeMode().navbarIcon!,
-              ),
-              label: 'Favorite',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
                 Icons.account_circle_rounded,
-                color: _currentIndex == 4
+                color: _currentIndex == 1
                     ? themeProvider.themeMode().navbarIconAct!
                     : themeProvider.themeMode().navbarIcon!,
               ),
@@ -233,14 +205,8 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
         break;
       case 1:
         break;
-      case 2:
-        break;
-      case 3:
-        break;
-      case 4:
-        break;
     }
-    Navigator.pushReplacement(
+     Navigator.pushReplacement(
       context,
       PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) {
@@ -248,15 +214,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
             case 0:
               return const HomeScreenAdmin();
             case 1:
-              return const SearchScreen();
-            case 2:
-              return const CartScreen(
-                purchasedSongs: [],
-              );
-            case 3:
-              return const FavoriteScreen();
-            case 4:
-              return const UserProfile();
+              return const UserAdminProfile();
             default:
               return Container();
           }
