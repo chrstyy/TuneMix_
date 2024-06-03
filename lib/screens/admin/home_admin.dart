@@ -222,22 +222,16 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
   }
 
   void _navigateToPage(int index) {
-    var routeBuilder;
     switch (index) {
       case 0:
-        routeBuilder = '/home';
         break;
       case 1:
-        routeBuilder = '/search';
         break;
       case 2:
-        routeBuilder = '/cart';
         break;
       case 3:
-        routeBuilder = '/favorites';
         break;
       case 4:
-        routeBuilder = '/user';
         break;
     }
     Navigator.pushReplacement(
