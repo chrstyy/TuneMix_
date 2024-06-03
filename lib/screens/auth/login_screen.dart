@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gracieusgalerij/screens/theme/theme_app.dart';
 import 'package:gracieusgalerij/screens/user/fav_screen.dart';
+import 'package:gracieusgalerij/screens/user/landing_screen.dart';
 import 'package:gracieusgalerij/screens/user/song/song_detail.dart';
 import 'package:gracieusgalerij/screens/user/user_profile.dart';
 import 'package:provider/provider.dart';
@@ -196,7 +197,44 @@ class _LoginScreensState extends State<LoginScreen> {
                         padding: const EdgeInsets.only(top: 60),
                         child: ElevatedButton(
                           onPressed: () {
-                            Navigator.pop(context);
+                            Navigator.push(
+                              context,
+                              PageRouteBuilder(
+                                pageBuilder: (context, animation,
+                                  secondaryAnimation) =>
+                                    const LandingScreen(),
+                                    transitionsBuilder: (context, animation,
+                                      secondaryAnimation, child) {
+                                        const begin = 0.0;
+                                        const end = 1.0;
+                                        const curve = Curves.easeInOut;
+
+                                        var scaleTween =
+                                          Tween(begin: begin, end: end);
+                                        var fadeTween =
+                                          Tween(begin: 0.0, end: 1.0);
+                                        var curvedAnimation = CurvedAnimation(
+                                          parent: animation,
+                                          curve: curve,
+                                        );
+
+                                        var scaleAnimation = scaleTween
+                                          .animate(curvedAnimation);
+                                        var fadeAnimation = fadeTween
+                                          .animate(curvedAnimation);
+
+                                        return ScaleTransition(
+                                          scale: scaleAnimation,
+                                          child: FadeTransition(
+                                          opacity: fadeAnimation,
+                                          child: child,
+                                      ),
+                                    );
+                                  },
+                                  transitionDuration:
+                                    const Duration(milliseconds: 500),
+                              ),
+                            );
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0x004B39EF),
