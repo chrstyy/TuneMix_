@@ -91,6 +91,9 @@ class ThemeProvider with ChangeNotifier {
       thumbColor: isLightTheme ? AppColors.white : AppColors.black,
       switchBgColor: isLightTheme ? AppColors.choco2 : AppColors.cream,
       switchBgColor2: isLightTheme ? AppColors.cream : AppColors.choco2,
+      navbar: isLightTheme ? AppColors.cream2 : AppColors.lightGrey,
+      navbarIcon: isLightTheme ? AppColors.red2 : AppColors.dcyan,
+      navbarIconAct: isLightTheme ? AppColors.turquoise : AppColors.purple,
     );
   }
 }
@@ -101,6 +104,9 @@ class ThemeMode {
   Color? thumbColor;
   Color? switchBgColor;
   Color? switchBgColor2;
+  Color? navbar;
+  Color? navbarIcon;
+  Color? navbarIconAct;
 
   ThemeMode({
     this.gradientColors,
@@ -108,5 +114,8 @@ class ThemeMode {
     this.thumbColor,
     this.switchBgColor,
     this.switchBgColor2,
+    this.navbar,
+    this.navbarIcon,
+    this.navbarIconAct,
   });
 }

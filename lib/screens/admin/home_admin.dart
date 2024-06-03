@@ -160,7 +160,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
       ),
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(
-          canvasColor: const Color(0xFFE2DFD0),
+          canvasColor: themeProvider.themeMode().navbar!,
         ),
         child: BottomNavigationBar(
           currentIndex: _currentIndex,
@@ -174,16 +174,18 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.home,
-                color:
-                    _currentIndex == 0 ? const Color(0xFF0500FF) : Colors.black,
+                color: _currentIndex == 0
+                    ? themeProvider.themeMode().navbarIconAct!
+                    : themeProvider.themeMode().navbarIcon!,
               ),
               label: 'Home',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.search,
-                color:
-                    _currentIndex == 1 ? const Color(0xFF0500FF) : Colors.black,
+                color: _currentIndex == 1
+                    ? themeProvider.themeMode().navbarIconAct!
+                    : themeProvider.themeMode().navbarIcon!,
               ),
               label: 'Search',
             ),
@@ -192,24 +194,27 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                 _currentIndex == 2 ? 'images/basket.png' : 'images/basket.png',
                 width: 24,
                 height: 24,
-                color:
-                    _currentIndex == 2 ? const Color(0xFF0500FF) : Colors.black,
+                color: _currentIndex == 2
+                    ? themeProvider.themeMode().navbarIconAct!
+                    : themeProvider.themeMode().navbarIcon!,
               ),
               label: 'Story',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.favorite,
-                color:
-                    _currentIndex == 3 ? const Color(0xFF0500FF) : Colors.black,
+                color: _currentIndex == 3
+                    ? themeProvider.themeMode().navbarIconAct!
+                    : themeProvider.themeMode().navbarIcon!,
               ),
               label: 'Favorite',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.account_circle_rounded,
-                color:
-                    _currentIndex == 4 ? const Color(0xFF0500FF) : Colors.black,
+                color: _currentIndex == 4
+                    ? themeProvider.themeMode().navbarIconAct!
+                    : themeProvider.themeMode().navbarIcon!,
               ),
               label: 'Account',
             ),

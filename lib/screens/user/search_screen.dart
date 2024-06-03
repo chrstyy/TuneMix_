@@ -15,10 +15,10 @@ class SearchScreen extends StatefulWidget {
   @override
   State<SearchScreen> createState() => _SearchScreenState();
 }
+
 class _SearchScreenState extends State<SearchScreen> {
   int _currentIndex = 1;
   final TextEditingController _searchController = TextEditingController();
-  final SongService _songService = SongService();
   Future<List<Song>>? _searchResults;
 
   void _onSearchChanged() {
@@ -60,26 +60,26 @@ class _SearchScreenState extends State<SearchScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: Image.asset(
-                    'images/logo.png',
-                    width: 100,
-                    height: 100,
-                    fit: BoxFit.cover,
-                  ),
+                borderRadius: BorderRadius.circular(8),
+                child: Image.asset(
+                  'images/logo.png',
+                  width: 100,
+                  height: 100,
+                  fit: BoxFit.cover,
                 ),
+              ),
               Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 15, 0),
                 child: TextField(
-                controller: _searchController,
-                decoration: InputDecoration(
-                  labelText: 'Search for songs',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
+                  controller: _searchController,
+                  decoration: InputDecoration(
+                    labelText: 'Search for songs',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    prefixIcon: const Icon(Icons.search),
                   ),
-                  prefixIcon: const Icon(Icons.search),
                 ),
-              ),
               ),
               const SizedBox(height: 20),
               Expanded(
@@ -138,57 +138,62 @@ class _SearchScreenState extends State<SearchScreen> {
         ),
       ),
       bottomNavigationBar: Theme(
-            data: Theme.of(context).copyWith(
-              canvasColor: const Color(0xFFE2DFD0),
+        data: Theme.of(context).copyWith(
+          canvasColor: themeProvider.themeMode().navbar!,
+        ),
+        child: BottomNavigationBar(
+          currentIndex: _currentIndex,
+          onTap: (index) {
+            setState(() {
+              _currentIndex = index;
+              _navigateToPage(index);
+            });
+          },
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.home,
+                color: _currentIndex == 0
+                    ? themeProvider.themeMode().navbarIconAct!
+                    : themeProvider.themeMode().navbarIcon!,
+              ),
+              label: 'Home',
             ),
-            child: BottomNavigationBar(
-              currentIndex: _currentIndex,
-              onTap: (index) {
-                setState(() {
-                  _currentIndex = index;
-                  _navigateToPage(index);
-                });
-              },
-              items: [
-                BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.home,
-                color:
-                  _currentIndex == 0 ? const Color(0xFF0500FF) : Colors.black,
-                ),
-                label: 'Home',
-                ),
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.search,
-                  color:
-                    _currentIndex == 1 ? const Color(0xFF0500FF) : Colors.black,
-                ),
-                label: 'Search',
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.search,
+                color: _currentIndex == 1
+                    ? themeProvider.themeMode().navbarIconAct!
+                    : themeProvider.themeMode().navbarIcon!,
               ),
-              BottomNavigationBarItem(
-                icon: Image.asset(
-                  _currentIndex == 2 ? 'images/basket.png' : 'images/basket.png',
-                  width: 24,
-                  height: 24,
-                  color:
-                    _currentIndex == 2 ? const Color(0xFF0500FF) : Colors.black,
-                ),
-                label: 'Story',
+              label: 'Search',
+            ),
+            BottomNavigationBarItem(
+              icon: Image.asset(
+                _currentIndex == 2 ? 'images/basket.png' : 'images/basket.png',
+                width: 24,
+                height: 24,
+                color: _currentIndex == 2
+                    ? themeProvider.themeMode().navbarIconAct!
+                    : themeProvider.themeMode().navbarIcon!,
               ),
-              BottomNavigationBarItem(
+              label: 'Story',
+            ),
+            BottomNavigationBarItem(
               icon: Icon(
                 Icons.favorite,
-                color:
-                    _currentIndex == 3 ? const Color(0xFF0500FF) : Colors.black,
+                color: _currentIndex == 3
+                    ? themeProvider.themeMode().navbarIconAct!
+                    : themeProvider.themeMode().navbarIcon!,
               ),
               label: 'Favorite',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.account_circle_rounded,
-                color:
-                    _currentIndex == 4 ? const Color(0xFF0500FF) : Colors.black,
+                color: _currentIndex == 4
+                    ? themeProvider.themeMode().navbarIconAct!
+                    : themeProvider.themeMode().navbarIcon!,
               ),
               label: 'Account',
             ),
@@ -200,23 +205,17 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-   void _navigateToPage(int index) {
-    var routeBuilder;
+  void _navigateToPage(int index) {
     switch (index) {
       case 0:
-        routeBuilder = '/home';
         break;
       case 1:
-        routeBuilder = '/search';
         break;
       case 2:
-        routeBuilder = '/cart';
         break;
       case 3:
-        routeBuilder = '/favorites';
         break;
       case 4:
-        routeBuilder = '/user';
         break;
     }
     Navigator.pushReplacement(
@@ -242,5 +241,5 @@ class _SearchScreenState extends State<SearchScreen> {
         },
       ),
     );
-}
+  }
 }

@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 import 'song/song_detail.dart';
 
 class FavoriteScreen extends StatefulWidget {
-  const FavoriteScreen({Key? key}) : super(key: key);
+  const FavoriteScreen({super.key});
 
   @override
   State<FavoriteScreen> createState() => _FavoriteScreenState();
@@ -21,7 +21,6 @@ class FavoriteScreen extends StatefulWidget {
 
 class _FavoriteScreenState extends State<FavoriteScreen> {
   int _currentIndex = 3;
-  
 
   @override
   Widget build(BuildContext context) {
@@ -32,12 +31,9 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
           Container(
             height: double.infinity,
             width: double.infinity,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [
-                  Color(0xFFF8F4E1),
-                  Color(0xFFAF8F6F),
-                ],
+                colors: themeProvider.themeMode().gradientColors!,
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
               ),
@@ -61,7 +57,12 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                             color: Colors.transparent,
                           ),
                         ),
-                        child: Image.asset('images/arrowback.png', width: 35, height: 35),
+                        child: Image.asset(
+                          'images/arrowback.png',
+                          width: 35,
+                          height: 35,
+                          color: themeProvider.themeMode().switchColor!,
+                        ),
                       ),
                       Container(
                         width: 152,
@@ -90,7 +91,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                           child: Text('Error: ${snapshot.error}'),
                         );
                       } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                        return const Center(
+                        return Center(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -99,7 +100,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                 'No favorite songs yet.',
                                 style: TextStyle(
                                   fontFamily: 'Bayon',
-                                  color: Colors.brown,
+                                  color: themeProvider.themeMode().switchColor!,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 18,
                                 ),
@@ -109,62 +110,76 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                         );
                       } else {
                         final data = snapshot.data!;
-                       
+
                         return ListView.builder(
                           itemCount: data.length,
                           itemBuilder: (context, index) {
                             final song = data[index];
                             return Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 16.0, vertical: 8.0),
                               child: GestureDetector(
                                 onTap: () {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => SongDetailScreen(songId: song.id),
+                                      builder: (context) =>
+                                          SongDetailScreen(songId: song.id),
                                     ),
                                   );
                                 },
                                 child: Card(
-                                  color: const Color(0xFF543310),
+                                  color:
+                                      themeProvider.themeMode().switchBgColor!,
                                   elevation: 3,
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Row(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                       children: [
                                         Container(
                                           width: 70,
                                           height: 70,
                                           decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(10),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
                                             image: DecorationImage(
                                               fit: BoxFit.cover,
-                                              image: song.imageSong != null && song.imageSong!.isNotEmpty
-                                                  ? NetworkImage(song.imageSong!)
-                                                  : const AssetImage('images/default_song.jpeg') as ImageProvider,
+                                              image: song.imageSong != null &&
+                                                      song.imageSong!.isNotEmpty
+                                                  ? NetworkImage(
+                                                      song.imageSong!)
+                                                  : const AssetImage(
+                                                          'images/default_song.jpeg')
+                                                      as ImageProvider,
                                             ),
                                           ),
                                         ),
                                         const SizedBox(width: 10),
                                         Expanded(
                                           child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Text(
                                                 song.songTitle,
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                   fontSize: 16,
-                                                  color: Colors.white,
+                                                  color: themeProvider
+                                                      .themeMode()
+                                                      .thumbColor!,
                                                   fontFamily: 'Bayon',
                                                 ),
                                               ),
                                               const SizedBox(height: 4),
                                               Text(
                                                 song.creator,
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                   fontSize: 15,
-                                                  color: Colors.white,
+                                                  color: themeProvider
+                                                      .themeMode()
+                                                      .thumbColor!,
                                                   fontFamily: 'Bayon',
                                                 ),
                                               ),
@@ -174,33 +189,46 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                         IconButton(
                                           onPressed: () {
                                             setState(() {
-                                              song.isFavorite = !song.isFavorite;
+                                              song.isFavorite =
+                                                  !song.isFavorite;
                                             });
                                             if (song.isFavorite) {
-                                              FavoriteService.addToFavorites(song).catchError((error) {
+                                              FavoriteService.addToFavorites(
+                                                      song)
+                                                  .catchError((error) {
                                                 setState(() {
                                                   song.isFavorite = false;
                                                 });
-                                                ScaffoldMessenger.of(context).showSnackBar(
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
                                                   SnackBar(
-                                                    content: Text('Failed to add to favorites: $error'),
+                                                    content: Text(
+                                                        'Failed to add to favorites: $error'),
                                                   ),
                                                 );
                                               });
                                             } else {
-                                              FavoriteService.removeFromFavorites(song.id).catchError((error) {
+                                              FavoriteService
+                                                      .removeFromFavorites(
+                                                          song.id)
+                                                  .catchError((error) {
                                                 setState(() {
                                                   song.isFavorite = true;
                                                 });
-                                                ScaffoldMessenger.of(context).showSnackBar(
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
                                                   SnackBar(
-                                                    content: Text('Failed to remove from favorites: $error'),
+                                                    content: Text(
+                                                        'Failed to remove from favorites: $error'),
                                                   ),
                                                 );
                                               });
                                             }
                                           },
-                                          icon: Icon(Icons.favorite, color: song.isFavorite ? Colors.red : Colors.green),
+                                          icon: Icon(Icons.favorite,
+                                              color: song.isFavorite
+                                                  ? Colors.red
+                                                  : Colors.green),
                                         ),
                                       ],
                                     ),
@@ -217,115 +245,124 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
               ],
             ),
           ), // Hanya menampilkan jika berada di layar Favorite dan ada favorit
-            Positioned(
-  bottom: 10,
-  left: 27,
-  right: 27,
-  child: StreamBuilder<List<Song>>(
-    stream: FavoriteService.getFavoritesForUser(),
-    builder: (context, snapshot) {
-      if (snapshot.connectionState == ConnectionState.waiting) {
-        // Jika masih dalam proses memuat, tampilkan tombol sebagai SizedBox
-        return SizedBox();
-      } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-        // Jika ada data favorit, tampilkan tombol Remove All Favorites
-        return GestureDetector(
-          onTap: () {
-            _removeAllFavorites();
-          },
-          child: Container(
-            height: 50,
-            color: const Color.fromARGB(255, 101, 75, 66),
-            child: const Center(
-              child: Text(
-                'Remove All Favorites',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+          Positioned(
+            bottom: 10,
+            left: 27,
+            right: 27,
+            child: StreamBuilder<List<Song>>(
+              stream: FavoriteService.getFavoritesForUser(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  // Jika masih dalam proses memuat, tampilkan tombol sebagai SizedBox
+                  return SizedBox();
+                } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                  // Jika ada data favorit, tampilkan tombol Remove All Favorites
+                  return GestureDetector(
+                    onTap: () {
+                      _removeAllFavorites();
+                    },
+                    child: Container(
+                      height: 50,
+                      color: themeProvider.themeMode().switchBgColor!,
+                      child: Center(
+                        child: Text(
+                          'Remove All Favorites',
+                          style: TextStyle(
+                            color: themeProvider.themeMode().thumbColor!,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                } else {
+                  // Jika tidak ada data favorit, jangan tampilkan tombol
+                  return SizedBox();
+                }
+              },
             ),
           ),
-        );
-      } else {
-        // Jika tidak ada data favorit, jangan tampilkan tombol
-        return SizedBox();
-      }
-    },
-  ),
-),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-            _navigateToPage(index);
-          });
-        },
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home,
-              color: _currentIndex == 0 ? const Color(0xFF0500FF) : Colors.black,
+      bottomNavigationBar: Theme(
+        data: Theme.of(context).copyWith(
+          canvasColor: themeProvider.themeMode().navbar!,
+        ),
+        child: BottomNavigationBar(
+          currentIndex: _currentIndex,
+          onTap: (index) {
+            setState(() {
+              _currentIndex = index;
+              _navigateToPage(index);
+            });
+          },
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.home,
+                color: _currentIndex == 0
+                    ? themeProvider.themeMode().navbarIconAct!
+                    : themeProvider.themeMode().navbarIcon!,
+              ),
+              label: 'Home',
             ),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.search,
-              color: _currentIndex == 1 ? const Color(0xFF0500FF) : Colors.black,
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.search,
+                color: _currentIndex == 1
+                    ? themeProvider.themeMode().navbarIconAct!
+                    : themeProvider.themeMode().navbarIcon!,
+              ),
+              label: 'Search',
             ),
-            label: 'Search',
-          ),
-          BottomNavigationBarItem(
-            icon: Image.asset(
-              _currentIndex == 2 ? 'images/basket.png' : 'images/basket.png',
-              width: 24,
-              height: 24,
-              color: _currentIndex == 2 ? const Color(0xFF0500FF) : Colors.black,
+            BottomNavigationBarItem(
+              icon: Image.asset(
+                _currentIndex == 2 ? 'images/basket.png' : 'images/basket.png',
+                width: 24,
+                height: 24,
+                color: _currentIndex == 2
+                    ? themeProvider.themeMode().navbarIconAct!
+                    : themeProvider.themeMode().navbarIcon!,
+              ),
+              label: 'Story',
             ),
-            label: 'Story',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.favorite,
-              color: _currentIndex == 3 ? const Color(0xFF0500FF) : Colors.black,
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.favorite,
+                color: _currentIndex == 3
+                    ? themeProvider.themeMode().navbarIconAct!
+                    : themeProvider.themeMode().navbarIcon!,
+              ),
+              label: 'Favorite',
             ),
-            label: 'Favorite',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.account_circle_rounded,
-              color: _currentIndex == 4 ? const Color(0xFF0500FF) : Colors.black,
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.account_circle_rounded,
+                color: _currentIndex == 4
+                    ? themeProvider.themeMode().navbarIconAct!
+                    : themeProvider.themeMode().navbarIcon!,
+              ),
+              label: 'Account',
             ),
-            label: 'Account',
-          ),
-        ],
-        showUnselectedLabels: false,
-        showSelectedLabels: false,
+          ],
+          showUnselectedLabels: false,
+          showSelectedLabels: false,
+        ),
       ),
     );
   }
 
   void _navigateToPage(int index) {
-    var routeBuilder;
     switch (index) {
       case 0:
-        routeBuilder = '/home';
         break;
       case 1:
-        routeBuilder = '/search';
         break;
       case 2:
-        routeBuilder = '/cart';
         break;
       case 3:
-        routeBuilder = '/favorite';
         break;
       case 4:
-        routeBuilder = '/user';
         break;
     }
     Navigator.pushReplacement(
@@ -371,4 +408,3 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
     });
   }
 }
-
