@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gracieusgalerij/screens/admin/edit_product_detail_admin.dart';
+import 'package:gracieusgalerij/screens/admin/song_list_admin.dart';
 import 'package:gracieusgalerij/screens/admin/widget/widget_genre.dart';
 import 'package:gracieusgalerij/screens/theme/theme_app.dart';
 import 'package:gracieusgalerij/screens/user/cart_screen.dart';
@@ -92,7 +93,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const SongList()),
+                                    builder: (context) => const SongListAdmin()),
                               );
                             },
                             child: Padding(

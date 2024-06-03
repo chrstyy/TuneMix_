@@ -21,7 +21,8 @@ class SongService {
         .where('song_title', isLessThanOrEqualTo: query + '\uf8ff')
         .get();
     return querySnapshot.docs
-        .map((doc) => Song.fromFirestore(doc.data() as Map<String, dynamic>, doc.id))
+        .map((doc) =>
+            Song.fromFirestore(doc.data() as Map<String, dynamic>, doc.id))
         .toList();
   }
 
@@ -37,7 +38,8 @@ class SongService {
     }
   }
 
-static Future<bool> isFavorite({required String userId, required String songId}) async {
+  static Future<bool> isFavorite(
+      {required String userId, required String songId}) async {
     try {
       DocumentSnapshot docSnapshot = await _database
           .collection('users')
@@ -51,23 +53,23 @@ static Future<bool> isFavorite({required String userId, required String songId})
     }
   }
 
-static Future<void> addSong(Song song, File? image) async {
-  try {
-    String imageUrl = '';
-    if (image != null) {
-      imageUrl = await uploadImage(image);
-    }
-    song.imageSong = imageUrl;
-    DocumentReference docRef = await _songsCollection.add(song.toFirestore());
+  static Future<void> addSong(Song song, File? image) async {
+    try {
+      String imageUrl = '';
+      if (image != null) {
+        imageUrl = await uploadImage(image);
+      }
+      song.imageSong = imageUrl;
+      DocumentReference docRef = await _songsCollection.add(song.toFirestore());
 
-    song.id = docRef.id;
-    await docRef.update({
-      'id': docRef.id,
-    });
-  } catch (e) {
-    throw Exception('Error adding song: $e');
+      song.id = docRef.id;
+      await docRef.update({
+        'id': docRef.id,
+      });
+    } catch (e) {
+      throw Exception('Error adding song: $e');
+    }
   }
-}
 
   Future<Song> getSongById(String id) async {
     DocumentSnapshot doc = await _database.collection('songs').doc(id).get();
@@ -78,19 +80,27 @@ static Future<void> addSong(Song song, File? image) async {
     }
   }
 
-   Future<List<Song>> getAllSongs() async {
+  Future<List<Song>> getAllSongs() async {
     try {
       QuerySnapshot querySnapshot = await _songsCollection.get();
-      List<Song> songs = querySnapshot.docs.map((doc) => Song.fromFirestore(doc.data() as Map<String, dynamic>, doc.id)).toList();
+      List<Song> songs = querySnapshot.docs
+          .map((doc) =>
+              Song.fromFirestore(doc.data() as Map<String, dynamic>, doc.id))
+          .toList();
       return songs;
     } catch (e) {
       throw Exception('Error getting songs: $e');
     }
   }
 
+  
+
   Future<List<Song>> getSongSpecialOffer({int count = 5}) async {
     try {
-      QuerySnapshot collectionSnapshot = await _songsCollection.orderBy(FieldPath.documentId).limit(count).get();
+      QuerySnapshot collectionSnapshot = await _songsCollection
+          .orderBy(FieldPath.documentId)
+          .limit(count)
+          .get();
       int totalSongs = collectionSnapshot.docs.length;
 
       if (totalSongs == 0) return [];
@@ -99,7 +109,8 @@ static Future<void> addSong(Song song, File? image) async {
       for (int i = 0; i < totalSongs; i++) {
         DocumentSnapshot docSnapshot = collectionSnapshot.docs[i];
         if (docSnapshot.exists) {
-          Song song = Song.fromFirestore(docSnapshot.data() as Map<String, dynamic>, docSnapshot.id);
+          Song song = Song.fromFirestore(
+              docSnapshot.data() as Map<String, dynamic>, docSnapshot.id);
           specialOfferSongs.add(song);
         }
       }
@@ -112,7 +123,7 @@ static Future<void> addSong(Song song, File? image) async {
   Future<List<Song>> getSongRecommend({int count = 5}) async {
     try {
       QuerySnapshot collectionSnapshot = await _songsCollection
-          .orderBy('rating', descending: true) 
+          .orderBy('rating', descending: true)
           .limit(count)
           .get();
       int totalSongs = collectionSnapshot.docs.length;
@@ -123,7 +134,8 @@ static Future<void> addSong(Song song, File? image) async {
       for (int i = 0; i < totalSongs; i++) {
         DocumentSnapshot docSnapshot = collectionSnapshot.docs[i];
         if (docSnapshot.exists) {
-          Song song = Song.fromFirestore(docSnapshot.data() as Map<String, dynamic>, docSnapshot.id);
+          Song song = Song.fromFirestore(
+              docSnapshot.data() as Map<String, dynamic>, docSnapshot.id);
           recommendedSongs.add(song);
         }
       }
@@ -132,7 +144,6 @@ static Future<void> addSong(Song song, File? image) async {
       throw Exception('Error getting recommended songs: $e');
     }
   }
-
 
   Future<void> updateSongRating(String songId, double rating) async {
     try {
@@ -151,14 +162,15 @@ static Future<void> addSong(Song song, File? image) async {
           .where('genre', isEqualTo: genre)
           .get();
       return querySnapshot.docs
-          .map((doc) => Song.fromFirestore(doc.data() as Map<String, dynamic>, doc.id))
+          .map((doc) =>
+              Song.fromFirestore(doc.data() as Map<String, dynamic>, doc.id))
           .toList();
     } catch (e) {
       throw Exception('Failed to fetch songs: $e');
     }
   }
 
-   Future<List<String>> getGenres() async {
+  Future<List<String>> getGenres() async {
     try {
       QuerySnapshot querySnapshot = await _database.collection('songs').get();
       Set<String> genres = {};
@@ -170,5 +182,15 @@ static Future<void> addSong(Song song, File? image) async {
       throw Exception('Failed to fetch genres: $e');
     }
   }
+  static Future<void> deleteSong(String songId) async {
+  try {
+    await _songsCollection.doc(songId).delete();
+    // Juga perlu menghapus gambar dari storage jika ada
+    // Misalnya:
+    // await _storage.ref('song_images/$songId.jpg').delete();
+  } catch (e) {
+    throw Exception('Error deleting song: $e');
+  }
+}
 
 }

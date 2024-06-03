@@ -38,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         child: Padding(
-          padding: const EdgeInsetsDirectional.fromSTEB(20, 20, 0, 0),
+          padding: const EdgeInsets.only(top: 20, left: 20),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,41 +52,38 @@ class _HomeScreenState extends State<HomeScreen> {
                     fit: BoxFit.cover,
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
-                  child: Row(
-                    children: [
-                      const Text(
-                        'Special Offer',
-                        style:
-                            const TextStyle(fontFamily: 'Bayon', fontSize: 20),
-                      ),
-                      const SizedBox(
-                        width: 150,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 20),
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const SongList(),
-                              ),
-                            );
-                          },
-                          child: Text(
-                            'view all',
-                            style: TextStyle(
-                              color: themeProvider.themeMode().switchColor!,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Special Offer',
+                      style: TextStyle(fontFamily: 'Bayon', fontSize: 20),
+                    ),
+                    const SizedBox(
+                      width: 150,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SongList(),
+                          ),
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 15),
+                        child: Text(
+                          'view all',
+                          style: TextStyle(
+                            color: themeProvider.themeMode().switchColor!,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
                 FutureBuilder<List<Song>>(
                   future: _songService.getSongSpecialOffer(count: 5),
@@ -185,7 +182,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                 ),
                 const Padding(
-                  padding: EdgeInsets.only(top: 20, right: 20),
+                  padding: EdgeInsets.only(top: 20),
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -216,30 +213,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
+                  padding: const EdgeInsets.only(top: 20, bottom: 20),
                   child: Column(
-                    mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding:
-                            const EdgeInsetsDirectional.fromSTEB(0, 0, 20, 0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text(
-                              'Recommendation',
-                              style: TextStyle(
-                                fontFamily: 'Bayon',
-                                fontSize: 20,
-                              ),
-                            ),
-                            Icon(
-                              Icons.arrow_drop_down,
-                              color: themeProvider.themeMode().switchColor!,
-                              size: 24,
-                            ),
-                          ],
+                      const Text(
+                        'Recommendation',
+                        style: TextStyle(
+                          fontFamily: 'Bayon',
+                          fontSize: 20,
                         ),
                       ),
                       FutureBuilder<List<Song>>(

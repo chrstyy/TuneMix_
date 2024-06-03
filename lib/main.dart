@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gracieusgalerij/favorite2.dart';
 import 'package:gracieusgalerij/screens/admin/edit_product_detail_admin.dart';
 import 'package:gracieusgalerij/screens/admin/home_admin.dart';
+import 'package:gracieusgalerij/screens/admin/song_list_admin.dart';
 import 'package:gracieusgalerij/screens/theme/constant.dart';
 import 'package:gracieusgalerij/screens/theme/theme_app.dart';
 import 'package:gracieusgalerij/screens/user/cart_screen.dart';
@@ -60,7 +61,7 @@ class MyApp extends StatelessWidget {
       title: 'TuneMix',
       theme: themeProvider.themeData(),
       debugShowCheckedModeBanner: false,
-      initialRoute: '/home_adm',
+      initialRoute: '/song_list_adm',
       routes: {
         '/landing': (context) => const LandingScreen(),
         '/signup': (context) => const SignupScreen(),
@@ -68,6 +69,7 @@ class MyApp extends StatelessWidget {
         '/home': (context) => const HomeScreen(),
         '/home_adm': (context) => const HomeScreenAdmin(),
         '/song_detail': (context) => const SongDetailScreen(songId: ''),
+        '/song_list_adm': (context) => const SongListAdmin(),
         '/review': (context) => const ReviewListScreen(
               songTitle: '',
             ),
