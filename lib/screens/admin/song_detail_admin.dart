@@ -105,24 +105,24 @@ class _SongDetailAdminScreenState extends State<SongDetailAdminScreen> {
                             //     ),
                             //   ),
                             // ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 40, right: 20),
-                              child: IconButton(
-                                onPressed: () {
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>  FavoriteScreen(),
-                                    ),
-                                  );
-                                },
-                                icon: Icon(
-                                  isFavorite ? Icons.favorite : Icons.favorite_border,
-                                  color: isFavorite ? Colors.red : Colors.green,
-                                  size: 35,
-                                ),
-                              ),
-                            ),
+                            // Padding(
+                            //   padding: const EdgeInsets.only(top: 40, right: 20),
+                            //   child: IconButton(
+                            //     onPressed: () {
+                            //       Navigator.pushReplacement(
+                            //         context,
+                            //         MaterialPageRoute(
+                            //           builder: (context) =>  FavoriteScreen(),
+                            //         ),
+                            //       );
+                            //     },
+                            //     icon: Icon(
+                            //       isFavorite ? Icons.favorite : Icons.favorite_border,
+                            //       color: isFavorite ? Colors.red : Colors.green,
+                            //       size: 35,
+                            //     ),
+                            //   ),
+                            // ),
                           ],
                         ),
                       ],

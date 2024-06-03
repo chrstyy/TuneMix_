@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gracieusgalerij/models/song.dart';
+import 'package:gracieusgalerij/screens/theme/theme_app.dart';
 import 'package:gracieusgalerij/screens/user/cart_screen.dart';
 import 'package:gracieusgalerij/screens/user/home_screen.dart';
 import 'package:gracieusgalerij/screens/user/search_screen.dart';
 import 'package:gracieusgalerij/screens/user/user_profile.dart';
 import 'package:gracieusgalerij/services/favorite_service.dart';
+import 'package:provider/provider.dart';
 
 import 'song_detail.dart';
 
@@ -19,9 +21,11 @@ class FavoriteScreen extends StatefulWidget {
 
 class _FavoriteScreenState extends State<FavoriteScreen> {
   int _currentIndex = 3;
+  
 
   @override
   Widget build(BuildContext context) {
+    ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       body: Stack(
         children: [
@@ -95,7 +99,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                 'No favorite songs yet.',
                                 style: TextStyle(
                                   fontFamily: 'Bayon',
-                                  color: Colors.yellowAccent,
+                                  color: Colors.brown,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 18,
                                 ),
@@ -105,6 +109,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                         );
                       } else {
                         final data = snapshot.data!;
+                       
                         return ListView.builder(
                           itemCount: data.length,
                           itemBuilder: (context, index) {
@@ -211,7 +216,44 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                 ),
               ],
             ),
+          ), // Hanya menampilkan jika berada di layar Favorite dan ada favorit
+            Positioned(
+  bottom: 10,
+  left: 27,
+  right: 27,
+  child: StreamBuilder<List<Song>>(
+    stream: FavoriteService.getFavoritesForUser(),
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        // Jika masih dalam proses memuat, tampilkan tombol sebagai SizedBox
+        return SizedBox();
+      } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+        // Jika ada data favorit, tampilkan tombol Remove All Favorites
+        return GestureDetector(
+          onTap: () {
+            _removeAllFavorites();
+          },
+          child: Container(
+            height: 50,
+            color: const Color.fromARGB(255, 101, 75, 66),
+            child: const Center(
+              child: Text(
+                'Remove All Favorites',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
           ),
+        );
+      } else {
+        // Jika tidak ada data favorit, jangan tampilkan tombol
+        return SizedBox();
+      }
+    },
+  ),
+),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -294,7 +336,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
             case 0:
               return const HomeScreen();
             case 1:
-             return const SearchScreen();
+              return const SearchScreen();
             case 2:
               return const CartScreen(
                 purchasedSongs: [],
@@ -310,4 +352,23 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
       ),
     );
   }
+
+  void _removeAllFavorites() {
+    // Implement function to remove all favorites here
+    // You can use FavoriteService method to remove all favorites from Firestore
+    FavoriteService.removeAllFavorites().then((_) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('All favorites removed'),
+        ),
+      );
+    }).catchError((error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to remove favorites: $error'),
+        ),
+      );
+    });
+  }
 }
+

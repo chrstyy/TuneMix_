@@ -263,7 +263,7 @@ class _LandingScreenState extends State<LandingScreen> {
                     Align(
                       alignment: const AlignmentDirectional(-2.00, 0.00),
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 70),
+                        padding: const EdgeInsets.only(left: 50),
                         child: RichText(
                           textScaleFactor:
                               MediaQuery.of(context).textScaleFactor,

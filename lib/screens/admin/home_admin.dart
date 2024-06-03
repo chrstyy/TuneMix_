@@ -5,7 +5,9 @@ import 'package:flutter/widgets.dart';
 import 'package:gracieusgalerij/models/song.dart';
 import 'package:gracieusgalerij/screens/admin/edit_genre.dart';
 import 'package:gracieusgalerij/screens/admin/edit_product_detail_admin.dart';
+import 'package:gracieusgalerij/screens/admin/widget/widget_genre.dart';
 import 'package:gracieusgalerij/screens/theme/theme_app.dart';
+import 'package:gracieusgalerij/screens/user/song_list.dart';
 import 'package:gracieusgalerij/services/song_service.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -53,125 +55,178 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                     fit: BoxFit.cover,
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 20, 0),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Container(
-                          width: 110,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            gradient: const LinearGradient(
-                              colors: [Color(0xFF747474), Color(0xFFC1C1C1)],
-                              stops: [0, 1],
-                              begin: AlignmentDirectional(0, -1),
-                              end: AlignmentDirectional(0, 1),
-                            ),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                const Icon(
-                                  Icons.search,
-                                  color: Colors.white,
-                                  size: 24,
-                                ),
-                                Expanded(
-                                  child: Padding(
-                                    padding:
-                                        const EdgeInsetsDirectional.fromSTEB(
-                                            8, 0, 8, 0),
-                                    child: TextFormField(
-                                      autofocus: true,
-                                      obscureText: false,
-                                      cursorColor: Colors.white,
-                                      decoration: InputDecoration(
-                                        border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(15.0),
-                                          borderSide: const BorderSide(
-                                            color: Colors.transparent,
-                                          ),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(15.0),
-                                          borderSide: const BorderSide(
-                                            color: Colors.white,
-                                            width: 2,
-                                          ),
-                                        ),
-                                        filled: true,
-                                        fillColor: Colors.transparent,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const EditProductDetail()),
-                          );
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 20),
-                          child: Icon(
-                            Icons.add_circle_sharp,
-                            color: themeProvider.themeMode().switchColor!,
-                            size: 24,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                // Padding(
+                //   padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 20, 0),
+                //   child: Row(
+                //     mainAxisSize: MainAxisSize.max,
+                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //     children: [
+                //       Expanded(
+                //         child: Container(
+                //           width: 110,
+                //           height: 40,
+                //           decoration: BoxDecoration(
+                //             gradient: const LinearGradient(
+                //               colors: [Color(0xFF747474), Color(0xFFC1C1C1)],
+                //               stops: [0, 1],
+                //               begin: AlignmentDirectional(0, -1),
+                //               end: AlignmentDirectional(0, 1),
+                //             ),
+                //             borderRadius: BorderRadius.circular(10),
+                //           ),
+                //           child: Padding(
+                //             padding: const EdgeInsets.all(10),
+                //             child: Row(
+                //               mainAxisSize: MainAxisSize.max,
+                //               children: [
+                //                 const Icon(
+                //                   Icons.search,
+                //                   color: Colors.white,
+                //                   size: 24,
+                //                 ),
+                //                 Expanded(
+                //                   child: Padding(
+                //                     padding:
+                //                         const EdgeInsetsDirectional.fromSTEB(
+                //                             8, 0, 8, 0),
+                //                     child: TextFormField(
+                //                       autofocus: true,
+                //                       obscureText: false,
+                //                       cursorColor: Colors.white,
+                //                       decoration: InputDecoration(
+                //                         border: OutlineInputBorder(
+                //                           borderRadius:
+                //                               BorderRadius.circular(15.0),
+                //                           borderSide: const BorderSide(
+                //                             color: Colors.transparent,
+                //                           ),
+                //                         ),
+                //                         focusedBorder: OutlineInputBorder(
+                //                           borderRadius:
+                //                               BorderRadius.circular(15.0),
+                //                           borderSide: const BorderSide(
+                //                             color: Colors.white,
+                //                             width: 2,
+                //                           ),
+                //                         ),
+                //                         filled: true,
+                //                         fillColor: Colors.transparent,
+                //                       ),
+                //                     ),
+                //                   ),
+                //                 ),
+                //               ],
+                //             ),
+                //           ),
+                //         ),
+                //       ),
+                //       Row(
+                //         children: [
+                //           GestureDetector(
+                //             onTap: () {
+                //               Navigator.push(
+                //                 context,
+                //                 MaterialPageRoute(
+                //                     builder: (context) =>
+                //                         const EditProductDetail()),
+                //               );
+                //             },
+                //             child: Padding(
+                //               padding: const EdgeInsets.only(left: 20),
+                //               child: Icon(
+                //                 Icons.add_circle_sharp,
+                //                 color: themeProvider.themeMode().switchColor!,
+                //                 size: 24,
+                //               ),
+                //             ),
+                //           ),
+                //           GestureDetector(
+                //            onTap: () {
+                //               Navigator.push(
+                //                 context,
+                //                 MaterialPageRoute(
+                //                     builder: (context) => SongList()),
+                //               );
+                //             },
+                //             child: Padding(
+                //               padding: const EdgeInsets.only(left: 10),
+                //               child: Icon(
+                //                 Icons.view_list,
+                //                 color: themeProvider.themeMode().switchColor!,
+                //                 size: 24,
+                //               ),
+                //             ),
+                //           ),
+                //         ],
+                //       ),
+                //     ],
+                //   ),
+                // ),
+                Row(
+  mainAxisSize: MainAxisSize.max,
+  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  children: [
+    Expanded(
+      child: Text(
+        'Special Offer',
+        style: TextStyle(
+          fontFamily: 'Bayon',
+          fontSize: 20,
+        ),
+      ),
+    ),
+    Row(
+      children: [
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const EditProductDetail()),
+            );
+          },
+          child: Padding(
+            padding: const EdgeInsets.only(left: 16),
+            child: Icon(
+              Icons.add_circle_sharp,
+              color: themeProvider.themeMode().switchColor!,
+              size: 24,
+            ),
+          ),
+        ),
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => SongList()),
+            );
+          },
+          child: Padding(
+            padding: const EdgeInsets.only(left: 5),
+            child: Icon(
+              Icons.view_list,
+              color: themeProvider.themeMode().switchColor!,
+              size: 24,
+            ),
+          ),
+        ),
+      ],
+    ),
+  ],
+),
+
+                SizedBox(child: WidgetOffer()),
                 const Padding(
                   padding: EdgeInsets.only(top: 20, right: 20),
-                  child: Text(
-                    'Special Offer',
-                    style: TextStyle(
-                      fontFamily: 'Bayon',
-                      fontSize: 20,
-                    ),
-                  ),
-                ),
-                SizedBox(child: WidgetOffer()),
-                Padding(
-                  padding: const EdgeInsets.only(top: 20, right: 20),
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
+                      Text(
                         'Genre',
                         style: TextStyle(
                           fontFamily: 'Bayon',
                           fontSize: 20,
-                        ),
-                      ),
-                      InkWell(
-                        child: Icon(
-                          Icons.edit_note_rounded,
-                          color: themeProvider.themeMode().switchColor!,
-                          size: 24,
-                        ),
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => EditGenre()),
                         ),
                       ),
                     ],
@@ -189,89 +244,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                   ),
                   child: Padding(
                     padding: const EdgeInsetsDirectional.fromSTEB(10, 5, 0, 5),
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(right: 10),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                print('Button pressed ...');
-                              },
-                              style: ElevatedButton.styleFrom(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 24),
-                                elevation: 3,
-                                backgroundColor: const Color(0xFFF1B26F),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                              child: const Text(
-                                'Pop',
-                                style: TextStyle(
-                                    fontFamily: 'Bayon',
-                                    color: Colors.black,
-                                    letterSpacing: 0,
-                                    fontSize: 25),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 10),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                print('Button pressed ...');
-                              },
-                              style: ElevatedButton.styleFrom(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 24),
-                                elevation: 3,
-                                backgroundColor: const Color(0xFFF1B26F),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                              child: const Text(
-                                'Jazz',
-                                style: TextStyle(
-                                    fontFamily: 'Bayon',
-                                    color: Colors.black,
-                                    letterSpacing: 0,
-                                    fontSize: 25),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 10),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                print('Button pressed ...');
-                              },
-                              style: ElevatedButton.styleFrom(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 24),
-                                elevation: 3,
-                                backgroundColor: const Color(0xFFF1B26F),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                              child: const Text(
-                                'Rock & Roll',
-                                style: TextStyle(
-                                    fontFamily: 'Bayon',
-                                    color: Colors.black,
-                                    letterSpacing: 0,
-                                    fontSize: 25),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    child: WidgetGenre(),
                   ),
                 ),
                 const Padding(
@@ -285,6 +258,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
                   ),
                 ),
                 SizedBox(child: WidgetRecommendation()),
+                SizedBox(height: 20),
               ],
             ),
           ),

@@ -29,6 +29,7 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
   late String _userId;
   late String songId;
   late Song song;
+  
 
   @override
   void initState() {
@@ -48,17 +49,21 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
 
   Future<void> _toggleFavorite() async {
     try {
-      setState(() {
-        _isFavorite = !_isFavorite;
-      });
+    setState(() {
+      _isFavorite = !_isFavorite;
+    });
+
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
       if (_isFavorite) {
         await FavoriteService.addToFavorites(song);
       } else {
-        await FavoriteService.removeFromFavorites(songId);
+        await FavoriteService.removeFromFavorites(song.id);
       }
-    } catch (e) {
-      print('Error toggling favorite: $e');
     }
+  } catch (e) {
+    print('Error toggling favorite: $e');
+  }
   }
 
   Future<void> _fetchSong() async {

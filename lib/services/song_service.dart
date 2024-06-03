@@ -143,4 +143,32 @@ static Future<void> addSong(Song song, File? image) async {
       print('Error updating song rating: $e');
     }
   }
+
+  Future<List<Song>> getSongsByGenre(String genre) async {
+    try {
+      QuerySnapshot querySnapshot = await _database
+          .collection('songs')
+          .where('genre', isEqualTo: genre)
+          .get();
+      return querySnapshot.docs
+          .map((doc) => Song.fromFirestore(doc.data() as Map<String, dynamic>, doc.id))
+          .toList();
+    } catch (e) {
+      throw Exception('Failed to fetch songs: $e');
+    }
+  }
+
+   Future<List<String>> getGenres() async {
+    try {
+      QuerySnapshot querySnapshot = await _database.collection('songs').get();
+      Set<String> genres = {};
+      for (var doc in querySnapshot.docs) {
+        genres.add(doc['genre']);
+      }
+      return genres.toList();
+    } catch (e) {
+      throw Exception('Failed to fetch genres: $e');
+    }
+  }
+
 }

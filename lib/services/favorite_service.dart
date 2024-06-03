@@ -75,4 +75,31 @@ class FavoriteService {
         .map((snapshot) =>
             snapshot.docs.map((doc) => Song.fromFirestore(doc.data(), doc.id)).toList());
   }
+
+  static Future<void> removeAllFavorites() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) {
+        throw Exception("User not logged in");
+      }
+      final userId = user.uid;
+      
+      // Menghapus semua dokumen dari koleksi 'favorites' milik pengguna
+      await FirebaseFirestore.instance
+          .collection('users') 
+          .doc(userId)
+          .collection('favorites')
+          .get()
+          .then((snapshot) {
+            for (DocumentSnapshot doc in snapshot.docs) {
+              doc.reference.delete();
+            }
+          });
+
+      print("All favorites removed successfully.");
+    } catch (error) {
+      print("Error removing all favorites: $error");
+    }
+    
+  }
 }

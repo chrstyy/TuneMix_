@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:gracieusgalerij/screens/admin/widget/widget_genre.dart';
 import 'package:gracieusgalerij/screens/user/search_screen.dart';
+import 'package:gracieusgalerij/screens/user/song_list.dart';
+import 'package:gracieusgalerij/screens/user/widgets/widget_recommend_user.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/song.dart';
@@ -52,23 +56,39 @@ class _HomeScreenState extends State<HomeScreen> {
                     fit: BoxFit.cover,
                   ),
                 ),
-                const Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
-                  child:Row(
-                    children: [
-                      Text(
-                       'Special Offer', style: TextStyle(fontFamily: 'Bayon',fontSize: 20),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 220),
-                        child: Icon(
-                          Icons.notifications,
-                          size: 24,
-                          ),
-                        ),
-                    ],
-                  ) 
-                ),
+                Padding(
+  padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+  child: Row(
+    children: [
+      Text(
+        'Special Offer',
+        style: TextStyle(fontFamily: 'Bayon', fontSize: 20),
+      ),
+      SizedBox(width: 150,),
+      Padding(
+        padding: EdgeInsets.only(left: 20),
+        child: GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SongList(),
+              ),
+            );
+          },
+          child: Text(
+            'view all',
+            style: TextStyle(
+              color: themeProvider.themeMode().switchColor!,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ),
+    ],
+  ),
+), 
                 FutureBuilder<List<Song>>(
                   future: _songService.getSongSpecialOffer(count: 5),
                   builder: (context, snapshot) {
@@ -166,13 +186,19 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                 ),
                 const Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
-                  child: Text(
-                    'Category',
-                    style: TextStyle(
-                      fontFamily: 'Bayon',
-                      fontSize: 20,
-                    ),
+                  padding: EdgeInsets.only(top: 20, right: 20),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Genre',
+                        style: TextStyle(
+                          fontFamily: 'Bayon',
+                          fontSize: 20,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 Container(
@@ -187,112 +213,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   child: Padding(
                     padding: const EdgeInsetsDirectional.fromSTEB(10, 5, 0, 5),
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(right: 10),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                print('Button pressed ...');
-                              },
-                              style: ElevatedButton.styleFrom(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 24),
-                                elevation: 3,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                              child: const Text(
-                                'texthdsjs',
-                                style: TextStyle(
-                                  fontFamily: 'Readex Pro',
-                                  color: Colors.black,
-                                  letterSpacing: 0,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 10),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                print('Button pressed ...');
-                              },
-                              style: ElevatedButton.styleFrom(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 24),
-                                elevation: 3,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                              child: const Text(
-                                'text',
-                                style: TextStyle(
-                                  fontFamily: 'Readex Pro',
-                                  color: Colors.white,
-                                  letterSpacing: 0,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 10),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                print('Button pressed ...');
-                              },
-                              style: ElevatedButton.styleFrom(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 24),
-                                elevation: 3,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                              child: const Text(
-                                'texthdsjs',
-                                style: TextStyle(
-                                  fontFamily: 'Readex Pro',
-                                  color: Colors.white,
-                                  letterSpacing: 0,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 10),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                print('Button pressed ...');
-                              },
-                              style: ElevatedButton.styleFrom(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 24),
-                                elevation: 3,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                              child: const Text(
-                                'text',
-                                style: TextStyle(
-                                  fontFamily: 'Readex Pro',
-                                  color: Colors.white,
-                                  letterSpacing: 0,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    child: WidgetGenre(), 
                   ),
                 ),
+
                 Padding(
                   padding: const EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
                   child: Column(
@@ -311,7 +235,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 fontSize: 20,
                               ),
                             ),
-                            Icon(
+                             Icon(
                               Icons.arrow_drop_down,
                               color: themeProvider.themeMode().switchColor!,
                               size: 24,
@@ -319,102 +243,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           ],
                         ),
                       ),
-                      FutureBuilder<List<Song>>(
-                        future: _songService.getSongRecommend(count: 5),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.waiting) {
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          }
-                          if (snapshot.hasError) {
-                            return Center(
-                              child: Text('Error: ${snapshot.error}'),
-                            );
-                          }
-                          final List<Song> data = snapshot.data ?? [];
-                          if (data.isEmpty) {
-                            return const Center(
-                              child: Text('No data available.'),
-                            );
-                          }
-                          return SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: data.map((song) {
-                                return Padding(
-                                  padding: const EdgeInsets.only(right: 10),
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              SongDetailScreen(songId: song.id),
-                                        ),
-                                      );
-                                    },
-                                    child: Container(
-                                      width: 200,
-                                      height: 260,
-                                      decoration: BoxDecoration(
-                                        color:
-                                            themeProvider.themeMode().switchBgColor!,
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: [
-                                          const SizedBox(height: 13),
-                                          ClipRRect(
-                                            borderRadius: BorderRadius.circular(8),
-                                            child: song.imageSong != null &&
-                                                    Uri.parse(song.imageSong!)
-                                                        .isAbsolute
-                                                ? Image.network(
-                                                    song.imageSong!,
-                                                    width: 182,
-                                                    height: 188,
-                                                    fit: BoxFit.cover,
-                                                  )
-                                                : Container(
-                                                    width: 182,
-                                                    height: 188,
-                                                    color: Colors.grey[300],
-                                                    child: const Icon(
-                                                      Icons.image,
-                                                      color: Colors.grey,
-                                                    ),
-                                                  ),
-                                          ),
-                                          const SizedBox(
-                                            height: 5,
-                                          ),
-                                          Text(
-                                            song.songTitle,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headline3!,
-                                          ),
-                                          const SizedBox(height: 5),
-                                          Text(
-                                            '\$${song.price.toString()}',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headline3!,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              }).toList(),
-                            ),
-                          );
-                        },
-                      ),
+                      SizedBox(child: WidgetRecoUser()),
+                      SizedBox(height: 20),
                     ],
                   ),
                 ),
@@ -423,6 +253,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
+
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(
           canvasColor: const Color(0xFFE2DFD0),
