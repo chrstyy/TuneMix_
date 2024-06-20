@@ -469,7 +469,7 @@ class _UserProfileState extends State<UserProfile> {
                           children: [
                             Text(
                               _userName,
-                              style: Theme.of(context).textTheme.headlineLarge!,
+                              // style: Theme.of(context).textTheme.headline1!,
                             ),
                             const SizedBox(height: 2),
                             GestureDetector(
@@ -478,6 +478,7 @@ class _UserProfileState extends State<UserProfile> {
                               },
                               child: Text(
                                 'Edit Username',
+                                // style: Theme.of(context).textTheme.headline2!,
                               ),
                             ),
                           ],
@@ -618,7 +619,7 @@ class _UserProfileState extends State<UserProfile> {
                                     height: 10,
                                   ),
                                   Text(
-                                    'rayvin_putra_tapasya@gmail.com',
+                                    'edison_sugiono@gmail.com',
                                     style: TextStyle(
                                       fontFamily: 'Basic',
                                       fontSize: 18,
@@ -627,7 +628,7 @@ class _UserProfileState extends State<UserProfile> {
                                     ),
                                   ),
                                   Text(
-                                    'christy_permata_sari@gmail.com',
+                                    'raihan_sigondo@gmail.com',
                                     style: TextStyle(
                                       fontFamily: 'Basic',
                                       fontSize: 18,
@@ -636,7 +637,7 @@ class _UserProfileState extends State<UserProfile> {
                                     ),
                                   ),
                                   Text(
-                                    'jocelyn_ratna_harpasari@gmail.com',
+                                    'sanu_sigenta@gmail.com',
                                     style: TextStyle(
                                       fontFamily: 'Basic',
                                       fontSize: 18,
@@ -645,7 +646,16 @@ class _UserProfileState extends State<UserProfile> {
                                     ),
                                   ),
                                   Text(
-                                    'callista_putri_khadijah@gmail.com',
+                                    'wong_sigola@gmail.com',
+                                    style: TextStyle(
+                                      fontFamily: 'Basic',
+                                      fontSize: 18,
+                                      color:
+                                          themeProvider.themeMode().thumbColor!,
+                                    ),
+                                  ),
+                                  Text(
+                                    'putri_singakak@gmail.com',
                                     style: TextStyle(
                                       fontFamily: 'Basic',
                                       fontSize: 18,
