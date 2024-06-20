@@ -228,7 +228,6 @@ class _UserAdminProfileState extends State<UserAdminProfile> {
                           children: [
                             Text(
                               _userName,
-                              style: Theme.of(context).textTheme.headline1!,
                             ),
                           ],
                         ),

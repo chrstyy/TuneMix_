@@ -271,11 +271,9 @@ class _LandingScreenState extends State<LandingScreen> {
                             children: [
                               TextSpan(
                                 text: 'ALREADY HAVE AN ACCOUNT?',
-                                style: Theme.of(context).textTheme.headline2,
                               ),
                               TextSpan(
                                 text: ' LOGIN',
-                                style: Theme.of(context).textTheme.headline5,
                                 mouseCursor: SystemMouseCursors.click,
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {

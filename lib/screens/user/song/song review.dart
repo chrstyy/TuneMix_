@@ -123,7 +123,6 @@ class _SongReviewScreenState extends State<SongReviewScreen> {
                                   children: [
                                     Text(
                                       song.songTitle,
-                                      style: Theme.of(context).textTheme.headline4!,
                                     ),
                                     const SizedBox(height: 5),
                                     RichText(
@@ -139,7 +138,6 @@ class _SongReviewScreenState extends State<SongReviewScreen> {
                                           ),
                                           TextSpan(
                                             text: song.creator,
-                                            style: Theme.of(context).textTheme.headline3!,
                                           ),
                                         ],
                                       ),

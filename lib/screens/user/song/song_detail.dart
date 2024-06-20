@@ -263,9 +263,6 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                                   children: [
                                     Text(
                                       song.songTitle,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline4!,
                                     ),
                                     Text(
                                       '\$${song.price}',
@@ -318,9 +315,6 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                                           ),
                                           TextSpan(
                                             text: '${song.description}',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headline6!,
                                           ),
                                         ],
                                       ),
@@ -341,9 +335,6 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                                           ),
                                           TextSpan(
                                             text: '${song.arangement}',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headline6!,
                                           ),
                                         ],
                                       ),

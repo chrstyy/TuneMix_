@@ -158,7 +158,7 @@ class _SongListState extends State<SongList> {
               padding: const EdgeInsets.symmetric(horizontal: 8.0), 
               child: Text(
                 song.songTitle,
-                style: Theme.of(context).textTheme.headline3,
+                
                 textAlign: TextAlign.center, 
               ),
             ),
@@ -167,7 +167,7 @@ class _SongListState extends State<SongList> {
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Text(
                 '\$${song.price.toString()}',
-                style: Theme.of(context).textTheme.headline3,
+                
                 textAlign: TextAlign.center,
               ),
             ),

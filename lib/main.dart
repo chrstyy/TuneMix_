@@ -58,9 +58,9 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       title: 'TuneMix',
-      theme: themeProvider.themeData(),
+      // theme: themeProvider.themeData(),
       debugShowCheckedModeBanner: false,
-      initialRoute: '/login',
+      initialRoute: '/landing',
       routes: {
         '/landing': (context) => const LandingScreen(),
         '/signup': (context) => const SignupScreen(),

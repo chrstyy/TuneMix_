@@ -172,7 +172,6 @@ class _SongDetailAdminScreenState extends State<SongDetailAdminScreen> {
                                   children: [
                                     Text(
                                       song.songTitle,
-                                      style: Theme.of(context).textTheme.headline4!,
                                     ),
                                     Text(
                                       '\$${song.price}',
@@ -196,7 +195,6 @@ class _SongDetailAdminScreenState extends State<SongDetailAdminScreen> {
                                           ),
                                           TextSpan(
                                             text: song.creator,
-                                            style: Theme.of(context).textTheme.headline3!,
                                           ),
                                         ],
                                       ),
@@ -215,7 +213,6 @@ class _SongDetailAdminScreenState extends State<SongDetailAdminScreen> {
                                           ),
                                           TextSpan(
                                             text: song.description,
-                                            style: Theme.of(context).textTheme.headline6!,
                                           ),
                                         ],
                                       ),
@@ -233,7 +230,6 @@ class _SongDetailAdminScreenState extends State<SongDetailAdminScreen> {
                                           ),
                                           TextSpan(
                                             text: song.arangement,
-                                            style: Theme.of(context).textTheme.headline6!,
                                           ),
                                         ],
                                       ),

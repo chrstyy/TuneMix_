@@ -41,45 +41,45 @@ class ThemeProvider with ChangeNotifier {
     getCurrentStatusNavigationBarColor();
   }
 
-  ThemeData themeData() {
-    return ThemeData(
-      brightness: isLightTheme ? Brightness.light : Brightness.dark,
-      scaffoldBackgroundColor: isLightTheme ? AppColors.white : AppColors.dark1,
-      textTheme: TextTheme(
-        headline1: TextStyle(
-          fontFamily: 'Bayon',
-          fontSize: 25,
-          color: isLightTheme ? AppColors.black : AppColors.white,
-        ),
-        headline2: TextStyle(
-          fontFamily: 'Basic',
-          fontSize: 16,
-          color: isLightTheme ? AppColors.black : AppColors.white,
-        ),
-        headline3: TextStyle(
-          fontFamily: 'Bayon',
-          fontSize: 15,
-          color: isLightTheme ? AppColors.white : AppColors.black,
-        ),
-        headline4: TextStyle(
-          fontFamily: 'Bayon',
-          fontSize: 30,
-          color: isLightTheme ? AppColors.white : AppColors.black,
-        ),
-        headline5: TextStyle(
-          fontFamily: 'OdorMeanChey',
-          fontSize: 16,
-          decoration: TextDecoration.underline,
-          color: isLightTheme ? AppColors.black : AppColors.white,
-        ),
-        headline6: TextStyle(
-            fontFamily: 'Battambang',
-            fontSize: 15,
-            color: isLightTheme ? AppColors.white : AppColors.black,
-            decoration: TextDecoration.underline),
-      ),
-    );
-  }
+  // ThemeData themeData() {
+  //   return ThemeData(
+  //     brightness: isLightTheme ? Brightness.light : Brightness.dark,
+  //     scaffoldBackgroundColor: isLightTheme ? AppColors.white : AppColors.dark1,
+  //     textTheme: TextTheme(
+  //       headline1: TextStyle(
+  //         fontFamily: 'Bayon',
+  //         fontSize: 25,
+  //         color: isLightTheme ? AppColors.black : AppColors.white,
+  //       ),
+  //       headline2: TextStyle(
+  //         fontFamily: 'Basic',
+  //         fontSize: 16,
+  //         color: isLightTheme ? AppColors.black : AppColors.white,
+  //       ),
+  //       headline3: TextStyle(
+  //         fontFamily: 'Bayon',
+  //         fontSize: 15,
+  //         color: isLightTheme ? AppColors.white : AppColors.black,
+  //       ),
+  //       headline4: TextStyle(
+  //         fontFamily: 'Bayon',
+  //         fontSize: 30,
+  //         color: isLightTheme ? AppColors.white : AppColors.black,
+  //       ),
+  //       headline5: TextStyle(
+  //         fontFamily: 'OdorMeanChey',
+  //         fontSize: 16,
+  //         decoration: TextDecoration.underline,
+  //         color: isLightTheme ? AppColors.black : AppColors.white,
+  //       ),
+  //       headline6: TextStyle(
+  //           fontFamily: 'Battambang',
+  //           fontSize: 15,
+  //           color: isLightTheme ? AppColors.white : AppColors.black,
+  //           decoration: TextDecoration.underline),
+  //     ),
+  //   );
+  // }
 
   ThemeMode themeMode() {
     return ThemeMode(

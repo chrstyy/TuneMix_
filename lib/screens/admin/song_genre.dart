@@ -147,12 +147,12 @@ class _SongGenreScreenState extends State<SongGenreScreen> {
                                   const SizedBox(height: 5),
                                   Text(
                                     song.songTitle,
-                                    style: Theme.of(context).textTheme.headline3,
+                                    
                                   ),
                                   const SizedBox(height: 5),
                                   Text(
                                     '\$${song.price.toString()}',
-                                    style: Theme.of(context).textTheme.headline3,
+                                    
                                   ),
                                 ],
                               ),

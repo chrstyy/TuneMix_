@@ -469,7 +469,7 @@ class _UserProfileState extends State<UserProfile> {
                           children: [
                             Text(
                               _userName,
-                              style: Theme.of(context).textTheme.headline1!,
+                              style: Theme.of(context).textTheme.headlineLarge!,
                             ),
                             const SizedBox(height: 2),
                             GestureDetector(
@@ -478,7 +478,6 @@ class _UserProfileState extends State<UserProfile> {
                               },
                               child: Text(
                                 'Edit Username',
-                                style: Theme.of(context).textTheme.headline2!,
                               ),
                             ),
                           ],
