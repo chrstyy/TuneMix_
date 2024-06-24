@@ -5,6 +5,7 @@ class Song {
   final String genre;
   final String arangement;
   final String description;
+  final int yearMade;
   String? imageSong;
   final double price;
   final bool isRecommended;
@@ -18,6 +19,7 @@ class Song {
     required this.creator,
     required this.genre,
     required this.description,
+    required this.yearMade,
     this.imageSong,
     required this.price,
     required this.arangement,
@@ -34,6 +36,7 @@ factory Song.fromFirestore(Map<String, dynamic> data, String id) {
     creator: data['creator'] ?? '',
     genre: data['genre'] ?? '',
     description: data['description'] ?? '',
+    yearMade: int.tryParse(data['description']) ?? DateTime.now().year,
     imageSong: data['image_song'] ?? '',
     arangement: data['arangement'] ?? '',
     price: (data['price'] ?? 0.0).toDouble(),
@@ -51,6 +54,7 @@ factory Song.fromFirestore(Map<String, dynamic> data, String id) {
       'creator': creator,
       'genre': genre,
       'description': description,
+      'yearMade': yearMade,
       'image_song': imageSong,
       'price': price,
       'arangement': arangement,

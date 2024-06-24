@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gracieusgalerij/screens/theme/theme_app.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'dart:io';
 import 'package:provider/provider.dart';
 
@@ -16,6 +17,7 @@ class EditProductDetail extends StatefulWidget {
 
 class _EditProductDetailState extends State<EditProductDetail> {
   File? _image;
+  int yearMade = DateTime.now().year;
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _genreController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
@@ -43,6 +45,7 @@ class _EditProductDetailState extends State<EditProductDetail> {
         creator: _creatorController.text,
         genre: _genreController.text,
         description: _descriptionController.text,
+        yearMade: yearMade,
         imageSong: '', // imageUrl seharusnya ditentukan
         price: double.parse(_priceController.text),
         arangement: _arangementController.text,
@@ -240,6 +243,82 @@ class _EditProductDetailState extends State<EditProductDetail> {
                             maxLines: 6,
                           ),
                         ),
+                      ),
+                      const SizedBox(height: 14),
+                      // Container(
+                      //   height: 150,
+                      //   width: double.infinity,
+                      //   decoration: BoxDecoration(
+                      //     color: themeProvider.themeMode().switchBgColor!,
+                      //     borderRadius: BorderRadius.circular(10),
+                      //   ),
+                      //   child: Padding(
+                      //     padding: const EdgeInsets.all(10),
+                      //     child: TextField(
+                      //       controller: _yearMadeController,
+                      //       decoration: InputDecoration(
+                      //         border: InputBorder.none,
+                      //         hintText: 'Masukkan Tahun Rilis...',
+                      //         hintStyle: TextStyle(
+                      //           fontFamily: 'Bayon',
+                      //           color: themeProvider.themeMode().thumbColor!,
+                      //         ),
+                      //       ),
+                      //       style: TextStyle(
+                      //         fontFamily: 'Bayon',
+                      //         color: themeProvider.themeMode().thumbColor!,
+                      //         fontSize: 16,
+                      //       ),
+                      //       maxLines: 6,
+                      //     ),
+                      //   ),
+                      // ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            'Selected Year: $yearMade',
+                            style: const TextStyle(
+                              fontFamily: 'Bayon',
+                              color: Colors.brown,
+                              fontSize: 16,
+                            )
+                            ),
+                          const SizedBox(width: 10),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.brown,
+                            ),
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text('Select Year'),
+                                    content: Container(
+                                      width: double.maxFinite,
+                                      height: 400, // Ensuring height to fit YearPicker
+                                      child: YearPicker(
+                                        firstDate: DateTime(1900),
+                                        lastDate: DateTime(2050),
+                                        selectedDate: DateTime.now(),
+                                        onChanged: (DateTime dateTime) {
+                                          setState(() {
+                                            yearMade = dateTime.year;
+                                          });
+                                          Navigator.pop(context); // Close the dialog
+                                        },
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                            child: const Text(
+                              'Pick Year',
+                              style: TextStyle(color: Colors.white)),
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 14),
                       Container(

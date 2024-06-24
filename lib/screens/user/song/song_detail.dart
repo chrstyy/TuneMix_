@@ -263,6 +263,11 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                                   children: [
                                     Text(
                                       song.songTitle,
+                                      style: const TextStyle(
+                                        fontSize: 25,
+                                        fontFamily: 'Bayon',
+                                        color: Color(0xFFFF8A00),
+                                      ),
                                     ),
                                     Text(
                                       '\$${song.price}',
@@ -315,6 +320,26 @@ class _SongDetailScreenState extends State<SongDetailScreen> {
                                           ),
                                           TextSpan(
                                             text: '${song.description}',
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    RichText(
+                                      text: TextSpan(
+                                        children: [
+                                          const TextSpan(
+                                            text: 'Year Released: ',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontFamily: 'Bayon',
+                                              color: Color(0xFFFF8A00),
+                                            ),
+                                          ),
+                                          TextSpan(
+                                            text: '${song.yearMade}',
                                           ),
                                         ],
                                       ),
